@@ -47,6 +47,19 @@
         });
     });
 
+    // 1.1.1 รูปตกแต่ง (alt ว่าง: ภาพพื้นหลัง hero/สไลด์, ภาพย่อข้างชื่อเรื่อง, ไอคอน) → ภาพพื้นหลัง CSS (เทคนิค C9)
+    // เทคโนโลยีสิ่งอำนวยความสะดวกไม่ต้องข้ามรูปเอง / รูปสำรองเดิม (onerror) เป็นชั้นล่างของพื้นหลัง
+    body.querySelectorAll('img[alt=""]').forEach((img) => {
+        if (hidden(img) || !img.getAttribute('src')) return;
+        const span = doc.createElement('span');
+        span.className = ((img.getAttribute('class') || '') + ' aaa-deco').trim();
+        span.setAttribute('aria-hidden', 'true');
+        const fallback = /this\.src\s*=\s*'([^']+)'/.exec(img.getAttribute('onerror') || '');
+        const layers = [img.getAttribute('src')].concat(fallback && fallback[1] !== img.getAttribute('src') ? [fallback[1]] : []);
+        span.style.backgroundImage = layers.map((u) => 'url("' + u.replace(/"/g, '%22') + '")').join(', ');
+        img.replaceWith(span);
+    });
+
     // 1.3.1 กลุ่มลิงก์นำทาง (ภาษา / ลิงก์ท้ายหน้า / รายการการ์ด / แท็บกรอง) เป็นรายการ <ul><li> (H48)
     const toList = (el) => {
         if (el.closest('ul, ol') || hidden(el)) return;

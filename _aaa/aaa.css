@@ -629,3 +629,32 @@ nav.mrta-bc a {
     margin-top: 16px !important;
     min-height: 44px;
 }
+
+/* ══════════ 1.1.1 รูปตกแต่งเป็นภาพพื้นหลัง CSS (เทคนิค C9) - transform เปลี่ยน <img alt=""> เป็น <span class="... aaa-deco"> ══════════ */
+.aaa-deco {
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.ph-hero-media > .aaa-deco,
+.ph-hl-img > .aaa-deco {
+    width: 100%;
+    height: 100%;
+}
+.ph-slide-bg.aaa-deco {
+    background-position: 70% center;
+}
+.ph-hl-img > .aaa-deco {
+    transition: transform .4s ease;
+}
+.ph-hl-card:hover .ph-hl-img > .aaa-deco {
+    transform: scale(1.04);
+}
+.img-cookie-setting.aaa-deco {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    vertical-align: middle;
+}
