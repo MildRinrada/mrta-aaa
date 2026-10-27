@@ -150,7 +150,7 @@ def main():
     scrub = Scrub(json.loads((RAW / 'pii.json').read_text(encoding='utf-8')))
 
     # ล้างผลรอบก่อน (คงไฟล์ที่เขียนมือ: _build, _aaa, 404.html, vercel.json, .vercelignore)
-    keep = {'_build', '_aaa', '404.html', 'vercel.json', '.vercelignore', '.git', 'README.md'}
+    keep = {'_build', '_aaa', '404.html', 'vercel.json', '.vercelignore', '.gitignore', '.git', 'README.md'}
     if SITE.exists():
         for p in SITE.iterdir():
             if p.name not in keep:

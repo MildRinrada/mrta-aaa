@@ -1,0 +1,3 @@
+# สคริปต์ตัวตรวจ (HTML_CodeSniffer / axe-core) ดาวน์โหลดเองตอนรัน check_aaa.py
+_build/vendor/
+__pycache__/
