@@ -247,10 +247,23 @@ abbr[title] {
 .ph-cal-day.today,
 .ph-cal-day.active,
 .ph-btn,
-.ph-btn-red,
-.btn-app {
+.ph-btn-red {
     background: var(--aaa-red) !important;
     color: #fff !important;
+}
+/* ปุ่มกลางของระบบ (.btn-app-*) คงสีเดิม แค่เข้มขึ้นให้ถึง 7:1 */
+.btn-app-blue {
+    background: var(--aaa-blue-btn) !important;
+    border-color: var(--aaa-blue-btn) !important;
+    color: #fff !important;
+}
+.btn-app-danger {
+    background: var(--aaa-red) !important;
+    border-color: var(--aaa-red) !important;
+    color: #fff !important;
+}
+.btn-app-muted {
+    color: #3a3f47 !important;
 }
 .ph-cal-day {
     min-width: 44px;
@@ -335,7 +348,10 @@ nav.mrta-bc a {
 .qa-hero-title,
 .qa-hero-desc {
     color: #fff !important;
-    background: var(--aaa-navy);
+}
+.au-hero-title,
+.au-hero-desc {
+    width: fit-content;
 }
 .au-hero-desc {
     max-width: 28em !important;
@@ -657,4 +673,11 @@ nav.mrta-bc a {
     height: 30px;
     background-size: contain;
     vertical-align: middle;
+}
+
+/* โลโก้บนพื้นน้ำเงินทึบ: สีขาวล้วนทั้งชิ้น (ไม่ผสมสีแดง ไม่ให้ดูเหมือนดัดแปลงโลโก้) */
+.nav-logo img,
+.nav-drawer-logo,
+.mf-logo img {
+    filter: brightness(0) invert(1);
 }
