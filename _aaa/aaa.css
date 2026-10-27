@@ -584,3 +584,48 @@ nav.mrta-bc a {
         overflow: visible !important;
     }
 }
+
+/* ไอคอนโซเชียลบนพื้นน้ำเงินทึบ: วงขาวรอบไอคอน (1.4.11) / ช่องทางที่หน่วยงานยังไม่ได้ตั้งค่า (กดไม่ได้) ไม่แสดง */
+.mf-social > a {
+    background: #fff;
+    padding: 3px;
+    width: 44px !important;
+    height: 44px !important;
+}
+.mf-social .is-off {
+    display: none !important;
+}
+
+/* เนื้อหาแนะนำ (จอ xl+): คอลัมน์กว้างขึ้น หัวเรื่อง 2 บรรทัด - ปุ่มอ่านต่อไม่จมใต้แถบเลขหน้า */
+@media (min-width: 1200px) {
+    .ph-feed-grid {
+        grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr) minmax(0, 1.4fr) !important;
+    }
+    .ph-news-list.aaa-ul > li {
+        flex: 1 1 0;
+        min-height: 0;
+    }
+    .ph-news-list.aaa-ul > li > .ph-news-item {
+        height: 100%;
+    }
+}
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    .ph-news-list.aaa-ul > li:nth-child(n + 4) {
+        display: flex;
+    }
+}
+.ph-slide-body {
+    top: 68px !important;
+}
+.ph-slide-title {
+    font-size: clamp(20px, 1.7vw, 24px) !important;
+    -webkit-line-clamp: 2 !important;
+}
+.ph-slide-text {
+    font-size: 15px !important;
+    margin-top: 10px !important;
+}
+.ph-slide-more {
+    margin-top: 16px !important;
+    min-height: 44px;
+}

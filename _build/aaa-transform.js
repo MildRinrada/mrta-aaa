@@ -29,6 +29,8 @@
         if (!p || p.closest('script, style, textarea, abbr, title, option, [aria-hidden="true"]')) return;
         Object.entries(ABBR).forEach(([abbr, full]) => {
             if (!t.parentNode || !t.nodeValue.includes(abbr)) return;
+            // มีคำเต็มอยู่ติดกันแล้ว เช่น "การรถไฟฟ้า...แห่งประเทศไทย (รฟม.)" - ผ่านเกณฑ์อยู่แล้ว ไม่ต้องแตะ
+            if (t.nodeValue.replace(/\s+/g, '').includes(full + '(' + abbr + ')')) return;
             const parts = t.nodeValue.split(abbr);
             // ห่อด้วย <span> เดียว: ข้อความที่อยู่ตรงใน flex/grid (เช่น ที่อยู่ใน footer) จะไม่แตกเป็นหลายชิ้น
             const frag = doc.createElement('span');
