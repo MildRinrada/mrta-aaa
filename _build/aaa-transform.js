@@ -44,7 +44,32 @@
         });
     });
 
-    if (fragment) return body.innerHTML;
+    // 1.3.1 กลุ่มลิงก์นำทาง (ภาษา / ลิงก์ท้ายหน้า / รายการการ์ด / แท็บกรอง) เป็นรายการ <ul><li> (H48)
+    const toList = (el) => {
+        if (el.closest('ul, ol') || hidden(el)) return;
+        const ul = doc.createElement('ul');
+        Array.from(el.attributes).forEach((a) => ul.setAttribute(a.name, a.value));
+        if (ul.getAttribute('role') === 'group') ul.removeAttribute('role');   // รายการบอกการจัดกลุ่มเองแล้ว
+        ul.classList.add('aaa-ul');
+        Array.from(el.childNodes).forEach((n) => {
+            if (n.nodeType === 3 && !n.nodeValue.trim()) return;
+            const li = doc.createElement('li');
+            if (n.nodeType === 1 && (n.getAttribute('aria-hidden') === 'true' || /(^|\s)(sep|mf-copy-sep)(\s|$)/.test(n.className))) li.setAttribute('aria-hidden', 'true');
+            li.appendChild(n);
+            ul.appendChild(li);
+        });
+        el.replaceWith(ul);
+    };
+
+    // ข้อความยาวที่มีลิงก์แทรก (แถบคุกกี้) ไม่ใช่เมนู - ห่อลิงก์ด้วย <span> ให้เป็นประโยคเดียวกัน
+    body.querySelectorAll('.cookie-container > div').forEach((d) => {
+        d.querySelectorAll(':scope > a').forEach((a) => { const s = doc.createElement('span'); a.replaceWith(s); s.appendChild(a); });
+    });
+
+    if (fragment) {
+        body.querySelectorAll('.qa-status-tabs').forEach(toList);
+        return body.innerHTML;
+    }
 
     const head = doc.head;
     const aaaCss = head.querySelector('link[href="/_aaa/aaa.css"]');
@@ -75,6 +100,8 @@
         top.textContent = 'กลับขึ้นด้านบน';
         bottom.appendChild(top);
     }
+
+    body.querySelectorAll('.nav-lang, .mf-bottom-links, .nav-drawer-secondary, .ph-hl-list, .ph-news-list, .qa-status-tabs').forEach(toList);
 
     // แถบคุกกี้ไว้ท้ายสุดของหน้า (aaa.css ทำเป็น sticky ที่ขอบล่าง แทน fixed)
     body.querySelectorAll('.cookie-nav').forEach((c) => body.appendChild(c));

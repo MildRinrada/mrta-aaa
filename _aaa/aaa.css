@@ -446,3 +446,92 @@ nav.mrta-bc a {
         scroll-behavior: auto !important;
     }
 }
+
+/* ══════════ แก้รอบ 2 ══════════ */
+/* ข้อความรองของการ์ด (วันที่ / ยอดเข้าชม / เวลาเรียน) */
+.ph-meta,
+.ph-meta span,
+.ph-hl-meta,
+.ph-hl-meta span {
+    color: var(--aaa-muted) !important;
+}
+
+/* กลุ่มลิงก์ที่ transform เปลี่ยนเป็น <ul><li> - หน้าตาเหมือนเดิม */
+.aaa-ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.aaa-ul > li {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+.aaa-ul > li > * {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+.aaa-ul > li[aria-hidden="true"] > * {
+    flex: none;
+}
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    .ph-news-list.aaa-ul > li:nth-child(n + 4) {
+        display: none;
+    }
+}
+
+/* ข้อความสำหรับโปรแกรมอ่านหน้าจอ: เทคนิควางนอกจอ (อ่านได้ ไม่เห็น ไม่ซ้อนทับเนื้อหา) */
+.visually-hidden,
+.visually-hidden-focusable:not(:focus):not(:focus-within),
+.sr-only {
+    position: absolute !important;
+    left: -10000px !important;
+    top: auto !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+}
+.a11y-skip {
+    left: -10000px !important;
+    top: 8px !important;
+    z-index: 2000;
+    padding: 12px 20px !important;
+    min-height: 44px;
+}
+.a11y-skip:focus,
+.a11y-skip:focus-visible {
+    left: 16px !important;
+}
+
+/* ป้ายของเนื้อหาแนะนำอยู่ในเนื้อหาปกติ (ไม่ absolute) / ข้อความของสไลด์อยู่บนพื้นขาวทึบของตัวเอง */
+.ph-feat-badge {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    display: inline-block;
+    margin: 16px 0 0 16px !important;
+}
+.ph-slide-title,
+.ph-slide-text {
+    background: #fff;
+}
+
+/* ปุ่มเปิดแผนที่: อยู่ใต้แผนที่ (ไม่ลอยทับ) */
+.au-map-open {
+    position: static !important;
+    margin-top: 12px;
+    min-height: 44px;
+    color: var(--aaa-navy) !important;
+    background: #fff !important;
+    border: 2px solid var(--aaa-navy);
+    box-shadow: none !important;
+}
+.au-map-open:hover {
+    background: var(--aaa-navy) !important;
+    color: #fff !important;
+}
+
+/* แผงตั้งค่าคุกกี้ตอนปิด: ซ่อนจริง (ไม่ให้โฟกัสหลุดไปในแผงที่มองไม่เห็น) */
+.cookie-sidebar.closed {
+    visibility: hidden;
+}
