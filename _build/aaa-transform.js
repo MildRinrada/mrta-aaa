@@ -30,7 +30,8 @@
         Object.entries(ABBR).forEach(([abbr, full]) => {
             if (!t.parentNode || !t.nodeValue.includes(abbr)) return;
             const parts = t.nodeValue.split(abbr);
-            const frag = doc.createDocumentFragment();
+            // ห่อด้วย <span> เดียว: ข้อความที่อยู่ตรงใน flex/grid (เช่น ที่อยู่ใน footer) จะไม่แตกเป็นหลายชิ้น
+            const frag = doc.createElement('span');
             parts.forEach((part, i) => {
                 if (part) frag.appendChild(doc.createTextNode(part));
                 if (i < parts.length - 1) {

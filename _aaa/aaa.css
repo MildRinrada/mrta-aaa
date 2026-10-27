@@ -535,3 +535,52 @@ nav.mrta-bc a {
 .cookie-sidebar.closed {
     visibility: hidden;
 }
+
+/* ══════════ แก้รอบ 3 ══════════ */
+/* ปุ่มภาษา EN | TH เรียงแนวนอน */
+.nav-lang.aaa-ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
+}
+/* แผงตั้งค่าคุกกี้ตอนปิด: ไม่แสดงเลย (ไม่ดันความกว้างหน้า) */
+.cookie-sidebar.closed {
+    display: none !important;
+}
+
+/* ปฏิทินกิจกรรม: วันที่กดได้และปุ่มเลื่อนเดือนอย่างน้อย 44x44px (2.5.5)
+   คอลัมน์กิจกรรมกว้างขึ้นให้พอ 7 ช่อง และการ์ดสูงตามเนื้อหา (ไม่ตัดรายการกิจกรรม) */
+.ph-cal-day:not(.muted),
+.ph-cal-nav {
+    min-width: 44px !important;
+    min-height: 44px !important;
+}
+.ph-cal-day {
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
+}
+.ph-cal-day.today,
+.ph-cal-day.selected {
+    background: var(--aaa-red) !important;
+    color: #fff !important;
+}
+@media (min-width: 1200px) {
+    .ph-feed-grid {
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1.4fr) !important;
+    }
+    .ph-events {
+        contain: none !important;
+    }
+    .ph-events .ph-cal-grid {
+        gap: 2px !important;
+    }
+    .ph-events .ph-cal-nav {
+        width: 44px !important;
+        height: 44px !important;
+    }
+    .ph-events .ph-ev-list {
+        overflow: visible !important;
+    }
+}
