@@ -93,6 +93,11 @@
     // stylesheet ที่อยู่ใน <body> → <head> (ก่อน aaa.css ซึ่งต้องอยู่ท้ายสุด)
     body.querySelectorAll('link[rel="stylesheet"]').forEach((l) => head.insertBefore(l, aaaCss));
 
+    // หัวแผงตั้งค่าการเข้าถึง: ต้นแบบนี้เป็นระดับ AAA
+    const a11yTitle = doc.getElementById('a11y-title');
+    if (a11yTitle) a11yTitle.innerHTML = a11yTitle.innerHTML.replace('(WCAG 2.2 AA)', '(WCAG 2.2 AAA)');
+    body.querySelectorAll('.a11y-note span').forEach((s) => { s.textContent = s.textContent.replace('WCAG 2.2 ระดับ AA ', 'WCAG 2.2 ระดับ AAA '); });
+
     // แถบเมนูบน/ส่วนท้ายเป็นพื้นน้ำเงินทึบ (เดิมวางบนท้องฟ้า/ก้อนเมฆ) → โลโก้สีขาว
     body.querySelectorAll('.nav-logo img, .mf-logo img').forEach((img) => {
         img.setAttribute('src', img.getAttribute('src').replace(/logo-footer\.svg/, 'logo-white.svg'));
