@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-สร้างเว็บ static ต้นแบบ AAA ของหน้าบ้าน mrta-portal (หน้าแรก / เกี่ยวกับเรา / ถาม-ตอบ) จากผล capture.php
+สร้างเว็บ static ต้นแบบ AAA ของหน้าแรก mrta-portal จากผล capture.php (ไม่ต้องใช้ฐานข้อมูล - อ่านไฟล์ดิบอย่างเดียว)
 
     python build.py <raw dir> <site dir> [--plain]
 
-1) หน้า → index.html / about-us.html / qa.html (Vercel cleanUrls เปิดเป็น / /about-us /qa)
-   คำตอบ qa/fetch → _data/qa/*.json + ดัชนี _data/qa/index.json ให้ _aaa/static.js ตอบแทนเซิร์ฟเวอร์
+1) หน้าแรก → index.html (หน้าอื่นไม่อยู่ในต้นแบบ เปิดแล้วได้ 404.html)
 2) แทนข้อมูลส่วนบุคคลด้วยข้อมูลสมมติ (ตารางจาก pii_dict.php ของ mrta-back-office) และล้างค่าลับ (CSRF)
 3) http://portal.mrta.test/... → /... ก๊อปไฟล์ static ที่หน้าใช้จาก public ของ portal
    ลิงก์ไปหน้าอื่น / ระบบอื่น (news, belib, ...) เปิดแล้วได้หน้า 404 "ไม่อยู่ในต้นแบบนี้"
@@ -27,7 +26,7 @@ RAW, SITE = Path(sys.argv[1]), Path(sys.argv[2])
 PLAIN = '--plain' in sys.argv
 HERE = Path(__file__).resolve().parent
 APP = Path(r'C:\XAMPP 8.5\mrta-portal')
-PAGES = {'/': 'index.html', '/about-us': 'about-us.html', '/qa': 'qa.html'}
+PAGES = {'/': 'index.html'}
 OTHER = 'auth|belib|booking|knowledge|learnext|news'
 ASSET_EXT = 'css|js|mjs|png|jpe?g|gif|svg|webp|ico|avif|woff2?|ttf|eot|otf|json|map|mp4|webm|mp3'
 MAX_ASSET = 8 * 1024 * 1024
@@ -167,7 +166,7 @@ def main():
             out = SITE / COOKIE_JS.lstrip('/')
             out.parent.mkdir(parents=True, exist_ok=True)
             out.write_text(js, encoding='utf-8')
-        elif e['xhr']:
+        elif e['xhr'] and '/qa' in PAGES:
             data = json.loads(body)
             data['html'] = scrub.text(rewrite(data.get('html', '')))
             collect_assets(data['html'])
@@ -181,8 +180,9 @@ def main():
             collect_assets(html)
             pages[PAGES[e['p']]] = html
 
-    (SITE / '_data' / 'qa').mkdir(parents=True, exist_ok=True)
-    (SITE / '_data' / 'qa' / 'index.json').write_text(json.dumps(qa_index, ensure_ascii=False), encoding='utf-8')
+    if qa_index:
+        (SITE / '_data' / 'qa').mkdir(parents=True, exist_ok=True)
+        (SITE / '_data' / 'qa' / 'index.json').write_text(json.dumps(qa_index, ensure_ascii=False), encoding='utf-8')
     for name in ('favicon.ico', 'favicon.svg'):
         copy_asset(name)
 
@@ -196,7 +196,7 @@ def main():
         (SITE / name).write_text(html, encoding='utf-8')
 
     if not PLAIN:
-        targets = [str(SITE / n) for n in pages] + [str(p) for p in (SITE / '_data' / 'qa').glob('*.json') if p.name != 'index.json']
+        targets = [str(SITE / n) for n in pages] + [str(p) for p in (SITE / '_data' / 'qa').glob('*.json') if p.name != 'index.json']  # ไม่มีโฟลเดอร์ = ว่าง
         subprocess.run([sys.executable, '-I', str(HERE / 'transform.py'), *targets], check=True)
 
     # ตรวจข้อมูลจริงหลงเหลือ
