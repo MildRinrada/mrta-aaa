@@ -1,0 +1,341 @@
+/* =============================================================================
+   Footer ของ MRTA - จัดสไตล์ให้ resources/views/frontend/includes/footer.blade.php
+   เดิมชุดนี้ฝังเป็น <style> ท้าย blade ย้ายออกมาเพื่อให้เบราว์เซอร์แคชได้
+   และแก้ที่เดียวเห็นผลทุกหน้า
+
+   รูปพื้นหลังส่งมาจาก blade ทาง --mf-bg (style="" ของ <footer class="mrta-footer">)
+   เพราะ path ของรูปต้องผ่าน asset() ของ laravel ไฟล์ css ประกาศเองไม่ได้
+   ============================================================================= */
+/* ขนาดทั้งหมดวัดจาก mockup (เฟรม 1440) - เนื้อหาชิดแนวเดียวกับ container ของหน้า home (1302px) */
+.mrta-footer {
+    background: #002777;
+    color: #fff;
+    text-align: left;
+    font-family: var(--bs-font-secondary);
+}
+.mrta-footer p { margin: 0; }
+.mrta-footer .mf-inner {
+    max-width: 1332px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.mrta-footer-main {
+    min-height: 337.5px;
+    padding: 47px 0 40px;
+    background: #002777 var(--mf-bg) center / cover no-repeat;
+}
+.mf-grid {
+    display: grid;
+    grid-template-columns: 34.18% 16.97% 18.23% minmax(0, 1fr);
+}
+/* ให้ข้อความยาว (ที่อยู่/อีเมล) ตัดบรรทัดได้ ไม่ดันคอลัมน์จนล้นจอ */
+.mf-grid > *,
+.mf-contact-list li > * { min-width: 0; }
+
+/* ---------- โลโก้ + คำอธิบาย + โซเชียล (วางบนก้อนเมฆ) ---------- */
+.mf-logo {
+    display: inline-block;
+    margin-top: 1.75px;
+}
+.mf-logo img {
+    display: block;
+    height: 56px;
+    width: auto;
+}
+/* โลโก้ที่อัปโหลดจากหลังบ้าน (site_logo_url) - กว้างไม่เกิน 260px ไม่บิด */
+.mf-logo img.is-custom {
+    max-width: 260px;
+    object-fit: contain;
+    object-position: left center;
+}
+.mf-desc {
+    margin-top: 16.75px !important;
+    color: #002777;
+    font-family: var(--bs-font-primary);
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 30px;
+}
+.mf-social {
+    display: flex;
+    gap: 30px;
+    margin-top: 21.25px;
+}
+/* ไอคอนเป็นไฟล์ svg วงกลมพร้อมสี (image/footer/icons) - ปุ่มแค่กำหนดขนาด */
+.mf-social > * {
+    display: block;
+    flex: none;
+    width: 40.5px;
+    height: 40.5px;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: transform .15s ease, filter .15s ease;
+}
+.mf-social img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.mf-social a:hover,
+.mf-social a:focus-visible {
+    transform: translateY(-2px);
+    filter: brightness(1.12);
+}
+/* หน่วยงานยังไม่ได้ตั้ง URL - คงสีไว้แต่จางลง กดไม่ได้ */
+.mf-social .is-off {
+    opacity: .45;
+    cursor: default;
+}
+
+/* ---------- หัวคอลัมน์ ---------- */
+.mf-head {
+    color: #fff;
+    font-family: var(--bs-font-primary);
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 20px;
+}
+
+/* ---------- ลิงก์ (ลิงก์ด่วน / บริการ) ---------- */
+.mf-links {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+}
+.mf-links a,
+.mf-contact-list li {
+    display: flex;
+    align-items: center;
+    gap: 8.5px;
+    color: #fff;
+    font-size: 16px;
+    line-height: 36px;
+    text-decoration: none;
+}
+.mf-links a:hover,
+.mf-links a:focus-visible {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.mf-links a i,
+.mf-contact-list li i {
+    flex: 0 0 16px;
+    font-size: 16px;
+    line-height: 1;
+}
+/* ลูกศรในแบบเส้นหนากว่า bi-chevron-right */
+.mf-links a i { -webkit-text-stroke: .6px currentColor; }
+/* แสดงแต่กดไม่ได้ (footer/links disabled - เช่นโหมดสาธิตของ portal) - หน้าตาเหมือนลิงก์ปกติ แค่ไม่มีขีดเส้นใต้ตอน hover */
+.mf-links a.is-disabled { cursor: default; }
+.mf-links a.is-disabled:hover { text-decoration: none; }
+
+/* ---------- ช่องทางการติดต่อ ---------- */
+.mf-contact-list {
+    list-style: none;
+    margin: 23px 0 0;
+    padding: 0;
+}
+.mf-contact-list li { font-weight: 300; font-size: 16.5px; }
+.mf-contact-list a {
+    color: #fff;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+.mf-contact-list a:hover,
+.mf-contact-list a:focus-visible {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+/* ที่อยู่หลายบรรทัด - ไอคอนตรงกับบรรทัดแรก */
+.mf-contact-list .mf-address {
+    align-items: flex-start;
+    margin-bottom: 1.5px;
+    line-height: 24px;
+}
+.mf-contact-list .mf-address i { margin-top: 4px; }
+
+/* ---------- แถบล่าง ---------- */
+.mrta-footer-bottom {
+    background: #002777;
+}
+.mf-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0 24px;
+    min-height: 34.5px;
+    color: rgba(255, 255, 255, 0.88);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 34.5px;
+}
+.mf-copy { display: flex; flex-wrap: wrap; }
+.mf-copy-sep { margin-right: 4px; }
+.mf-bottom-links {
+    display: flex;
+    align-items: center;
+    gap: 31px;
+}
+.mf-sep {
+    width: 1px;
+    height: 18.75px;
+    background: rgba(255, 255, 255, 0.88);
+}
+.mf-bottom-links a {
+    color: rgba(255, 255, 255, 0.88);
+    text-decoration: none;
+}
+.mf-bottom-links a:hover,
+.mf-bottom-links a:focus-visible {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* ---------- modal แผนผังเว็บไซต์ ---------- */
+.mf-sitemap {
+    width: min(1200px, 92vw);
+    max-width: none;
+    max-height: 92vh;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, .35);
+    overflow: visible;
+}
+.mf-sitemap::backdrop {
+    background: rgba(0, 20, 60, .6);
+}
+.mf-sitemap-body {
+    position: relative;
+    padding: 12px;
+}
+.mf-sitemap-body img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: calc(92vh - 24px);
+    object-fit: contain;
+}
+.mf-sitemap-close {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: #fff;
+    border: 0;
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .25);
+    color: #002777;
+    font-size: 16px;
+    cursor: pointer;
+}
+.mf-sitemap-close:hover,
+.mf-sitemap-close:focus-visible {
+    background: #002777;
+    color: #fff;
+}
+@media (max-width: 767.98px) {
+    .mf-sitemap-body { padding: 8px; }
+    .mf-sitemap-close { top: -12px; right: -8px; width: 32px; height: 32px; }
+}
+
+/* ---------- จอเล็ก: โลโก้/คำอธิบายเต็มแถวบนก้อนเมฆ คอลัมน์อื่นอยู่บนพื้นกรมท่า ----------
+   footer สูงขึ้นเมื่อคอลัมน์ขึ้นบรรทัดใหม่ ถ้าใช้รูปทั้งแถบก้อนเมฆจะขยายจนคลุมตัวหนังสือสีขาว
+   จึงย้ายรูปมาไว้หลังส่วนโลโก้อย่างเดียว */
+@media (max-width: 1199.98px) {
+    .mrta-footer-main {
+        min-height: 0;
+        padding: 0 0 32px;
+        background: #002777;
+    }
+    .mf-grid {
+        grid-template-columns: repeat(3, minmax(0, auto));
+        justify-content: space-between;
+        gap: 32px 24px;
+    }
+    .mf-brand {
+        grid-column: 1 / -1;
+        margin: 0 -15px;
+        padding: 36px 15px 32px;
+        background: var(--mf-bg) left center / cover no-repeat;
+    }
+}
+/* ---------- มือถือ + แท็บเล็ตแนวตั้ง: พื้นน้ำเงินทั้ง footer ----------
+   ใช้รูป footer.png เต็มทั้ง footer (cover ไม่ซูม) ชิดขวา - จอแคบและสูงจะเห็นเฉพาะฝั่งขวาของรูป
+   ซึ่งเป็นพื้นน้ำเงินลายเชฟรอน ตัวหนังสือขาว และโลโก้สลับเป็น logo-white.svg (ดู <picture> ด้านบน)
+   media query ต้องตรงกับ <source media> ของโลโก้ */
+@media (max-width: 767.98px), (max-width: 1199.98px) and (orientation: portrait) {
+    .mrta-footer-main {
+        padding-top: 36px;
+        background: #002777 var(--mf-bg) right center / cover no-repeat;
+    }
+    .mf-brand {
+        margin: 0;
+        padding: 0;
+        background: none;
+    }
+    .mf-desc { color: #fff; }
+    /* ปุ่มเว็บไซต์เป็นวงกรมท่า จมไปกับพื้นน้ำเงิน - ใส่ขอบขาวบาง ๆ */
+    .mf-social-website { box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .7); }
+}
+/* ---------- มือถือ (< 768px): เรียงกระชับ โลโก้ → ลิงก์ด่วน | บริการ (สองคอลัมน์) → ช่องทางติดต่อ ---------- */
+@media (max-width: 767.98px) {
+    .mrta-footer-main { padding: 24px 0 22px; }
+    .mf-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px 12px;
+    }
+    .mf-brand,
+    .mf-contact { grid-column: 1 / -1; }
+    .mf-logo img { height: 44px; }
+    /* ปล่อยให้ตัดบรรทัดเองตามความกว้างจอ (บรรทัดที่บังคับไว้ยาวกว่าจอ 320px) */
+    .mf-desc { margin-top: 10px !important; font-size: 16px; line-height: 22px; }
+    .mf-desc br { display: none; }
+    .mf-social { gap: 12px; margin-top: 12px; }
+    .mf-social > * { width: 36px; height: 36px; }
+
+    .mf-head { font-size: 17px; line-height: 17px; }
+    .mf-links { margin-top: 8px; }
+    /* แถวละ ~32px ข้อความยาวตัดบรรทัดได้โดยลูกศร/ไอคอนอยู่บรรทัดแรก */
+    .mf-links a,
+    .mf-contact-list li {
+        align-items: flex-start;
+        gap: 6px;
+        padding: 5px 0;
+        font-size: 15px;
+        line-height: 22px;
+    }
+    .mf-links a i,
+    .mf-contact-list li i { flex-basis: 14px; margin-top: 4px; font-size: 14px; }
+    .mf-contact-list { margin-top: 8px; }
+    .mf-contact-list .mf-address { margin-bottom: 0; }
+
+    .mf-bottom {
+        flex-direction: column;
+        justify-content: center;
+        gap: 2px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-align: center;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    /* ลิขสิทธิ์แยกสองบรรทัด: Copyright... / Powered by... */
+    .mf-copy { display: flex; flex-direction: column; }
+    .mf-copy-sep { display: none; }
+    .mf-bottom-links { flex-wrap: wrap; justify-content: center; gap: 2px 16px; }
+    /* ลิงก์ขึ้นบรรทัดใหม่แล้วเส้นคั่นจะค้างท้ายบรรทัด */
+    .mf-sep { display: none; }
+}

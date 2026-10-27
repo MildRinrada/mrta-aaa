@@ -1,0 +1,66 @@
+@charset "UTF-8";
+:root {
+    --bs-primary-900: #213069;
+    --bs-primary-700: #273A82;
+    --bs-primary-500: #002777;
+    --bs-primary-300: #202EAB;
+    --bs-primary-100: #5F6BD0;
+
+    --bs-secondary-900: #D82028;
+    --bs-secondary-700: #a54449;
+    --bs-secondary-500: #EC545B;
+    --bs-secondary-300: #F299A3;
+    --bs-secondary-100: #F2F2F2;
+
+    --bs-tertiary-900: #805200;
+    --bs-tertiary-700: #C07B00;
+    --bs-tertiary-500: #FFA300;
+    --bs-tertiary-300: #FFBA40;
+    --bs-tertiary-100: #FFD180;
+
+    --bs-black: #000000;
+    --bs-white: #FFFFFF;
+
+    --bs-gray-900: #7B8189;
+    --bs-gray-700: #ADB4BE;
+    --bs-gray-500: #D7DBE0;
+    --bs-gray-300: #E9EEF3;
+    --bs-gray-100: #F7F7F7;
+
+    --bs-status-success: #198754;
+    --bs-status-error: #dc3545;
+    --bs-status-warning: #ffc107;
+    --bs-status-info: #1A8DFF;
+
+    --bs-blue: #6D85E8;
+    --bs-indigo: #6610f2;
+    --bs-purple: #6f42c1;
+    --bs-pink: #d63384;
+    --bs-red: #dc3545;
+    --bs-orange: #fd7e14;
+    --bs-yellow: #FFE382;
+    --bs-green: #10AE65;
+    --bs-teal: #20c997;
+    --bs-cyan: #0dcaf0;
+    --bs-white: #fff;
+    --bs-gray: #6c757d;
+    --bs-gray-dark: #343a40;
+
+    --bs-gradient-a: linear-gradient(180deg,#475791 0%,#213069 100%);
+    --bs-gradient-b: linear-gradient(180deg, #EC545B 0%, #D82028 100%);
+    --bs-gradient-c: linear-gradient(180deg, #2D66CC 0%, #0C3B95 100%);
+    --bs-gradient-d: linear-gradient(180deg, #6DA5E8 0%, #6D85E8 100%);
+    --bs-gradient-e: linear-gradient(180deg, #006C65 0%, #00D2C4 100%);
+    --bs-gradient-f-180: linear-gradient(180deg, #00109E 0%, #00D2C4 100%);
+    --bs-gradient-f-90: linear-gradient(90deg, #00109E 0%, #00D2C4 100%);
+    --bs-gradient-g: linear-gradient(180deg, #EC545B 0%, #D82028 100%);
+
+    --bs-bg-soft-blue: #DFE4F3;
+    --bs-bg-soft: #fefefe;
+    --bs-bg-soft-dark-blue: #bcc3ca;
+
+    /* พื้นหลังมาตรฐานของหน้า front ทุกหน้า (home / product list / product detail / article)
+       ใช้ตัวแปรนี้ตัวเดียว อย่า hardcode ค่าสีซ้ำในแต่ละไฟล์ */
+    --bs-bg-page: #F4F7FC;
+
+}

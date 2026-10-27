@@ -1,0 +1,448 @@
+/* ══════════════════════════════════════════════════════════════════════
+   ชั้น AAA ของ mrta-portal (ต้นแบบ) - โหลดท้ายสุด ทับธีมเดิม
+   เกณฑ์หลักที่ไฟล์นี้ดูแล (WCAG 2.2 ระดับ AAA / มอก. 2565-2555)
+   1.4.6  ความคมชัดของสีอย่างน้อย 7:1 (ตัวใหญ่ 4.5:1) - ตัวอักษรและพื้นหลังเป็นสีทึบทุกจุด ไม่วางตัวหนังสือบนรูป
+   1.4.8  ระยะบรรทัด 1.5 ขึ้นไป / ไม่จัดชิดสองข้าง / บรรทัดไม่ยาวเกิน 80 ตัวอักษร
+   1.4.10 ไม่มีส่วนลอยแบบ fixed ที่บังเนื้อหาเมื่อซูม
+   2.4.12 โฟกัสไม่ถูกบัง (scroll-padding เท่าแถบเมนูที่ติดขอบบน)
+   2.4.13 กรอบโฟกัสหนา 3px สองสี (น้ำเงินเข้ม + เหลืองอำพัน) เห็นได้ทั้งบนพื้นขาวและพื้นน้ำเงิน
+   2.5.5  เป้าหมายที่กด/คลิกอย่างน้อย 44x44px
+   2.3.3  ปิดภาพเคลื่อนไหวจากการโต้ตอบเมื่อผู้ใช้ตั้งค่าลดการเคลื่อนไหว
+   ══════════════════════════════════════════════════════════════════════ */
+
+:root {
+    /* จานสี AAA (อัตราส่วนกับพื้นขาว / ตัวขาว) */
+    --aaa-navy: #002777;        /* 13.49 */
+    --aaa-navy-dark: #001a52;
+    --aaa-red: #a8151c;         /* 7.53  แทน #d82028 (5.05) */
+    --aaa-blue: #0b3fc9;        /* 8.18  ลิงก์ */
+    --aaa-blue-btn: #1a47a0;    /* 8.56  ปุ่ม/ไอคอนพื้นน้ำเงิน */
+    --aaa-ink: #1b2a4e;         /* 14.11 ตัวอักษรหลัก */
+    --aaa-muted: #454f69;       /* 8.15  ตัวอักษรรอง (เดิม #6b7690 = 4.55) */
+    --aaa-on-navy: #c7d2ea;     /* 8.89  ตัวอักษรรองบนพื้นน้ำเงิน */
+    --aaa-green: #0d5c37;       /* 7.07 บน #e3f4ea */
+    --aaa-focus: #ffbf47;       /* 8.22 บนพื้นน้ำเงิน */
+    --aaa-header-h: 88px;
+
+    --ph-muted: var(--aaa-muted);
+    --ph-red: var(--aaa-red);
+    --bs-secondary-900: var(--aaa-red);
+    --bs-gray-900: var(--aaa-muted);
+    --bs-secondary-color: var(--aaa-muted);
+    --bs-link-color: var(--aaa-blue);
+    --bs-link-color-rgb: 11, 63, 201;
+}
+
+/* ---------- 2.4.12 โฟกัสไม่ถูกแถบเมนูที่ติดขอบบน / แถบคุกกี้ที่ขอบล่างบัง ---------- */
+html {
+    scroll-padding-top: calc(var(--aaa-header-h) + 16px);
+    scroll-padding-bottom: 96px;
+}
+
+/* ---------- 2.4.13 กรอบโฟกัส ---------- */
+:focus-visible,
+.btn:focus-visible,
+.form-control:focus,
+.form-select:focus {
+    outline: 3px solid var(--aaa-focus) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 2px var(--aaa-navy-dark) !important;
+}
+
+/* ---------- 1.4.8 การนำเสนอข้อความ ---------- */
+body {
+    line-height: 1.6;
+}
+p, li, dd, .au-text, .qa-post-excerpt {
+    line-height: 1.75;
+}
+p, li {
+    text-align: start !important;   /* ไม่จัดชิดสองข้าง */
+}
+.au-section p,
+.policy-content p {
+    max-width: 80ch;
+    margin-bottom: 1.5em;
+}
+
+/* 1.4.1 ลิงก์ในเนื้อความแยกจากข้อความรอบข้างด้วยเส้นใต้ ไม่ใช่สีอย่างเดียว */
+main p a:not(.btn),
+.cookie-nav a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* ข้อความสำหรับโปรแกรมอ่านหน้าจอ: พื้นทึบ (เครื่องตรวจคำนวณคอนทราสต์ได้ แม้มองไม่เห็น) */
+.visually-hidden,
+.visually-hidden-focusable:not(:focus):not(:focus-within),
+.sr-only {
+    color: #000 !important;
+    background: #fff !important;
+}
+
+/* 3.1.4 คำย่อ - เส้นประใต้คำ บอกว่ามีคำเต็ม (title) */
+abbr[title] {
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+    cursor: help;
+}
+
+/* ---------- ป้ายต้นแบบ (ไม่ลอย) ---------- */
+.aaa-proto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 16px;
+    background: #fff4d6;
+    color: #3d2a00;
+    font-size: 15px;
+    line-height: 1.5;
+    text-align: center;
+    border-bottom: 1px solid #e6cf8f;
+}
+.aaa-proto-badge {
+    flex: none;
+    padding: 2px 10px;
+    border-radius: 6px;
+    background: var(--aaa-navy);
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: .08em;
+}
+
+/* ---------- ลิงก์ข้ามไปเนื้อหาหลัก: absolute ไม่ใช่ fixed ---------- */
+.a11y-skip {
+    position: absolute !important;
+    background: var(--aaa-navy) !important;
+    color: #fff !important;
+}
+
+/* ══════════ แถบเมนูบน: พื้นน้ำเงินทึบทุกหน้า (เดิมโปร่งทับรูป hero ในหน้าแรก) ══════════ */
+.site-header,
+.site-header--transparent {
+    position: sticky !important;
+    top: 0;
+    background: var(--aaa-navy) !important;
+    box-shadow: 0 2px 0 var(--aaa-navy-dark);
+}
+.site-navbar {
+    min-height: var(--aaa-header-h) !important;
+}
+.site-header .nav-pill,
+.site-header .nav-pill.active,
+.site-header .txt-lang,
+.site-header .nav-lang,
+.site-header .nav-lang .sep {
+    color: #fff !important;
+    background: var(--aaa-navy) !important;
+    opacity: 1 !important;
+}
+.site-header .txt-lang:not(.on) {
+    color: var(--aaa-on-navy) !important;
+}
+.site-header .nav-pill {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+}
+.site-header .nav-pill::after {
+    background: var(--aaa-focus) !important;
+    height: 3px !important;
+}
+.site-header .nav-icon-btn,
+.site-header .nav-login-btn {
+    min-width: 44px;
+    min-height: 44px;
+}
+.site-header .txt-lang {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ══════════ หน้าแรก ══════════ */
+/* hero: ข้อความอยู่บนแผ่นพื้นขาวทึบ ไม่วางบนท้องฟ้าโดยตรง */
+.ph-hero::before {
+    display: none !important;
+}
+.ph-hero-body {
+    padding-top: 0 !important;
+}
+.ph-hero-text {
+    max-width: 640px !important;
+    padding: 28px 32px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 6px 24px rgba(0, 20, 70, .18);
+}
+.ph-hero-title {
+    font-size: clamp(30px, 3.2vw, 44px) !important;
+    color: var(--aaa-navy) !important;
+    background: #fff;
+}
+.ph-hero-title .accent {
+    color: var(--aaa-red) !important;
+}
+.ph-hero-sub {
+    color: var(--aaa-ink) !important;
+    background: #fff;
+}
+
+/* เนื้อหาแนะนำ: ข้อความบนแผ่นขาวทึบ / แถบเลขหน้าเป็นพื้นขาวทึบ */
+.ph-slide::before {
+    display: none !important;
+}
+.ph-slide-body {
+    padding: 20px 22px;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(0, 20, 70, .16);
+    width: min(420px, calc(100% - 48px)) !important;
+    left: 24px !important;
+    top: 84px !important;
+}
+.ph-slide-title a {
+    color: var(--aaa-navy) !important;
+}
+.ph-slide-text {
+    color: var(--aaa-ink) !important;
+}
+.ph-featured:hover .ph-slide-bg {
+    transform: none;
+}
+.ph-feat-bar {
+    background: #fff !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+.ph-slide-num {
+    opacity: 1 !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    color: var(--aaa-navy) !important;
+    background: #fff !important;
+}
+.ph-feat-btn {
+    width: 56px;
+    height: 56px;
+}
+
+/* ทางเข้าระบบ / ข่าว / ปฏิทิน / สถิติ: ตัวอักษรรองเข้มขึ้นให้ถึง 7:1 */
+.quicknav-sub,
+.ph-cal-dow,
+.ph-stat-label,
+.ph-ev-time,
+.ph-ev-place,
+.ph-news-meta,
+.ph-card-meta {
+    color: var(--aaa-muted) !important;
+}
+.ph-news-cat {
+    color: var(--aaa-blue) !important;
+}
+.ph-cal-day.is-today,
+.ph-cal-day.today,
+.ph-cal-day.active,
+.ph-btn,
+.ph-btn-red,
+.btn-app {
+    background: var(--aaa-red) !important;
+    color: #fff !important;
+}
+.ph-cal-day {
+    min-width: 44px;
+    min-height: 44px;
+}
+
+/* ══════════ ส่วนท้าย: พื้นน้ำเงินทึบ (เดิมวางบนรูปเมฆ) ══════════ */
+.mrta-footer-main {
+    background: var(--aaa-navy) !important;
+}
+.mrta-footer,
+.mrta-footer-main,
+.mrta-footer-main p,
+.mrta-footer-main li,
+.mrta-footer-main a,
+.mrta-footer-main h2,
+.mrta-footer-main h3,
+.mrta-footer-main .mf-desc {
+    color: #fff !important;
+}
+.mrta-footer-bottom {
+    background: var(--aaa-navy-dark) !important;
+}
+.mrta-footer-bottom,
+.mrta-footer-bottom .mf-inner,
+.mrta-footer-bottom .mf-copy,
+.mrta-footer-bottom span,
+.mrta-footer-bottom a {
+    color: #fff !important;
+    opacity: 1 !important;
+}
+.mrta-footer-bottom a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.mrta-footer-main a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* ══════════ แถบนำทาง (breadcrumb) ══════════ */
+nav.mrta-bc,
+nav.mrta-bc a,
+nav.mrta-bc span,
+nav.mrta-bc li {
+    background-color: var(--aaa-navy-dark) !important;
+    color: #fff !important;
+    opacity: 1 !important;
+}
+nav.mrta-bc a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* ══════════ banner ของหน้าเกี่ยวกับเรา / ถาม-ตอบ ══════════
+   หัวเรื่องอยู่บนพื้นน้ำเงินทึบฝั่งซ้าย ภาพประกอบย้ายไปฝั่งขวา (ตกแต่ง ไม่มีตัวหนังสือทับ) */
+.au-hero,
+.qa-hero {
+    background: var(--aaa-navy) !important;
+    position: relative;
+    isolation: isolate;
+}
+.au-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 52%;
+    z-index: -1;
+    background: var(--au-hero-image) right center / cover no-repeat;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 22%);
+}
+.au-hero-inner {
+    max-width: 1920px;
+}
+.au-hero-title,
+.au-hero-desc,
+.qa-hero-title,
+.qa-hero-desc {
+    color: #fff !important;
+    background: var(--aaa-navy);
+}
+.au-hero-desc {
+    max-width: 28em !important;
+}
+/* ภาพประกอบของถาม-ตอบอยู่สองข้าง - ช่วงกลางที่มีหัวเรื่องและช่องค้นหาเป็นพื้นทึบ */
+.qa-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--qa-hero-image) center / cover no-repeat;
+    -webkit-mask-image: linear-gradient(90deg, #000 0, #000 18%, transparent 30%, transparent 70%, #000 82%, #000 100%);
+    mask-image: linear-gradient(90deg, #000 0, #000 18%, transparent 30%, transparent 70%, #000 82%, #000 100%);
+}
+.qa-hero-search button,
+.qa-hero-search .btn {
+    background: var(--aaa-blue-btn) !important;
+    color: #fff !important;
+    min-height: 44px;
+}
+
+/* ══════════ ถาม-ตอบ ══════════ */
+.qa-q-ico,
+.qa-faq-tab.active,
+.qa-faq-tab[aria-current] {
+    background: var(--aaa-blue-btn) !important;
+    color: #fff !important;
+}
+.qa-faq-tab,
+.qa-status-tab,
+.qa-cat-list a,
+.page-link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+}
+.page-link {
+    min-width: 44px;
+    justify-content: center;
+}
+.qa-status-tab {
+    color: #2f3644 !important;
+}
+.qa-status-tab.active,
+.qa-status-tab[aria-current] {
+    color: #fff !important;
+    background: var(--aaa-navy) !important;
+}
+.qa-status {
+    color: var(--aaa-green) !important;
+    background: #e3f4ea !important;
+}
+.qa-ask-note,
+.qa-post-meta,
+.qa-post-meta span,
+.text-muted,
+.small.text-muted,
+.small.text-muted span {
+    color: var(--aaa-muted) !important;
+}
+.text-always {
+    color: var(--aaa-blue) !important;
+}
+
+/* ══════════ แถบคุกกี้: พื้นทึบ ติดขอบล่างแบบ sticky (ไม่ fixed) ══════════ */
+.cookie-nav {
+    position: sticky !important;
+    bottom: 0;
+    left: auto;
+    right: auto;
+    z-index: 1040;
+    background: #111 !important;
+}
+.cookie-nav,
+.cookie-nav span,
+.cookie-nav .cookie-container,
+.cookie-nav .toggle-setting {
+    color: #fff !important;
+}
+.cookie-nav .cookie-link {
+    color: #ffb3b6 !important;      /* 11.13 บน #111 */
+}
+.cookie-nav .btn-save-cookie {
+    background: var(--aaa-red) !important;
+    border-color: var(--aaa-red) !important;
+    color: #fff !important;
+    min-height: 44px;
+    min-width: 88px;
+}
+.cookie-nav .toggle-setting {
+    min-height: 44px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    background: transparent;
+}
+/* แผงตั้งค่าคุกกี้ / ปุ่มเปิดแผง: เป็น fixed เฉพาะตอนแสดงจริง */
+.cookie-sidebar.closed,
+.cookie-open-setting.d-none {
+    position: absolute !important;
+}
+
+/* ══════════ 2.3.3 ลดการเคลื่อนไหว ══════════ */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+    }
+}

@@ -1,0 +1,574 @@
+/* ============================================================
+   ระบบ Accessibility (includes/accessibility.blade.php)
+   ค่าที่ผู้ใช้เลือกถูกตั้งไว้ที่ <html> ตั้งแต่ใน <head> (ดู meta.blade.php):
+     data-a11y-font     = sm | md | lg
+     data-a11y-contrast = normal | high | bw | yb (yb = Tritan Color Correction ดู includes/accessibility_filters.blade.php)
+     class a11y-kbd / a11y-sr
+   หน้าต่างตั้งค่า (.a11y-panel) ไม่โดนปรับสี/ขนาดตามโหมด เพื่อให้ปุ่มที่เลือกอยู่ยังเห็นชัด
+   ============================================================ */
+
+/* ---------- 1. ขนาดตัวอักษร ----------
+   ธีมใช้ px เกือบทั้งหมด ปรับ font-size ที่ <html> จึงไม่มีผล - ใช้ zoom กับทุกส่วนของหน้าแทน
+   (ยกเว้นหน้าต่างตั้งค่า ไม่งั้นหน้าต่างจะล้นจอตอนขยาย) */
+html[data-a11y-font="sm"] body > :not(.a11y-panel):not(script) { zoom: .9; }
+html[data-a11y-font="lg"] body > :not(.a11y-panel):not(script) { zoom: 1.15; }
+
+/* ---------- 2. Contrast ---------- */
+/* ขาว-ดำ: ใส่ filter ที่ <html> (ใส่ที่ตัวลูกจะทำให้ header แบบ fixed เลื่อนตามหน้า) */
+html[data-a11y-contrast="bw"] { filter: grayscale(1); }
+
+/* เหลือง-น้ำเงิน = Tritan Color Correction: แก้สีให้ผู้ที่แยกสีน้ำเงิน-เหลืองได้ยาก (ตาบอดสีแบบ tritan)
+   เป็น filter เมทริกซ์สี (svg #a11y-tritan อยู่ต้น <body> - includes/accessibility_filters.blade.php) ใส่ที่ <html>
+   จึงมีผลกับทุกอย่างที่วาดบนหน้า: ข้อความ พื้นหลัง gradient รูป <img> วิดีโอ canvas svg ไอคอน iframe
+   ยกเว้นของที่เบราว์เซอร์วาดนอกต้นไม้ของหน้า (top layer): <dialog> ที่เปิดด้วย showModal และ element แบบเต็มจอ
+   ซึ่ง filter ของบรรพบุรุษไม่ส่งผล จึงใส่ filter ที่ตัวมันเองซ้ำอีกที (ยกเว้นหน้าต่างตั้งค่า ตั้งใจให้เห็นสีจริง) */
+html[data-a11y-contrast="yb"] { filter: url(#a11y-tritan); }
+html[data-a11y-contrast="yb"] dialog[open]:not(.a11y-panel) { filter: url(#a11y-tritan); }
+html[data-a11y-contrast="yb"] :fullscreen { filter: url(#a11y-tritan); }
+html[data-a11y-contrast="yb"] :popover-open { filter: url(#a11y-tritan); }
+
+/* ---------- คอนทราสต์สูง ----------
+   หลักการเดียวกับ forced-colors (Windows High Contrast): พื้นดำ ตัวหนังสือขาว ลิงก์เหลืองมีเส้นใต้ ขอบขาว
+   ตัดรูปพื้นหลัง/เงา/ไล่สีออก รูปถ่ายและวิดีโอคงเดิม
+   สิ่งที่การบังคับสีอย่างเดียวทำพัง และต้องแก้คืนในบล็อกนี้:
+     - สถานะที่เดิมบอกด้วยสีพื้นอย่างเดียว (แท็บที่เลือก หน้าปัจจุบัน จุดสไลด์ ชิปตัวกรอง) → กลับสีเป็นพื้นขาวตัวดำ
+     - เช็กบ็อกซ์ / วิทยุ / สวิตช์ / ลูกศร dropdown ที่วาดด้วยรูปพื้นหลัง → วาดใหม่เป็นขาว-ดำ
+     - ปุ่มและช่องกรอกที่ไม่มีขอบ → ใส่เส้นขอบขาว (เงาด้านใน ไม่ขยับ layout) ชี้เมาส์ขึ้นกรอบประเหลือง
+     - โลโก้/ไอคอนที่เป็นไฟล์ svg และ svg ที่ฝังในหน้า เป็นสีกรมท่าบนพื้นดำมองไม่เห็น → ทำเป็นขาว
+     - ตัวที่ปิดใช้งาน → เทา, placeholder → เทาอ่อน, สปินเนอร์ → ยังเห็นว่าหมุน */
+html[data-a11y-contrast="high"] body,
+html[data-a11y-contrast="high"] body *:not(img, video, svg, svg *, picture, .a11y-panel, .a11y-panel *) {
+    background-color: #000 !important;
+    background-image: none !important;
+    color: #fff !important;
+    border-color: #fff !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    accent-color: #fff;
+}
+html[data-a11y-contrast="high"] body ::placeholder { color: #cfcfcf !important; opacity: 1 !important; }
+/* ::before / ::after ไม่โดน * ข้างบน - แผ่นไล่สีทับรูป hero ฯลฯ จะเหลือเป็นแถบขาว-ดำ → ตัดรูปพื้นหลัง/ไล่สีออก (สีพื้นคงไว้ เช่น จุดบอกว่ามีกิจกรรม) */
+html[data-a11y-contrast="high"] body *:not(.a11y-panel, .a11y-panel *)::before,
+html[data-a11y-contrast="high"] body *:not(.a11y-panel, .a11y-panel *)::after {
+    background-image: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+/* ลิงก์: เหลือง + เส้นใต้ (พื้นหลังสีเดียว ต้องแยกลิงก์จากข้อความได้โดยไม่พึ่งสี) */
+html[data-a11y-contrast="high"] body a:not(.a11y-panel *),
+html[data-a11y-contrast="high"] body a *:not(img, svg, svg *, .a11y-panel *) {
+    color: #ffeb00 !important;
+}
+html[data-a11y-contrast="high"] body a:not(.a11y-panel *) { text-decoration: underline !important; }
+
+/* ปุ่ม / ช่องกรอก: ขอบขาวเสมอ (ปุ่มไอคอนและช่องค้นหาหลายตัวเดิมไม่มีขอบ กลายเป็นดำบนดำ)
+   เฉพาะตัวที่ "หน้าตาเป็นปุ่ม" (.btn / คลาสที่มีคำว่า btn) - <button> ทั่วไปไม่ใส่ เพราะหลายที่ใช้ทำช่องตาราง เช่น วันในปฏิทิน
+   ถ้าใส่ขอบจะกลายเป็นตารางกล่อง/วงกลมเต็มหน้า */
+html[data-a11y-contrast="high"] body :is(.btn, [class*="btn"], input:not([type="checkbox"], [type="radio"], [type="range"], [type="hidden"]), select, textarea):not(.a11y-panel *, .owl-dot, .hl-dot, .carousel-indicators *, .bw-step-btn, .el-link-more) {
+    box-shadow: inset 0 0 0 1px #fff !important;
+}
+/* ชี้เมาส์: เดิมบอกด้วยสีพื้นที่เปลี่ยน (ถูกตัดไป) → กรอบประเหลือง */
+html[data-a11y-contrast="high"] body :is(a, button, [role="button"]):hover:not(.a11y-panel *, [disabled], .disabled) {
+    outline: 2px dashed #ffeb00 !important;
+    outline-offset: 1px;
+}
+
+/* สถานะ "เลือกอยู่ / หน้าปัจจุบัน / เปิดอยู่": กลับสีเป็นพื้นขาวตัวดำ - ลูก ๆ ต้องโปร่งใสให้พื้นขาวโผล่ ตัวหนังสือและขอบดำ (รวมลิงก์)
+   ใช้กับตัวควบคุมเล็ก ๆ (a / button / label / li / span ...) เท่านั้น
+   กล่องโครงหน้า (div / section / ul ...) ที่มีคลาส active/is-active ส่วนใหญ่คือ "แผงที่แสดงอยู่" (แท็บเนื้อหา ขั้นตอนฟอร์ม สไลด์)
+   ถ้ากลับสีจะได้กล่องขาวทั้งก้อน → ข้าม (ตัวที่เป็น div แต่เป็นสถานะจริง แก้เป็นรายตัวท้ายไฟล์)
+   .bw-day / .ev-cal-day = วันในปฏิทิน มีกฎของตัวเองท้ายไฟล์ */
+html[data-a11y-contrast="high"] body :is(.active, .is-active, .is-on, .selected, .is-selected, .current, .is-current,
+    [aria-pressed="true"], [aria-selected="true"], [aria-checked="true"], [aria-current]:not([aria-current="false"]),
+    .page-item.active .page-link, .owl-dot.active span, .swiper-pagination-bullet-active):not(.a11y-panel *, div, section, article, main, aside, form, fieldset, ul, ol, nav, header, footer, table, thead, tbody, tr, dialog, .carousel-item, .owl-item, .owl-dot, .swiper-slide, .tab-pane, .form-check-input, .bw-day, .ev-cal-day, .ec-cal-day, .bw-step, .bw-step-btn) {
+    background-color: #fff !important;
+    color: #000 !important;
+    border-color: #fff !important;
+}
+html[data-a11y-contrast="high"] body :is(.active, .is-active, .is-on, .selected, .is-selected, .current, .is-current,
+    [aria-pressed="true"], [aria-selected="true"], [aria-checked="true"], [aria-current]:not([aria-current="false"]),
+    .page-item.active .page-link):not(.a11y-panel *, div, section, article, main, aside, form, fieldset, ul, ol, nav, header, footer, table, thead, tbody, tr, dialog, .carousel-item, .owl-item, .owl-dot, .swiper-slide, .tab-pane, .form-check-input, .bw-day, .ev-cal-day, .ec-cal-day, .bw-step, .bw-step-btn) *:not(img, svg, svg *, picture, video) {
+    background-color: transparent !important;
+    color: #000 !important;
+    border-color: #000 !important;
+}
+/* จุดบอกตำแหน่งสไลด์: วงขอบขาว (ที่เลือก = ทึบขาว จากกฎข้างบน) / กล่องที่ครอบจุดต้องโปร่ง ไม่งั้นเป็นแถบดำยาวทับรูป */
+html[data-a11y-contrast="high"] body :is(.carousel-indicators, .owl-dots, .swiper-pagination, .nw-slider-dots):not(.a11y-panel *) { background-color: transparent !important; }
+html[data-a11y-contrast="high"] body :is(.owl-dot span, .hl-dot, .nw-dot, .carousel-indicators [data-bs-target], .swiper-pagination-bullet):not(.a11y-panel *) {
+    box-shadow: inset 0 0 0 2px #fff !important;
+}
+
+/* เช็กบ็อกซ์ / วิทยุ / สวิตช์ของ bootstrap วาดด้วย background-image ซึ่งถูกตัด → วาดใหม่
+   ยังไม่เลือก = กล่องดำขอบขาว / เลือก = พื้นขาว เครื่องหมายดำ / สวิตช์ = ปุ่มกลมขาว (ปิด) หรือกลมดำบนพื้นขาว (เปิด) */
+html[data-a11y-contrast="high"] body .form-check-input:checked:not(.a11y-panel *) { background-color: #fff !important; }
+html[data-a11y-contrast="high"] body .form-check-input[type="checkbox"]:checked:not(.a11y-panel *, .form-switch *, [role="switch"]) {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3E%3C/svg%3E") !important;
+}
+html[data-a11y-contrast="high"] body .form-check-input[type="radio"]:checked:not(.a11y-panel *) {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='2' fill='%23000'/%3E%3C/svg%3E") !important;
+}
+html[data-a11y-contrast="high"] body :is(.form-switch .form-check-input, .form-check-input[role="switch"]):not(.a11y-panel *) {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23fff'/%3E%3C/svg%3E") !important;
+    background-position: left center !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+}
+html[data-a11y-contrast="high"] body :is(.form-switch .form-check-input, .form-check-input[role="switch"]):checked:not(.a11y-panel *) {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23000'/%3E%3C/svg%3E") !important;
+    background-position: right center !important;
+}
+/* ลูกศรของช่องเลือก (.form-select / .app-dd-toggle / .field-select / .nw-select ของ news) เป็นรูปพื้นหลังสีเข้ม → ขาว (ตำแหน่ง/ขนาดใช้ของเดิม) */
+html[data-a11y-contrast="high"] body :is(.form-select, .app-dd-toggle, .field-select, .nw-select select):not(.a11y-panel *) {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-width='2'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+}
+
+/* โลโก้และไอคอนที่เป็นไฟล์ svg (<img>) ส่วนใหญ่เป็นสีกรมท่า/สีแบรนด์ → ขาวล้วน (ตัวที่ขาวอยู่แล้วไม่เปลี่ยน) รูปถ่าย jpg/png/webp คงเดิม */
+html[data-a11y-contrast="high"] body :is(img[src*=".svg"], img[src*="image/svg"]):not(.a11y-panel *) { filter: brightness(0) invert(1); }
+
+/* svg ที่ฝังในหน้า (เช่น ไอคอนสถิติหน้าแรก): ส่วนที่ fill ด้วยสี → ขาว, ส่วนที่เดิมเป็นขาว (รายละเอียดด้านใน) → ดำ ไม่งั้นเป็นก้อนทึบ
+   ไอคอนแบบเส้น (fill="none" ที่ svg หรือ g) และ fill="none" ของตัวมันเองคงเดิม เส้น stroke สี → ขาว */
+html[data-a11y-contrast="high"] body svg:not(.a11y-filters, .a11y-panel *) :is(path, circle, ellipse, rect, polygon, polyline, line, text, use):not([fill="none" i], [fill="none" i] *, [fill="#fff" i], [fill="white" i], [fill="#ffffff" i]) { fill: #fff !important; }
+html[data-a11y-contrast="high"] body svg:not(.a11y-panel *) [fill="#fff" i],
+html[data-a11y-contrast="high"] body svg:not(.a11y-panel *) [fill="white" i],
+html[data-a11y-contrast="high"] body svg:not(.a11y-panel *) [fill="#ffffff" i] { fill: #000 !important; }
+html[data-a11y-contrast="high"] body svg:not(.a11y-filters, .a11y-panel *) [stroke]:not([stroke="none" i], [stroke="#fff" i], [stroke="white" i], [stroke="#ffffff" i]),
+html[data-a11y-contrast="high"] body svg[stroke]:not(.a11y-filters, .a11y-panel *, [stroke="none" i], [stroke="#fff" i], [stroke="white" i], [stroke="#ffffff" i]) { stroke: #fff !important; }
+html[data-a11y-contrast="high"] body svg:not(.a11y-panel *) [stroke="#fff" i],
+html[data-a11y-contrast="high"] body svg:not(.a11y-panel *) [stroke="white" i],
+html[data-a11y-contrast="high"] body svg:not(.a11y-panel *) [stroke="#ffffff" i] { stroke: #000 !important; }
+
+/* ปิดใช้งาน → เทา (แทน GrayText) / สปินเนอร์ของ bootstrap ใช้ขอบใส 1 ด้านให้เห็นว่าหมุน ซึ่งโดนขอบขาวทับ */
+html[data-a11y-contrast="high"] body :is(button, .btn, a, input, select, textarea, [role="button"]):is([disabled], .disabled, [aria-disabled="true"]):not(.a11y-panel *) {
+    color: #9a9a9a !important;
+    border-color: #9a9a9a !important;
+    box-shadow: none !important;
+    text-decoration-color: #9a9a9a !important;
+}
+html[data-a11y-contrast="high"] body :is(.btn, [class*="btn"]):is([disabled], .disabled, [aria-disabled="true"]):not(.a11y-panel *, .bw-step-btn) {
+    box-shadow: inset 0 0 0 1px #9a9a9a !important;
+}
+html[data-a11y-contrast="high"] body .spinner-border:not(.a11y-panel *) { border-right-color: transparent !important; }
+
+/* --- จุดเฉพาะของแต่ละระบบที่กฎทั่วไปทำแล้วดูแปลก (ไฟล์นี้ใช้ชุดเดียวกันทุกระบบ - ตัวเลือกที่ไม่มีในหน้าก็ไม่มีผล) --- */
+/* booking: ปฏิทินเลือกวัน - วงกลมของวันคือ <span> ข้างใน: วันที่เลือก = วงขาวตัวดำ, วันนี้ = วงขอบขาว, วันที่ปิดจอง = เทา */
+html[data-a11y-contrast="high"] body .bw-day.is-selected span { background-color: #fff !important; color: #000 !important; }
+html[data-a11y-contrast="high"] body .bw-day.is-today:not(.is-selected) span { box-shadow: inset 0 0 0 2px #fff !important; }
+html[data-a11y-contrast="high"] body .bw-day:is(:disabled, .is-muted),
+html[data-a11y-contrast="high"] body .bw-day:is(:disabled, .is-muted) span { color: #9a9a9a !important; }
+/* booking: ขั้นตอนของฟอร์ม (.bw-step เป็น div จึงไม่โดนกฎสถานะ) - วงเลขของขั้นปัจจุบัน/ที่ผ่านแล้ว = วงขาวตัวดำ ขั้นที่ยังไม่ถึง = วงขอบขาว */
+html[data-a11y-contrast="high"] body .bw-step-no { box-shadow: inset 0 0 0 1.5px #fff !important; }
+html[data-a11y-contrast="high"] body .bw-step:is(.is-active, .is-done) .bw-step-no,
+html[data-a11y-contrast="high"] body .bw-step:is(.is-active, .is-done) .bw-step-no * { background-color: #fff !important; color: #000 !important; }
+/* ปุ่มขั้นตอนเป็น <button disabled> เสมอ (กดไม่ได้จนกว่าจะผ่านขั้นนั้น) และขั้นปัจจุบันมี aria-current - ไม่ต้องมีกรอบ/กลับสี บอกด้วยวงเลขแทน */
+html[data-a11y-contrast="high"] body .bw-step .bw-step-btn { box-shadow: none !important; background-color: transparent !important; color: #fff !important; }
+html[data-a11y-contrast="high"] body .bw-step .bw-step-btn *:not(.bw-step-no, .bw-step-no *) { background-color: transparent !important; color: #fff !important; }
+/* booking: รอบเวลา - วงวิทยุวาดด้วยขอบ (ช่องที่เลือก = กลับสีจากกฎสถานะ วงจึงเป็นขอบดำหนา) / ช่องที่ปิดจอง = เทา */
+html[data-a11y-contrast="high"] body .bw-slot { box-shadow: inset 0 0 0 1px #fff !important; }
+html[data-a11y-contrast="high"] body .bw-slot.is-disabled,
+html[data-a11y-contrast="high"] body .bw-slot.is-disabled * { color: #9a9a9a !important; border-color: #9a9a9a !important; box-shadow: none !important; }
+
+/* ช่องพิมพ์ที่อยู่ในกล่องค้นหาซึ่งมีขอบของตัวเองอยู่แล้ว (ไอคอนแว่นขยาย + ช่องพิมพ์ในกรอบเดียว) - ไม่ต้องมีกรอบซ้อนข้างใน */
+html[data-a11y-contrast="high"] body :is(.homesearch-form, .nw-filter-search, .nav-search-input-wrap, .el-search-input) input:not(.a11y-panel *, [type="checkbox"]) { box-shadow: none !important; }
+/* news: ปฏิทินกิจกรรม - วันนอกเดือนเป็นเทา (วันนี้มี aria-current จึงกลับสีเป็นวงขาวจากกฎสถานะอยู่แล้ว) */
+html[data-a11y-contrast="high"] body .nw-cal-day.is-muted { color: #9a9a9a !important; }
+
+/* learnext: การ์ด "เส้นทางการเรียนรู้" เดิมแยกจากพื้นด้วยเงาอย่างเดียว (ถูกตัด) → เส้นขอบขาว (ใช้ outline เพราะลูกข้างในมีพื้นดำทับเงาด้านใน) */
+html[data-a11y-contrast="high"] body .el-path-card { outline: 1px solid #fff !important; outline-offset: -1px; }
+
+/* portal + learnext (ปฏิทิน .ev-cal-day ของ portal / .ec-cal-day ของ learnext ทำแบบเดียวกัน): */
+/* ข้อความบน hero: เดิมแต่ละบรรทัดได้พื้นดำของตัวเองเป็นแท่ง ๆ → ทำเป็นแผ่นรองเดียวมีขอบมน ลูกข้างในโปร่ง */
+html[data-a11y-contrast="high"] body .hero-content:not(.a11y-panel *) {
+    padding: 20px 28px !important;
+    border-radius: 12px;
+}
+html[data-a11y-contrast="high"] body .hero-content *:not(img, svg, svg *) { background-color: transparent !important; }
+/* ปฏิทินกิจกรรม: วันทุกวันเป็นปุ่ม ถ้าใส่ขอบขาวจะกลายเป็นวงกลม 35 วง → ไม่ใส่ขอบ
+   วันนี้ = พื้นขาวตัวดำ (จุดบอกว่ามีกิจกรรมของวันนี้เปลี่ยนเป็นดำ) / วันนอกเดือน = เทา */
+html[data-a11y-contrast="high"] body button:is(.ev-cal-day, .ec-cal-day):not(.a11y-panel *, .selected) { box-shadow: none !important; }
+html[data-a11y-contrast="high"] body :is(.ev-cal-day, .ec-cal-day).today:not(.a11y-panel *) { background-color: #fff !important; color: #000 !important; }
+html[data-a11y-contrast="high"] body :is(.ev-cal-day, .ec-cal-day).today.has-event::after { background: #000 !important; }
+html[data-a11y-contrast="high"] body :is(.ev-cal-day, .ec-cal-day).muted:not(.a11y-panel *) { color: #9a9a9a !important; }
+/* ไอคอนโซเชียลท้ายหน้าเป็นไฟล์ svg ที่มีวงกลมสีมาในตัว ถ้าทำขาวล้วนจะเป็นวงทึบ → คงสีเดิม (วงสีมีสัญลักษณ์ขาว อ่านบนพื้นดำได้อยู่แล้ว) */
+html[data-a11y-contrast="high"] body .mf-social img { filter: none !important; }
+/* portal: ดาวคะแนน (คอร์สของฉัน) เดิมแยกดาวที่ได้/ดาวว่างด้วยสีทอง/เทา ถ้าเป็นขาวหมดจะอ่านคะแนนไม่ออก
+   → ดาวที่ได้ = เหลืองแบบเดียวกับลิงก์ / ดาวว่าง = เทาเข้ม (การ์ด .mc-star และกล่องให้คะแนน .my-rate-stars) */
+html[data-a11y-contrast="high"] body :is(.mc-star, .my-rate-stars label) > i { color: #6a6a6a !important; }
+html[data-a11y-contrast="high"] body .mc-star-fill > i,
+html[data-a11y-contrast="high"] body .my-rate-stars:not(:hover) :is(label:has(~ input:checked), input:checked + label) > i,
+html[data-a11y-contrast="high"] body .my-rate-stars :is(label:has(~ label:hover), label:hover) > i { color: #ffeb00 !important; }
+
+/* ---------- 3. Keyboard navigation: กรอบโฟกัสชัด ๆ (ธีมหลายที่ใส่ outline: none ไว้) ----------
+   ช่องพิมพ์ (input/textarea/select) เบราว์เซอร์ถือเป็น :focus-visible ทุกครั้ง แม้คลิกด้วยเมาส์
+   → คลิกช่องค้นหาแล้วขึ้นกรอบเหลือง ทั้งที่ไม่ได้ใช้คีย์บอร์ด
+   html.a11y-pointer = ผู้ใช้ใช้เมาส์/นิ้วอยู่ (script ใน <head> ใส่ตอน pointerdown ถอดตอนกด Tab)
+   ตอนนั้นช่องพิมพ์ไม่ต้องมีกรอบ ส่วนปุ่ม/ลิงก์ไม่โดนผล เพราะคลิกเมาส์แล้วไม่เป็น :focus-visible อยู่แล้ว */
+html.a11y-kbd:not(.a11y-pointer) :focus-visible,
+html.a11y-kbd.a11y-pointer :focus-visible:not(input, textarea, select, [contenteditable]) {
+    outline: 3px solid #ffbf00 !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 6px #002777 !important;
+}
+/* ปิดสวิตช์ = ไม่เน้น แต่ต้องยังเห็นว่าโฟกัสอยู่ตรงไหน (WCAG 2.4.7) - ธีมหลายที่ใส่ outline: none ไว้
+   ใช้กรอบปกติของเบราว์เซอร์ (outline-style: auto = วงสองสีที่เห็นได้ทั้งบนพื้นสว่างและมืด) */
+html:not(.a11y-kbd):not(.a11y-pointer) :focus-visible,
+html:not(.a11y-kbd).a11y-pointer :focus-visible:not(input, textarea, select, [contenteditable]) {
+    outline: auto !important;
+    outline-offset: 2px !important;
+}
+/* ปลายทางของลิงก์ข้าม (<main tabindex="-1">) รับโฟกัสแค่ให้ Tab ถัดไปเริ่มจากเนื้อหา - ไม่ต้องขึ้นกรอบรอบทั้งหน้า */
+html:is(.a11y-kbd, :not(.a11y-kbd)) main[tabindex="-1"]:is(:focus, :focus-visible),
+html:is(.a11y-kbd, :not(.a11y-kbd)) [role="main"][tabindex="-1"]:is(:focus, :focus-visible) { outline: none !important; box-shadow: none !important; }
+
+/* ลิงก์ "ข้ามไปยังเนื้อหาหลัก" (includes/accessibility_filters.blade.php) - ซ่อนเหนือจอ โผล่มุมซ้ายบนเมื่อได้โฟกัส
+   แสดงเสมอไม่ขึ้นกับสวิตช์ เพราะคนที่ใช้แป้นพิมพ์อาจยังไม่ได้เปิดหน้าต่างตั้งค่า */
+.a11y-skip {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 2147483000;
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: #002777;
+    color: #fff !important;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.4;
+    text-decoration: none !important;
+    box-shadow: 0 6px 20px rgba(0, 20, 60, .35);
+    transform: translateY(calc(-100% - 24px));
+    transition: transform .15s ease;
+}
+.a11y-skip:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { .a11y-skip { transition: none; } }
+
+/* ============================================================
+   หน้าต่างตั้งค่า (ตาม mockup)
+   ============================================================ */
+/* แถบด้านขวา สูงเต็มจอ (เว้นขอบ 12px) เลื่อนเข้าจากขวาไปซ้าย */
+.a11y-panel {
+    --a11y-navy: #002777;
+    --a11y-line: #e3e7ee;
+    width: min(420px, calc(100vw - 24px));
+    max-width: none;
+    height: calc(100dvh - 24px);
+    max-height: calc(100dvh - 24px);
+    margin: 12px 12px 12px auto;
+    padding: 0;
+    border: 0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 16px 48px rgba(0, 20, 60, .35);
+    color: var(--a11y-navy);
+    font-family: var(--bs-font-secondary), 'IBM Plex Sans Thai', sans-serif;
+    font-size: 15px;
+    line-height: 1.45;
+    text-align: left;
+    overflow: hidden;
+}
+.a11y-panel[open] {
+    display: flex;
+    flex-direction: column;
+}
+.a11y-panel::backdrop { background: rgba(0, 20, 60, .55); }
+
+/* เปิด: เลื่อนจากขวาเข้ามา / ปิด: JS ใส่ .is-closing ให้เลื่อนออกก่อนแล้วค่อยปิดจริง */
+.a11y-panel[open] { animation: a11y-slide-in .32s cubic-bezier(.2, .8, .2, 1); }
+.a11y-panel[open]::backdrop { animation: a11y-fade-in .32s ease; }
+.a11y-panel.is-closing { animation: a11y-slide-out .24s ease-in forwards; }
+.a11y-panel.is-closing::backdrop { animation: a11y-fade-out .24s ease-in forwards; }
+@keyframes a11y-slide-in { from { transform: translateX(calc(100% + 24px)); } to { transform: none; } }
+@keyframes a11y-slide-out { from { transform: none; } to { transform: translateX(calc(100% + 24px)); } }
+@keyframes a11y-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes a11y-fade-out { from { opacity: 1; } to { opacity: 0; } }
+/* ผู้ใช้ตั้งเครื่องให้ลดการเคลื่อนไหว - เปิด/ปิดทันที */
+@media (prefers-reduced-motion: reduce) {
+    .a11y-panel[open],
+    .a11y-panel[open]::backdrop,
+    .a11y-panel.is-closing,
+    .a11y-panel.is-closing::backdrop { animation: none; }
+}
+.a11y-panel * { box-sizing: border-box; }
+.a11y-panel p { margin: 0; font-family: inherit; }
+.a11y-panel button { font-family: inherit; }
+
+/* หัว */
+.a11y-head {
+    flex: none;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 20px;
+    background: var(--a11y-navy);
+    color: #fff;
+}
+.a11y-head h2 {
+    margin: 0;
+    color: #fff;
+    font-family: var(--bs-font-primary), 'Prompt', sans-serif;
+    font-weight: 600;
+    font-size: 19px;
+    line-height: 1.4;
+}
+.a11y-x {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin: -2px -6px 0 0;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+.a11y-x:hover { background: rgba(255, 255, 255, .15); }
+
+/* เนื้อหา (เลื่อนได้ถ้าจอเตี้ย) */
+.a11y-body {
+    flex: 1;
+    min-height: 0;
+    padding: 18px 20px 16px;
+    overflow-y: auto;
+    /* เลื่อนสุดแล้วไม่ให้ไปเลื่อนหน้าด้านหลังต่อ */
+    overscroll-behavior: contain;
+}
+.a11y-intro { font-size: 15.5px; }
+
+.a11y-sec {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--a11y-line);
+}
+.a11y-sec-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.a11y-sec-icon {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--a11y-navy);
+    color: #fff;
+    font-size: 20px;
+}
+/* ไอคอน contrast ในแบบเป็นวงครึ่งกรมท่าบนพื้นขาว */
+.a11y-sec-icon.is-outline {
+    background: #fff;
+    border: 2px solid var(--a11y-navy);
+    color: var(--a11y-navy);
+}
+.a11y-sec-text { flex: 1; min-width: 0; }
+.a11y-sec-title {
+    font-family: var(--bs-font-primary), 'Prompt', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+}
+.a11y-sec-desc { margin-top: 2px !important; color: #405d99; font-size: 13.5px; }
+
+/* 1. ขนาดตัวอักษร */
+.a11y-font {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 14px;
+}
+.a11y-font button {
+    width: 80px;
+    height: 40px;
+    padding: 0;
+    background: #fff;
+    border: 1px solid var(--a11y-line);
+    border-radius: 6px;
+    color: var(--a11y-navy);
+    font-weight: 600;
+    cursor: pointer;
+}
+.a11y-font button[data-value="sm"] { font-size: 14px; }
+.a11y-font button[data-value="md"] { font-size: 16px; }
+.a11y-font button[data-value="lg"] { font-size: 18px; }
+.a11y-font button:hover { border-color: var(--a11y-navy); }
+.a11y-font button[aria-pressed="true"] {
+    background: var(--a11y-navy);
+    border-color: var(--a11y-navy);
+    color: #fff;
+}
+
+/* 2. Contrast */
+.a11y-contrast {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 14px;
+}
+.a11y-contrast button {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 4px 8px;
+    background: #fff;
+    border: 1px solid var(--a11y-line);
+    border-radius: 8px;
+    color: var(--a11y-navy);
+    font-weight: 600;
+    font-size: 12.5px;
+    line-height: 1.25;
+    cursor: pointer;
+}
+.a11y-contrast button:hover { border-color: var(--a11y-navy); }
+.a11y-contrast button[aria-pressed="true"] {
+    border: 2px solid var(--a11y-navy);
+    padding: 9px 3px 7px;
+}
+/* เครื่องหมายถูกมุมขวาบนของตัวที่เลือก */
+.a11y-contrast .a11y-check {
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    display: none;
+    font-size: 13px;
+    line-height: 1;
+}
+.a11y-contrast button[aria-pressed="true"] .a11y-check { display: block; }
+/* วงครึ่งสีแทนตัวอย่างโหมด */
+.a11y-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--a, #002777);
+    background: linear-gradient(90deg, var(--a, #002777) 50%, var(--b, #fff) 50%);
+}
+.a11y-swatch.is-normal { --a: #002777; --b: #fff; }
+.a11y-swatch.is-high { --a: #000; --b: #fff; }
+.a11y-swatch.is-bw { --a: #000; --b: #fff; background: linear-gradient(90deg, #fff 50%, #000 50%); }
+.a11y-swatch.is-yb { --a: #002777; --b: #ffe500; background: linear-gradient(90deg, #ffe500 50%, #002777 50%); }
+
+/* 3-4. สวิตช์ */
+.a11y-switch {
+    position: relative;
+    flex: none;
+    width: 48px;
+    height: 28px;
+    padding: 0;
+    background: #c3cad6;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background .15s;
+}
+.a11y-switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+    transition: transform .15s;
+}
+.a11y-switch[aria-checked="true"] { background: var(--a11y-navy); }
+.a11y-switch[aria-checked="true"]::after { transform: translateX(20px); }
+
+/* วิธีเปิดโปรแกรมอ่านหน้าจอ (กล่องพับใต้หัวข้อ Screen Reader) */
+.a11y-howto { margin-top: 10px; border-radius: 8px; background: #f5f8fe; }
+.a11y-howto summary {
+    padding: 8px 12px;
+    color: var(--a11y-navy);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+.a11y-howto[open] summary { border-bottom: 1px solid #dfe6f4; }
+.a11y-howto-list { margin: 0; padding: 10px 12px 0 30px; color: #1a2a4a; font-size: 13.5px; line-height: 1.6; }
+.a11y-howto-list li + li { margin-top: 4px; }
+.a11y-howto-tips { margin: 8px 0 0; padding: 0 12px 10px; color: #405d99; font-size: 13px; line-height: 1.6; }
+
+/* กล่องหมายเหตุ */
+.a11y-note {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 12px 14px;
+    background: #eef3fc;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 500;
+}
+.a11y-note i { flex: none; font-size: 17px; line-height: 1.2; }
+
+/* ท้าย: รีเซ็ต / บันทึก */
+.a11y-foot {
+    flex: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 14px 20px 18px;
+    border-top: 1px solid var(--a11y-line);
+}
+.a11y-foot button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 46px;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-family: var(--bs-font-primary), 'Prompt', sans-serif;
+    font-weight: 500;
+    font-size: 15.5px;
+    cursor: pointer;
+}
+.a11y-reset {
+    background: #fff;
+    border: 1px solid var(--a11y-line);
+    color: var(--a11y-navy);
+}
+.a11y-reset:hover { border-color: var(--a11y-navy); }
+.a11y-save {
+    background: var(--a11y-navy);
+    border: 1px solid var(--a11y-navy);
+    color: #fff;
+}
+.a11y-save:hover { background: #0d3a9a; border-color: #0d3a9a; }
+
+/* โฟกัสในหน้าต่างเห็นชัดเสมอ */
+.a11y-panel :focus-visible {
+    outline: 3px solid #ffbf00;
+    outline-offset: 2px;
+}
+
+/* เปิดหน้าต่างแล้วไม่ให้หน้าด้านหลังเลื่อน: ทำด้วย JS (accessibility.blade.php - blockPageScroll)
+   ไม่ใช้ overflow:hidden ที่ <html> เพราะ scrollbar จะหายแล้วหน้าทั้งหน้าขยับ */
+
+@media (max-width: 420px) {
+    .a11y-head { padding: 16px; }
+    .a11y-body { padding: 16px 16px 14px; }
+    .a11y-foot { padding: 12px 16px 16px; gap: 10px; }
+    /* การ์ด 4 ใบในจอแคบกว้างแค่ ~78px - ลดขอบ/ฟอนต์ให้ชื่อโหมดอยู่บรรทัดเดียว (ยาวสุด "เหลือง-น้ำเงิน") */
+    .a11y-contrast { gap: 5px; }
+    .a11y-contrast button,
+    .a11y-contrast button[aria-pressed="true"] { padding-left: 1px; padding-right: 1px; }
+    .a11y-contrast button { font-size: 10.5px; letter-spacing: -.1px; white-space: nowrap; }
+    .a11y-foot button { font-size: 14.5px; }
+}
+
+/* โลโก้ที่อัปโหลดจากหลังบ้าน portal (PNG ไม่โดนกฎ svg ข้างบน): สลับเป็นโลโก้ธีมมืดที่วางซ่อนไว้คู่กัน
+   (.nav-logo-hc / .mf-logo-hc) - ไม่ได้อัปโหลดโลโก้ธีมมืดแยก = ทำเป็นขาวล้วน (.is-hc-mono) แบบเดียวกับโลโก้ svg */
+.nav-logo-hc, .mf-logo-hc { display: none !important; }
+html[data-a11y-contrast="high"] :is(.nav-logo, .mf-logo):has(.nav-logo-hc, .mf-logo-hc) picture { display: none !important; }
+html[data-a11y-contrast="high"] :is(.nav-logo-hc, .mf-logo-hc) { display: block !important; }
+html[data-a11y-contrast="high"] body img.is-hc-mono:not(.a11y-panel *) { filter: brightness(0) invert(1); }

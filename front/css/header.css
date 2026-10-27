@@ -1,0 +1,1145 @@
+/* ══════════════════════════════════════════════════
+   Top nav - โครงสร้าง/ขนาดเดียวกับ top nav ของ e-Learning (mrta-learnext: includes/topnav_home)
+   แถบทึบ: รูปท้องฟ้าไล่เป็นน้ำเงิน (image/header/header.png) / หน้าแรก: แถบใส (ดูท้ายไฟล์)
+   เมนูพับเป็น drawer ที่จอ < 1200px (navbar-expand-xl) เท่ากับ learnext
+   ══════════════════════════════════════════════════ */
+.site-header {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+
+    /* header.png ชิดล่างตามแบบ */
+    background: #002777 url('../image/header/header.png') center bottom / cover no-repeat;
+}
+
+/*
+* Bootstrap .navbar ใช้ display:flex + align-items:center
+* เราให้ logo ใช้ align-self:stretch เพื่อยืดเต็มความสูง header
+* ส่วน nav links และ right-items ถูก center อัตโนมัติ
+*/
+
+.site-navbar {
+    padding: 0 !important;
+    min-height: 104px;
+    position: relative;
+    /* needed for nav-search-panel absolute overlay */
+}
+
+
+/* ── Logo ── */
+.nav-logo {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    text-decoration: none;
+    margin-right: 8px;
+    padding-left: 62px;
+    justify-content: flex-start;
+}
+
+.nav-logo img {
+    display: block;
+    height: 56px;
+    width: auto;
+}
+
+/* โลโก้ที่อัปโหลดจากหลังบ้าน (site_logo_url) สัดส่วนไม่แน่นอน - กว้างไม่เกิน 260px ไม่บิด */
+.nav-logo img.is-custom {
+    max-width: 260px;
+    object-fit: contain;
+    object-position: left center;
+}
+
+/* จอ xl+ : bootstrap ตั้ง .navbar-expand-xl .offcanvas-body เป็น flex-grow:0
+   เนื้อหาเมนูจึงกองอยู่ชิดซ้ายทับโลโก้ ต้องให้ยืดเต็มแล้วดันไปชิดขวา */
+@media (min-width: 1200px) {
+    .navbar-expand-xl .nav-drawer .offcanvas-body {
+        flex-grow: 1;
+        justify-content: flex-end;
+    }
+
+    /* กลุ่มขวา (เมนู/ค้นหา/ล็อกอิน/ภาษา) */
+    .nav-right {
+        padding-right: 48px;
+    }
+
+    /* learnext: ไอคอนค้นหาต่อท้ายเมนูรายการสุดท้ายทันที (เมนูกับไอคอนอยู่คนละ ul)
+       ที่นี่อยู่ใน .nav-right เดียวกันที่มี gap - หักช่องว่างหลังเมนูออก
+       ต้องแรงกว่า .me-auto (!important) ของ bootstrap */
+    .nav-right .nav-menu-list {
+        margin-right: -8px !important;
+    }
+}
+/* ขนาดของจอ desktop เล็ก (1200–1479px) / กลาง (1480–1679px) อยู่ท้ายไฟล์ - ต้องประกาศหลังค่าพื้นฐานของ .nav-pill ฯลฯ */
+
+/* ── Mobile responsive (< 1200px เท่ากับ learnext) ── */
+@media (max-width: 1199.98px) {
+    /* header.png วางแบบเดียวกับจอใหญ่ (ก้อนเมฆซ้าย พื้นน้ำเงินขวา) ไม่บีบสัดส่วน: สูงเท่าแถบ 72px
+       ทับด้วยฟิล์มน้ำเงินจาง ๆ ให้โลโก้ขาวอ่านออกบนก้อนเมฆ (ค่าเดียวกับ learnext) */
+    .site-header {
+        background:
+            linear-gradient(90deg, rgba(0, 39, 119, .55), rgba(0, 39, 119, .15) 70%) left top / 100% 72px no-repeat,
+            url('../image/header/header.png') left top / auto 72px no-repeat,
+            #002777;
+    }
+
+    .site-navbar {
+        min-height: 72px;
+    }
+
+    /* โลโก้ขาววางบนแถบโดยตรง (ไม่มีแผ่นขาวรองแล้ว) - ขนาดเดียวกับ learnext */
+    .nav-logo {
+        width: auto;
+        flex: 0 1 auto;
+        min-width: 0;
+        padding: 0 0 0 16px;
+    }
+
+    .nav-logo img {
+        width: auto;
+        height: 44px;
+        max-width: 100%;
+        object-fit: contain;
+        object-position: left center;
+    }
+
+    @media (max-width: 520px) {
+        .nav-logo img {
+            height: 38px;
+        }
+    }
+
+    /* จอแคบมาก: ตอนล็อกอินมีปุ่มกระดิ่งเพิ่ม รวมปุ่มขวา 144px - ย่อโลโก้ไม่ให้ทับปุ่ม */
+    @media (max-width: 359.98px) {
+        .nav-logo {
+            padding-left: 12px;
+        }
+
+        .nav-logo img {
+            height: 32px;
+        }
+    }
+
+    /* Mobile controls row (search + hamburger) */
+    .nav-mobile-controls {
+        gap: 2px;
+        padding-right: 8px;
+    }
+
+    /* Hamburger icon size */
+    .nav-hamburger-icon {
+        font-size: 26px;
+    }
+
+    /* ── Drawer (bootstrap offcanvas) ──
+       ใช้ offcanvas แทน collapse เพราะได้ฉากหลังดำ + ล็อก scroll พื้นหลัง + เต็มความสูงมาให้เลย
+       ทุกอย่างข้างในเป็นตัวอักษรสีขาว พื้นจึงต้องเป็นกรมท่าเหมือนแถบเมนู */
+    /* ต้องเป็น .offcanvas.nav-drawer (0,2,0) เพราะ bootstrap.min.css โหลดทีหลัง header.css
+       ถ้าใช้ .nav-drawer เฉย ๆ จะโดน .offcanvas ของ bootstrap ทับ (พื้นขาว กว้างเต็มจอ) */
+    .offcanvas.nav-drawer {
+        width: min(88vw, 360px);
+        height: 100dvh;
+        max-width: 100%;
+        background: #0C2E63;
+        border: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* ฉากหลังต้องดำจริง ไม่งั้นน้ำเงินทับน้ำเงิน แยกไม่ออกว่าอะไรอยู่บน */
+    .offcanvas-backdrop.show {
+        background-color: rgba(3, 12, 28, .62);
+        opacity: 1;
+    }
+
+    .nav-drawer .offcanvas-header {
+        padding: 12px 8px 12px 16px;
+        gap: 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, .14);
+    }
+
+    .nav-drawer .offcanvas-header .nav-icon-btn {
+        width: 44px;
+        height: 44px;
+        flex: none;
+        font-size: 18px;
+    }
+
+    .nav-drawer-logo {
+        height: 34px;
+        width: auto;
+        max-width: calc(100% - 64px);
+        object-fit: contain;
+        object-position: left center;
+    }
+
+    /* body ต้องยืดเต็ม drawer และ .nav-right ต้อง flex:1 ด้วย
+       ไม่งั้น margin-top:auto ของบล็อกภาษาไม่มีที่ให้ดัน (กล่องสูงเท่าเนื้อหาพอดี) */
+    .nav-drawer .offcanvas-body {
+        padding: 8px 16px 24px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+    }
+
+    .nav-drawer .offcanvas-body > .nav-right {
+        flex: 1 1 auto;
+    }
+
+    /* ── จัดกลุ่มใน drawer: บัญชี → เมนูหลัก → ภาษา ── */
+    .nav-drawer .nav-right {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding-right: 0 !important;
+        width: 100%;
+        gap: 0 !important;
+    }
+
+    .nav-drawer .nav-right > .dropdown,          /* กล่องผู้ใช้ */
+    .nav-drawer .nav-login-btn {
+        order: 1;
+    }
+
+    /* ใช้คลาสเจาะจง ไม่ใช้ :first-of-type/:last-of-type เพราะมันนับตาม "ชนิด element"
+       ลูกตัวสุดท้ายที่เป็น div คือ .nav-lang ไม่ใช่ป้ายภาษา ป้ายจึงไม่โดนจับแล้วหล่นไปอยู่บนสุด */
+    .nav-drawer .nav-group-menu { order: 2; }
+    .nav-drawer .nav-menu-list  { order: 3; }
+    .nav-drawer .nav-group-lang { order: 4; }
+    .nav-drawer .nav-lang       { order: 5; }
+
+    /* เมนูมีแค่ 3 อัน ครึ่งล่างเลยโหวง ดันบล็อกภาษาไปติดขอบล่าง */
+    .nav-drawer .nav-group-lang {
+        margin-top: auto;
+    }
+
+    /* ป้ายหัวกลุ่ม */
+    .nav-group-label {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: .5px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, .72);
+        /* เว้นบนมากกว่าล่าง ~2 เท่า แยกกลุ่มได้โดยไม่ต้องมีเส้น */
+        padding: 20px 4px 8px;
+    }
+
+    /* กล่องผู้ใช้: การ์ดบนสุดของ drawer */
+    .nav-drawer .nav-user {
+        width: 100%;
+        padding: 14px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, .10);
+    }
+
+    .nav-drawer .nav-user-name {
+        max-width: none;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    /* เฉพาะใน drawer: แดงบนพื้นน้ำเงินทึบ contrast ต่ำมาก ใช้อำพันแทน
+       (แถบเมนู desktop ไม่แตะ ของเดิมอ่านออกอยู่แล้ว) */
+    .nav-drawer .nav-user-points-number {
+        color: #F6C86A;
+        font-weight: 700;
+    }
+
+    /* เมนูหลัก: แถวเต็มความกว้าง แตะได้อย่างน้อย 44px */
+    .nav-drawer .navbar-nav {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        width: 100%;
+        gap: 0 !important;
+    }
+
+    .nav-drawer .nav-pill {
+        width: 100%;
+        min-height: 44px;
+        font-size: 16px;
+        padding: 12px 4px;
+        justify-content: space-between;
+    }
+
+    .nav-drawer .nav-item + .nav-item .nav-pill {
+        border-top: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    /* เมนูแนวตั้งใช้แถบซ้าย + พื้นอ่อน ส่วนเส้นใต้ (.nav-pill::after) เก็บไว้ให้เมนูแนวนอนอย่างเดียว
+       ถ้าปล่อยเส้นใต้ยาวเต็มความกว้างไว้ ตาจะอ่านเป็น divider ไม่ใช่รายการที่เลือกอยู่ */
+    .nav-drawer .nav-pill::after {
+        display: none;
+    }
+
+    .nav-drawer .nav-pill.active {
+        background: rgba(255, 255, 255, .10);
+        border-left: 3px solid #85B7EB;
+        padding-left: 13px;
+    }
+
+    .nav-drawer .dropdown-menu {
+        width: 100%;
+    }
+
+    /* ปุ่มค้นหาในเมนูซ้ำกับแว่นขยายบนแถบบน - ซ่อนทิ้ง */
+    .nav-drawer #navSearchToggle {
+        display: none;
+    }
+
+    .nav-drawer .nav-login-btn {
+        width: 100%;
+        min-height: 44px;
+        padding: 12px 4px;
+    }
+
+    /* ── ภาษา: segmented control เล็ก ๆ ชิดซ้าย ──
+       ปุ่มครึ่งจอสองอันทำให้ตัวสลับภาษาเด่นกว่าเมนูหลัก ซึ่งผิดลำดับความสำคัญ */
+    .nav-drawer .nav-lang {
+        display: inline-flex;
+        align-self: flex-start;
+        padding: 3px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, .10);
+    }
+
+    .nav-drawer .nav-lang .sep {
+        display: none;
+    }
+
+    .nav-drawer .txt-lang {
+        min-width: 46px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    /* ภาษาที่ไม่ได้เลือกบนพื้น drawer (#244373) - เดิม #93A2C4 คอนทราสต์ 3.86:1 สว่างขึ้นให้ผ่าน 4.5:1 */
+    .nav-drawer .txt-lang:not(.on) {
+        color: #a5b2ce;
+    }
+
+    /* ตัวที่เลือกต้องพื้นขาวจริง ไม่ใช่น้ำเงินอ่อนกว่านิดเดียว */
+    .nav-drawer .txt-lang.on {
+        background: #fff;
+        color: #0C2E63;
+    }
+
+    /* ลิงก์รองท้าย drawer - วางแถวเดียวกับ segmented ภาษา */
+    .nav-drawer-secondary {
+        order: 6;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid rgba(255, 255, 255, .14);
+    }
+
+    .nav-drawer-secondary a {
+        color: rgba(255, 255, 255, .72);
+        font-size: 14px;
+        text-decoration: none;
+    }
+
+    /* ปุ่มบนแถบบนแตะได้ 44px ตามมาตรฐาน */
+    .nav-mobile-controls .nav-icon-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+    }
+}
+
+.nav-pill {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 13px;
+    font-size: 16px;
+    color: var(--bs-white);
+    text-decoration: none;
+    white-space: nowrap;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* ขีดใต้สีแดง (hover + active) - แบบเดียวกับ learnext */
+.nav-pill::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 3px;
+    background: var(--bs-secondary-900);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .5s ease;
+}
+
+.nav-pill:hover::after,
+.nav-pill.active::after {
+    transform: scaleX(1);
+}
+
+.nav-pill.active {
+    color: var(--bs-white) !important;
+    font-weight: 600;
+}
+
+/* แสดงแต่กดไม่ได้ (includes/header/menu disabled - เช่นโหมดสาธิตของ portal)
+   หน้าตาเหมือนเมนูปกติ (ไม่ทำจาง) แค่ไม่มีขีดใต้ตอน hover */
+.nav-pill.is-disabled,
+.nav-drawer-secondary .is-disabled {
+    cursor: default;
+}
+
+.nav-pill.is-disabled::after {
+    display: none;
+}
+
+.nav-icon-btn {
+    background: none;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--bs-white);
+    cursor: pointer;
+    transition: background .15s;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.nav-icon-btn:hover {
+    background: rgba(255, 255, 255, .12);
+}
+
+/* ── Login button ── */
+.nav-login-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--bs-white);
+    background: none;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all .15s;
+}
+
+.nav-login-btn:hover {
+    color: var(--bs-white);
+    opacity: .8;
+}
+
+/* ── Language switcher ── */
+.nav-lang {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--bs-white);
+    white-space: nowrap;
+    user-select: none;
+}
+
+/* ภาษาที่ใช้อยู่เป็นสีขาว อีกภาษาเป็นเทาจาง (ตามดีไซน์) */
+.txt-lang {
+    cursor: pointer;
+    color: #93A2C4;
+    text-decoration: none;
+}
+
+.nav-lang .on {
+    color: var(--bs-white);
+    font-weight: 600;
+}
+
+.nav-lang .sep {
+    color: #93A2C4;
+    margin: 0 2px;
+}
+
+/* ── Notification badge ── */
+.notif-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: var(--bs-status-error);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    min-width: 14px;
+    height: 14px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2px;
+}
+
+/* ── Dropdown menu - .nav-dd-menu นิยามอยู่ที่ main.css แหล่งเดียว
+      (ใช้ร่วมกับดรอปดาวน์ตัวกรองในหน้าอื่น) ── */
+
+/* ── User info block ── */
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background .15s;
+    cursor: pointer;
+}
+
+.nav-user-name {
+    font-size: 0.8rem;
+    color: var(--bs-white);
+    line-height: 1.2;
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nav-user-points {
+    font-size: 14px;
+    color: var(--bs-white);
+    line-height: 1.2;
+}
+
+.nav-user-points-number {
+    color: var(--bs-secondary-500);
+}
+
+/* ช่องค้นหา + autocomplete ย้ายไปเป็น component: public/front/css/nav-search.css (ใช้ร่วมกับ learnext) */
+
+/* ── Notification dropdown - เปลือกใช้ร่วมกับ .nav-dd-menu (main.css)
+      ที่นี่เหลือแค่ขนาด - ต้องคู่กับ .dropdown-menu ให้ชนะ padding ของ bootstrap ── */
+.dropdown-menu.notif-dd-menu {
+    padding: 0;
+    width: 340px;
+    overflow: hidden;
+}
+
+.notif-dd-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--bs-gray-100);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--bs-gray-900);
+}
+
+/* "อ่านทั้งหมด" เปลี่ยนจาก <a href="javascript:void(0)"> เป็น <button> แล้ว
+   (lighthouse: ลิงก์ที่ crawler ตามไม่ได้ + screen reader อ่านผิดประเภท)
+   รีเซ็ตหน้าตาปุ่มให้เหมือนลิงก์เดิมเป๊ะ */
+.notif-dd-head a,
+.notif-dd-head button {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--bs-secondary-900);
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    padding: 0;
+    font-family: inherit;
+    line-height: inherit;
+}
+
+.notif-dd-head a:hover,
+.notif-dd-head button:hover {
+    text-decoration: underline;
+}
+
+.notif-dd-body {
+    max-height: 360px;
+    overflow-y: auto;
+    /* แถบเลื่อนแบบค่าเริ่มต้นของเบราว์เซอร์เหมือน belib - main.css ตั้ง ::-webkit-scrollbar สีเข้มไว้ทั้งเว็บ
+       (แบบเดียวกับ learnext) พอใส่ scrollbar-color (ค่ามาตรฐาน) Chrome จะใช้ตัวนี้แทน */
+    scrollbar-color: #8b8b8b #fcfcfc; /* สีเดียวกับแถบเลื่อนค่าเริ่มต้นใน belib */
+}
+
+.notif-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid #f5f5f5;
+    transition: background .1s;
+}
+
+.notif-item:hover {
+    background: var(--bs-gray-100);
+}
+
+.notif-item:last-child {
+    border-bottom: none;
+}
+
+.notif-item-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+    background: transparent;
+}
+
+.notif-item-unread .notif-item-dot {
+    background: var(--bs-secondary-500);
+}
+
+.notif-item-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.notif-item-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--bs-gray-900);
+}
+
+.notif-item-unread .notif-item-title {
+    color: #1a237e;
+}
+
+.notif-item-msg {
+    font-size: 12px;
+    color: #607d8b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.notif-item-time {
+    font-size: 11px;
+    color: #b0bec5;
+    margin-top: 2px;
+}
+
+.notif-empty {
+    padding: 24px 14px;
+    text-align: center;
+    font-size: 13px;
+    color: #b0bec5;
+}
+
+/* ป้ายระบบที่มาของรายการ (กระดิ่งรวมทุกระบบ - App\Support\NotificationHub::SYSTEMS)
+   สีชุดเดียวกับหน้ารวมการแจ้งเตือนบน portal (notification-center.css .nc-sys) */
+.notif-item-sys {
+    display: inline-block;
+    margin-bottom: 2px;
+    padding: 0 7px;
+    border-radius: 99px;
+    background: #eef1f6;
+    color: #4a587a;
+    font-size: 10.5px;
+    font-weight: 600;
+    line-height: 18px;
+}
+.notif-item-sys.is-portal    { background: #e6edf9; color: #213069; }
+.notif-item-sys.is-belib     { background: #e3f4f4; color: #0f766e; }
+.notif-item-sys.is-learnext  { background: #efe9fb; color: #6d28d9; }
+.notif-item-sys.is-knowledge { background: #e5f6ea; color: #147d3b; }
+.notif-item-sys.is-booking   { background: #fff1e0; color: #c2410c; }
+.notif-item-sys.is-news      { background: #fde8e9; color: #b91c1c; }
+
+/* แท็บแยกตามระบบ - แผงแบ่งช่อง (segmented) 3 คอลัมน์ × 2 แถว ทุกช่องกว้างเท่ากัน (ไม่ใช่ชิปเรียงต่อกัน)
+     ทั้งหมด    | Portal    | e-Library
+     e-Learning | จองเข้าชม | คลังความรู้     ← App\Support\NotificationHub::TABS
+   เส้นแบ่งไม่แตะขอบแผงและไม่ต่อกันเป็นตาราง:
+     นอน = เส้นตรงยาวเส้นเดียวกลางแผง (ระหว่าง 2 แถว) เว้นซ้าย-ขวา 12px - วาดเป็นพื้นหลังของแผง
+     ตั้ง = ขีดสั้นกลางความสูงระหว่างช่องในแถวเดียวกัน - ช่องที่เลือก/ชี้อยู่ซ่อนขีดที่ติดตัวเอง (แบบ segmented control)
+   ช่องที่เลือก = พื้นกรมท่า ตัวขาว / ช่องอื่นชี้แล้วเป็นพื้นขาว / ตัวเลขแดง = ยังไม่อ่าน
+   ชุดเดียวกันทุกระบบ: header.css ของ portal / belib / auth / knowledge / booking / news + nav-notification.css ของ learnext */
+.notif-dd-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 9px;
+    margin: 10px 12px;
+    padding: 4px;
+    border: 1px solid #e1e7f0;
+    border-radius: 10px;
+    /* padding บน-ล่างเท่ากัน จุดกึ่งกลางแผง = กลางช่องว่างระหว่างแถวพอดี (เส้นไม่ชนช่องที่เลือก) */
+    background: linear-gradient(#d3dbe8, #d3dbe8) center / calc(100% - 24px) 1px no-repeat, #f3f6fa;
+}
+.notif-dd-tabs[hidden] { display: none; }
+.notif-dd-tab {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 0;
+    height: 32px;
+    padding: 0 6px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: #4a587a;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background-color .15s, color .15s;
+}
+/* ขีดตั้งด้านซ้ายของช่อง (ไม่มีที่ช่องแรกของแถว) */
+.notif-dd-tab::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    bottom: 9px;
+    width: 1px;
+    background: #d3dbe8;
+    pointer-events: none;
+    transition: opacity .15s;
+}
+.notif-dd-tab:nth-child(3n+1)::before { display: none; }
+.notif-dd-tab.is-active::before,
+.notif-dd-tab.is-active + .notif-dd-tab::before,
+.notif-dd-tab:hover::before,
+.notif-dd-tab:hover + .notif-dd-tab::before { opacity: 0; }
+.notif-dd-tab:hover { background: #fff; color: #213069; }
+.notif-dd-tab.is-active {
+    background: #213069;
+    color: #fff;
+    font-weight: 600;
+}
+.notif-dd-tab:focus-visible { outline: 2px solid #5570d0; outline-offset: -2px; }
+.notif-dd-tab .n {
+    flex: none;
+    min-width: 16px;
+    padding: 0 4px;
+    border-radius: 99px;
+    background: #e5484d;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+}
+
+/* ท้ายดรอปดาวน์: ดูการแจ้งเตือนทั้งหมด (หน้ารวมบน portal) */
+.notif-dd-foot {
+    display: block;
+    padding: 10px 14px;
+    border-top: 1px solid var(--bs-gray-100);
+    color: var(--bs-primary-900, #213069);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+}
+.notif-dd-foot:hover { background: var(--bs-gray-100); color: var(--bs-primary-900, #213069); }
+/* ══════════════════════════════════════════════════
+   Header แบบใส - วางทับ banner (หน้าแรกเท่านั้น)
+   เปิดใช้ด้วย @include('frontend.includes.top_nav_transparent')
+   โครงสร้าง/ขนาดเหมือนแถบทึบทุกอย่าง ต่างแค่ไม่มีพื้น (ไม่มี header.png) และไม่มีเงา
+   ══════════════════════════════════════════════════ */
+
+/* absolute ไม่ใช่ sticky - ต้องหลุดออกจาก flow ให้ banner ขึ้นมาเริ่มที่ขอบบนสุด
+   แล้วแถบเมนูค่อยลอยทับ (sticky จะกินที่ 104px ดัน banner ลงไป)
+   ต้องใส่ !important เพราะ .site-header ในจอ < 1200px ประกาศพื้นหลังใหม่ใน media query */
+.site-header--transparent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: transparent !important;
+    box-shadow: none;
+}
+
+/* ══════════════════════════════════════════════════
+   จอ desktop เล็ก (1200–1479px): บีบให้อยู่บรรทัดเดียว - ค่าเดียวกับ learnext
+   อยู่ท้ายไฟล์เพราะต้องชนะค่าพื้นฐานของ .nav-pill / .nav-login-btn / .nav-lang ด้านบน
+   ══════════════════════════════════════════════════ */
+@media (min-width: 1200px) and (max-width: 1479.98px) {
+    .nav-logo {
+        padding-left: 24px;
+    }
+
+    .nav-logo img {
+        height: 46px;
+    }
+
+    /* ต้องแรงกว่า .gap-1 / .gap-2 (!important) ของ bootstrap ที่โหลดหลังไฟล์นี้ - ขึ้นต้นด้วย .site-navbar */
+    .site-navbar .nav-menu-list {
+        gap: 0 !important;
+        margin-right: -4px !important;
+    }
+
+    .nav-pill {
+        padding: 7px 8px;
+        font-size: 14px;
+    }
+
+    .site-navbar .nav-right {
+        gap: 4px !important;
+        padding-right: 1.5rem;
+    }
+
+    .nav-login-btn {
+        padding: 6px 8px;
+        font-size: 15px;
+    }
+
+    .nav-lang {
+        font-size: 15px;
+    }
+}
+
+/* ══════════════════════════════════════════════════
+   จอ desktop กลาง (1480–1679px): ย่อลงนิดเดียว - ค่าเดียวกับ learnext
+   ตอนล็อกอินมีกระดิ่ง + รูป/ชื่อผู้ใช้เพิ่ม ขนาดเต็มจะดันเมนูไปชนโลโก้ (เช่นจอ 1920 ที่ย่อ 125% = 1536px)
+   ══════════════════════════════════════════════════ */
+@media (min-width: 1480px) and (max-width: 1679.98px) {
+    .nav-logo {
+        padding-left: 40px;
+    }
+
+    .nav-logo img {
+        height: 52px;
+    }
+
+    /* ตัวหนังสือเมนูคง 16px - ลดแค่ระยะห่างระหว่างรายการ */
+    .nav-pill {
+        padding: 7px 10px;
+    }
+}
+
+/* ══════════════════════════════════════════════════
+   ตอนล็อกอิน (จอ xl+) - ระยะ/ขนาดเดียวกับ learnext (includes/topnav_home)
+   ลำดับ: ค้นหา → การเข้าถึง → กระดิ่ง → ผู้ใช้ → ภาษา
+   ══════════════════════════════════════════════════ */
+@media (min-width: 1200px) {
+    /* กระดิ่ง: ช่องกว้าง 30px เท่ากับ learnext */
+    .nav-right .notif-dropdown .nav-icon-btn {
+        width: 30px;
+    }
+
+    /* บล็อกผู้ใช้: ขนาดเดียวกับ belib - ขอบใน 4px 10px, รูป 30px ห่างชื่อ 8px */
+    .nav-user-dropdown {
+        margin: 0 8px;
+    }
+
+    .nav-user {
+        gap: 8px;
+        padding: 4px 10px;
+    }
+}
+
+.nav-user-avatar {
+    flex: none;
+    width: 30px;
+    height: 30px;
+}
+
+.nav-user-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* ชื่อ 12.8px / แต้ม 14px ระยะบรรทัด 1.2 ตัดด้วย ... ที่ 100px (ค่าเดียวกับ belib) */
+.nav-user-name {
+    font-size: 12.8px;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.nav-user-points {
+    font-weight: 400;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════
+   ดีไซน์ top nav ชุดใหม่ (mockup หน้าแรก 2026-10) - ใช้กับทุกหน้าหน้าบ้านของ portal
+     โลโก้ซ้าย · เมนูกลาง (ขีดใต้สีขาว) · ปุ่มกลมขาว (การเข้าถึง / ค้นหา) · ปุ่มเข้าสู่ระบบแบบเส้นขอบ · EN | TH
+   แถบกว้างสุด 1680px (กว้างกว่า container เนื้อหา เมนูไม่ต้องบีบ)
+   หน้าแรก: แถบใสทับ hero (site-header--transparent) / หน้าอื่น: พื้นทึบ header.png เหมือนเดิม
+   อยู่ท้ายไฟล์เพื่อชนะค่าเดิมด้านบน
+   ══════════════════════════════════════════════════ */
+
+/* ขีดใต้เมนูเป็นสีขาว บาง ๆ ใต้ตัวหนังสือ */
+.nav-pill::after {
+    left: 12px;
+    right: 12px;
+    width: auto;
+    bottom: -4px;
+    height: 2px;
+    border-radius: 2px;
+    background: #fff;
+}
+
+@media (min-width: 1200px) {
+    /* กว้างสุด 1680px (เดิม 1320 = เท่า container เนื้อหา → จอกว้างเมนูกระจุกกลางจอ ดูหด) */
+    .site-navbar {
+        max-width: 1680px;
+        min-height: 88px;
+        margin: 0 auto;
+        padding: 0 40px !important;
+    }
+
+    .nav-logo {
+        padding-left: 0;
+        margin-right: 16px;
+    }
+
+    .nav-logo img {
+        height: 52px;
+    }
+
+    .navbar-expand-xl .nav-drawer .offcanvas-body {
+        justify-content: stretch;
+    }
+
+    .site-navbar .nav-right {
+        flex: 1 1 auto;
+        padding-right: 0;
+        gap: 8px !important;
+    }
+
+    /* เมนูชิดไปทางกลุ่มปุ่มขวา (ห่าง 24px) - พื้นที่ว่างไปอยู่ฝั่งโลโก้ เมนูแรก "หน้าแรก" จึงไม่ทับช่วงพื้นหลังสีอ่อนข้างโลโก้
+       (ต้องชนะ .me-auto !important ของ bootstrap) */
+    .site-navbar .nav-right .nav-menu-list {
+        margin-left: auto !important;
+        margin-right: 24px !important;
+        padding-right: 8px;
+        gap: 0 !important;
+    }
+
+    .nav-pill {
+        padding: 8px 12px;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .nav-pill.active {
+        font-weight: 600;
+    }
+
+    /* ลำดับกลุ่มขวา: การเข้าถึง → ค้นหา → [กระดิ่ง → ผู้ใช้ | เข้าสู่ระบบ] → ภาษา (markup คงเดิม - ใช้ร่วมกับระบบอื่น) */
+    .site-navbar .nav-menu-list      { order: 1; }
+    .site-navbar #navAccessibility   { order: 2; }
+    .site-navbar #navSearchToggle    { order: 3; }
+    .site-navbar .nav-right > .notif-dropdown { order: 4; }
+    .site-navbar .nav-user-dropdown  { order: 5; }
+    .site-navbar .nav-login-btn      { order: 5; }
+    .site-navbar .nav-lang           { order: 6; }
+
+    /* ปุ่มกลมพื้นขาว ไอคอนน้ำเงิน */
+    .site-navbar #navAccessibility,
+    .site-navbar #navSearchToggle,
+    .site-navbar .nav-right .notif-dropdown .nav-icon-btn {
+        width: 40px;
+        height: 40px;
+        background: #fff;
+        color: var(--bs-primary-500, #002777);
+        font-size: 17px;
+        box-shadow: 0 2px 8px rgba(0, 20, 70, .18);
+        transition: background-color .15s, color .15s, transform .15s;
+    }
+
+    .site-navbar #navAccessibility:hover,
+    .site-navbar #navSearchToggle:hover,
+    .site-navbar .nav-right .notif-dropdown .nav-icon-btn:hover {
+        background: #e8eefb;
+        transform: translateY(-1px);
+    }
+
+    .site-navbar .nav-right .notif-dropdown .notif-badge {
+        top: -2px;
+        right: -2px;
+    }
+
+    /* เข้าสู่ระบบ: เม็ดยาเส้นขอบขาว */
+    .site-navbar .nav-login-btn {
+        height: 40px;
+        margin-left: 4px;
+        padding: 0 22px;
+        border: 1.5px solid rgba(255, 255, 255, .9);
+        border-radius: 999px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .site-navbar .nav-login-btn:hover,
+    .site-navbar .nav-login-btn:focus-visible {
+        background: #fff;
+        color: var(--bs-primary-500, #002777);
+        opacity: 1;
+    }
+
+    .site-navbar .nav-lang {
+        margin-left: 8px;
+        font-size: 15px;
+    }
+
+    .nav-user-dropdown {
+        margin: 0 2px 0 4px;
+    }
+}
+
+/* desktop เล็ก (1200–1399): เมนู 8 รายการ + ปุ่มขวาต้องอยู่บรรทัดเดียว */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    .site-navbar {
+        padding: 0 20px !important;
+    }
+
+    .nav-logo img {
+        height: 44px;
+    }
+
+    .nav-pill {
+        padding: 8px 8px;
+        font-size: 14.5px;
+    }
+
+    .nav-pill::after {
+        left: 8px;
+        right: 8px;
+    }
+
+    .site-navbar .nav-right {
+        gap: 6px !important;
+    }
+
+    .site-navbar #navAccessibility,
+    .site-navbar #navSearchToggle,
+    .site-navbar .nav-right .notif-dropdown .nav-icon-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
+    }
+
+    .site-navbar .nav-login-btn {
+        height: 36px;
+        padding: 0 14px;
+        font-size: 14px;
+    }
+
+    .site-navbar .nav-lang {
+        margin-left: 4px;
+        font-size: 14px;
+    }
+
+    .nav-user-name {
+        max-width: 80px;
+    }
+}
+
+/* จอเล็ก (< 1200): ปุ่มบนแถบมือถือเป็นวงกลมโปร่งแสง */
+@media (max-width: 1199.98px) {
+    .nav-mobile-controls {
+        gap: 6px;
+        padding-right: 12px;
+    }
+
+    .nav-mobile-controls .nav-icon-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        background: rgba(255, 255, 255, .14);
+    }
+
+    .nav-mobile-controls .nav-icon-btn:hover {
+        background: rgba(255, 255, 255, .26);
+    }
+}
+
+/* ตอนล็อกอิน (มีกระดิ่ง + ชื่อผู้ใช้แทนปุ่มเข้าสู่ระบบ ~120px) จอ 1400–1679: ลดระยะเมนูให้อยู่บรรทัดเดียว */
+@media (min-width: 1400px) and (max-width: 1679.98px) {
+    .site-navbar:has(.nav-user-dropdown) .nav-pill {
+        padding: 8px 10px;
+    }
+
+    .site-navbar:has(.nav-user-dropdown) .nav-pill::after {
+        left: 10px;
+        right: 10px;
+    }
+
+    .site-navbar:has(.nav-user-dropdown) .nav-user-name {
+        max-width: 90px;
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1299.98px) {
+    .site-navbar:has(.nav-user-dropdown) .nav-pill {
+        padding: 8px 6px;
+        font-size: 14px;
+    }
+
+    .site-navbar:has(.nav-user-dropdown) .nav-pill::after {
+        left: 6px;
+        right: 6px;
+    }
+
+    .site-navbar:has(.nav-user-dropdown) .nav-logo {
+        margin-right: 8px;
+    }
+
+    .site-navbar:has(.nav-user-dropdown) .nav-logo img {
+        height: 40px;
+    }
+
+    .site-navbar:has(.nav-user-dropdown) .nav-user-name {
+        max-width: 70px;
+    }
+}
+
+/* จอกว้าง (1680+): เมนูห่างกันมากขึ้น */
+@media (min-width: 1680px) {
+    .nav-pill {
+        padding: 8px 16px;
+    }
+
+    .nav-pill::after {
+        left: 16px;
+        right: 16px;
+    }
+
+    .site-navbar .nav-right {
+        gap: 10px !important;
+    }
+}
+
+/* ตอนล็อกอิน จอ 1400–1479: ระยะเมนูแคบลงอีกนิดให้ EN | TH ไม่ตกขอบ */
+@media (min-width: 1400px) and (max-width: 1479.98px) {
+    .site-navbar:has(.nav-user-dropdown) .nav-pill {
+        padding: 8px 8px;
+        font-size: 15px;
+    }
+
+    .site-navbar:has(.nav-user-dropdown) .nav-pill::after {
+        left: 8px;
+        right: 8px;
+    }
+}

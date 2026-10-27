@@ -1,0 +1,155 @@
+/* ══════════════════════════════════════
+       SEARCH (แถบค้นหาหน้าแรก)
+       ══════════════════════════════════════ */
+/* พื้นหลังเดียวกับ Librarian's Choice ต่อเนื่องกันเป็นแถบเดียว */
+.search-section {
+    background: var(--bs-bg-page);
+    padding: 44px 0 0;
+}
+
+/* ครอบไว้เพื่อวาง dropdown autocomplete แบบ absolute */
+.search-group-wrap {
+    position: relative;
+    max-width: 530px;
+    margin: 0 auto;
+}
+
+/* พิลล์ขาวใบเดียว: [หมวดหมู่] | [ช่องค้นหาเทาอ่อน + ปุ่มกลมกรมท่า] */
+.search-group {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 50rem;
+    box-shadow: 0 8px 22px rgba(33, 48, 105, .10);
+    padding: 8px;
+}
+
+/* ── หมวดหมู่ (ซ้าย มีเส้นคั่น) ──
+      ใช้ component select-dropdown แผงที่เปิดออกมาจึงเป็น .app-dd-menu ชุดเดียว
+      กับดรอปดาวน์อื่นทั้งเว็บ (นิยามอยู่ที่ main.css - ห้ามประกาศซ้ำที่นี่)
+      ที่นี่ทับเฉพาะหน้าตา "ปุ่ม" ให้กลมกลืนไปกับพิลล์ค้นหาเหมือนตอนเป็น <select> ── */
+.search-cat {
+    flex: 0 0 auto;
+    border-right: 1px solid #E3E9F2;
+    padding-right: 8px;
+}
+
+/* ปล่อยให้ .app-dd คุมความกว้าง (min-width 170px จาก main.css) ตั้งใจไม่ทับ
+   เพราะถ้าปุ่มกว้างเท่าข้อความ เส้นคั่นจะขยับไปมาเวลาเปลี่ยนหมวด
+   ต่างจาก select เดิมที่กว้างคงที่เท่าตัวเลือกที่ยาวที่สุด */
+.search-cat .app-dd-toggle,
+.search-cat .app-dd-toggle:focus,
+.search-cat .app-dd-toggle[aria-expanded="true"] {
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+}
+
+/* ระบุ height ไว้ที่นี่ด้วย เพื่อไม่ให้ media query ของ .app-dd-toggle ใน main.css
+   ไปย่อความสูงปุ่มจนไม่เท่ากับช่องค้นหาข้าง ๆ */
+.search-cat .app-dd-toggle {
+    height: 40px;
+    padding: 0 28px 0 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16'%3E%3Cpath fill='%23213069' d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-position: calc(100% - 8px) center;
+    background-size: 12px;
+}
+
+/* ── ช่องค้นหา (เทาอ่อน อยู่ในพิลล์) ── */
+.search-field {
+    flex: 1;
+    min-width: 0;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    background: #F6F9FC;
+    border: 0;
+    border-radius: 50rem;
+    margin-left: 8px;
+    padding: 0 1px 0 14px;
+}
+
+.search-field-icon {
+    flex: 0 0 auto;
+    color: #9AA6BF;
+    font-size: 15px;
+    margin-right: 10px;
+}
+
+.search-field input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: 15px;
+    color: var(--bs-primary-900);
+}
+
+.search-field input::placeholder {
+    color: #9AA6BF;
+}
+
+.search-go {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--bs-primary-500);
+    color: #fff;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background .15s;
+}
+
+.search-go:hover {
+    background: var(--bs-primary-700);
+}
+
+/* dropdown autocomplete ใช้สไตล์กลางจาก header.css - ที่นี่ปรับแค่ตำแหน่ง/มุม */
+.search-group-wrap .ac-dropdown {
+    top: calc(100% + 8px);
+    border-radius: 14px;
+}
+
+.form-check-input:checked {
+    background-color: var(--bs-secondary-900) !important;
+    border-color: var(--bs-secondary-900) !important;
+}
+
+/* ── Responsive ── */
+@media (max-width: 991.98px) {
+    .search-group-wrap {
+        max-width: 100%;
+        padding: 0 8px;
+    }
+
+    .search-cat .app-dd-toggle {
+        font-size: 14px;
+        padding: 0 26px 0 12px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .search-section {
+        padding: 24px 0 0;
+    }
+
+    .search-cat .app-dd-toggle {
+        font-size: 13px;
+        padding: 0 22px 0 8px;
+    }
+
+    .search-field {
+        padding-left: 10px;
+    }
+
+    .search-field input {
+        font-size: 13px;
+    }
+}

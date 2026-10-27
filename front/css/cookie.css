@@ -1,0 +1,126 @@
+.cookie-nav {
+    width: 100%;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    z-index: 9999999;
+    position: fixed;
+    bottom: 0;
+    padding: 20px 5px;
+    font-family: var(--bs-font-primary);
+}
+/* ปุ่มพวกนี้เดิมเป็น <a href="javascript:;"> ซึ่ง crawler ตามไม่ได้และ screen reader อ่านผิดประเภท
+   เปลี่ยนเป็น <button> ตามความหมายจริง แล้วรีเซ็ตหน้าตาปุ่มให้เหมือนของเดิมเป๊ะ */
+button.cookie-link,
+button.toggle-setting {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    line-height: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+/* แดงอ่อนลงจาก --bs-secondary-900 (#d82028) ให้คอนทราสต์ผ่าน 4.5:1 บนแถบดำ */
+.cookie-link {
+    color: #e54d53;
+}
+.cookie-link:hover {
+    color: #e54d53;
+    text-decoration: underline;
+}
+.btn-save-cookie {
+    background-color: var(--bs-secondary-900);
+    text-transform: uppercase;
+}
+.cookie-container {
+    display: grid;
+    grid-template-columns: 1fr 15%;
+    align-items: end;
+}
+
+@media (max-width: 576px) {
+    .cookie-container {
+        grid-template-columns: 1fr;
+        justify-items: end;
+    }
+}
+
+.cookie-sidebar {
+    width: 375px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 9999;
+    background-color: #ffffff;
+    visibility: visible;
+    transition: all 0.5s ease 0s;
+}
+
+.cookie-sidebar.closed {
+    right: -375px;
+    visibility: visible;
+}
+
+.cookie-sidebar-header {
+    background-color: var(--bs-primary-900);
+    padding: 10px 0;
+}
+/* height: auto ต้องมีคู่กับ width เสมอ
+   เพราะ <img> มี attribute width/height (ใส่ไว้กันหน้าเด้งตอนโหลด) ซึ่งเบราว์เซอร์
+   นับเป็น presentational hint = height: 83px ถ้าไม่ทับ ภาพจะโดนบีบแนวนอน
+   (ไฟล์จริง 657x83 อัตราส่วน 7.92 แต่แสดง 250x83 = 3.01) */
+.cookie-logo {
+    width: 250px;
+    height: auto;
+}
+
+.cookie-sidebar-body {
+    overflow-y: scroll;
+    height: 80vh;
+    padding: 10px;
+}
+.cookie-sidebar-footer {
+    padding: 10px;
+}
+
+.text-always {
+    color: #2963ff;
+}
+
+.form-check-input.cookie:checked {
+    background-color: var(--bs-secondary-900) !important;
+    border-color: var(--bs-secondary-900) !important;
+}
+
+.btn-save-setting {
+    background-color: var(--bs-primary-900);
+    border: 1px solid var(--bs-primary-900);
+    color: white;
+    text-transform: uppercase;
+}
+.btn-save-setting:hover {
+    color: white;
+}
+
+.cookie-open-setting {
+    cursor: pointer;
+    position: fixed;
+    z-index: 2000;
+    left: 1.5%;
+    bottom: 9%;
+}
+.img-cookie-setting {
+    width: 30px;
+}
+
+.btn-consent {
+    text-transform: uppercase;
+}
+
+#consentContent {
+    height: 80vh;
+    overflow-y: scroll;
+}

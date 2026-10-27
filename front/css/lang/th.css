@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+:root {
+  --bs-font-primary: 'Prompt', sans-serif;
+  --bs-font-secondary: 'IBM Plex Sans Thai', sans-serif;
+  --bs-font-tertiary: 'Poppins', sans-serif;
+  --bs-font-button: 'Kanit', sans-serif;
+  --bs-font-home-header: 'mitr-regular';
+  --bs-font-footer-address: 'cs-prajad';
+  --bs-font-header-en: 'd-din-con-bold';
+
+}

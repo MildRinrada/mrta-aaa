@@ -9,7 +9,7 @@
 2) แทนข้อมูลส่วนบุคคลด้วยข้อมูลสมมติ (ตารางจาก pii_dict.php ของ mrta-back-office) และล้างค่าลับ (CSRF)
 3) http://portal.mrta.test/... → /... ก๊อปไฟล์ static ที่หน้าใช้จาก public ของ portal
    ลิงก์ไปหน้าอื่น / ระบบอื่น (news, belib, ...) เปิดแล้วได้หน้า 404 "ไม่อยู่ในต้นแบบนี้"
-4) ชั้น AAA (เว้นเมื่อ --plain): _aaa/aaa.css + _aaa/aaa.js และแก้ markup ด้วย _build/aaa-transform.js (DOMParser ใน Chromium)
+4) ชั้น AAA (เว้นเมื่อ --plain): _aaa/aaa.css และแก้ markup ด้วย _build/aaa-transform.js (DOMParser ใน Chromium)
 
 ผลดิบจาก capture มีข้อมูลจริง - เก็บไว้นอกโฟลเดอร์ที่ deploy เสมอ
 """
@@ -189,13 +189,10 @@ def main():
     for name, html in pages.items():
         # สคริปต์ตอบแทนเซิร์ฟเวอร์ (qa/fetch, บันทึกคุกกี้) ต้องมาก่อนสคริปต์ของหน้า
         tags = '<meta name="robots" content="noindex, nofollow"><script src="/_aaa/static.js"></script>'
-        if not PLAIN:
-            tags += '<link rel="stylesheet" href="/_aaa/aaa.css" data-aaa>'
         html = re.sub(r'(<head\b[^>]*>)', lambda m: m.group(1) + tags, html, count=1, flags=re.I)
         if not PLAIN:
-            # aaa.css ต้องอยู่ท้ายสุด (ทับสีของธีม) - ย้ายไปก่อน </head>
-            html = html.replace('<link rel="stylesheet" href="/_aaa/aaa.css" data-aaa>', '', 1)
-            html = re.sub(r'</head>', '<link rel="stylesheet" href="/_aaa/aaa.css"><script src="/_aaa/aaa.js" defer></script></head>', html, count=1, flags=re.I)
+            # aaa.css ต้องอยู่ท้ายสุด (ทับสีของธีม) - transform ย้าย stylesheet ใน <body> มาไว้ก่อนไฟล์นี้
+            html = re.sub(r'</head>', '<link rel="stylesheet" href="/_aaa/aaa.css"></head>', html, count=1, flags=re.I)
         (SITE / name).write_text(html, encoding='utf-8')
 
     if not PLAIN:

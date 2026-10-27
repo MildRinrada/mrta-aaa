@@ -1,0 +1,93 @@
+/* ==========================================================================
+   Breadcrumb กลางของทุกระบบ MRTA (component <x-mrta-breadcrumb>) - ต้นแบบ: mrta-news
+   ไฟล์นี้ต้องเหมือนกันทุกตัวอักษรใน 7 ระบบ (news / belib / auth / portal / booking-2 / learnext / knowledge)
+   ค่าทุกตัวกำหนดเองครบ ไม่พึ่ง css/bootstrap ของระบบไหน - หน้าตาจึงเท่ากันทุกระบบ
+   ========================================================================== */
+
+nav.mrta-bc {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #002777;
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: left;
+    text-transform: none;
+}
+
+/* แนวเดียวกับ .container ของ bootstrap 5 (ช่วงความกว้างชุดเดียวกัน ขอบซ้ายขวา 12px) */
+nav.mrta-bc .mrta-bc-inner {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0 9.6px;
+    width: 100%;
+    min-height: 42px;
+    margin: 0 auto;
+    padding: 5.6px 12px;
+    font-size: 14px;
+    line-height: 21px;
+}
+@media (min-width: 576px)  { nav.mrta-bc .mrta-bc-inner { max-width: 540px; } }
+@media (min-width: 768px)  { nav.mrta-bc .mrta-bc-inner { max-width: 720px; } }
+@media (min-width: 992px)  { nav.mrta-bc .mrta-bc-inner { max-width: 960px; } }
+@media (min-width: 1200px) { nav.mrta-bc .mrta-bc-inner { max-width: 1140px; } }
+@media (min-width: 1400px) { nav.mrta-bc .mrta-bc-inner { max-width: 1320px; } }
+
+/* full: กว้างเต็มจอ (สูงสุด 1920) ตัวหนังสือ 16px - หน้าที่มี hero เต็มจอ
+   เยื้องซ้ายเท่าหัวเรื่องใหญ่ของ hero (.nw-hero-inner / .el-hero .fe-hero-text / .bk-hero-inner: 8.5vw, จอ < 768: 4.7vw)
+   ตัวหนังสือ breadcrumb จึงเริ่มแนวเดียวกับหัวเรื่อง - แก้ระยะของ hero เมื่อไรให้แก้ตรงนี้ด้วย */
+nav.mrta-bc.mrta-bc--full .mrta-bc-inner {
+    max-width: 1920px;
+    padding: 5.6px clamp(16px, 8.5vw, 164px);
+    font-size: 16px;
+    line-height: 24px;
+}
+
+/* lg: ตัวหนังสือ 16px แต่วางแนว .container (belib / auth) */
+nav.mrta-bc.mrta-bc--lg .mrta-bc-inner {
+    font-size: 16px;
+    line-height: 24px;
+}
+@media (max-width: 767.98px) {
+    nav.mrta-bc.mrta-bc--full .mrta-bc-inner { padding-left: clamp(16px, 4.7vw, 92px); padding-right: clamp(16px, 4.7vw, 92px); }
+}
+
+nav.mrta-bc a {
+    color: #8597be; /* สว่างขึ้นเล็กน้อยให้คอนทราสต์ผ่าน 4.5:1 บนพื้น #002777 */
+    text-decoration: none;
+    background: none;
+    border: 0;
+    font: inherit;
+}
+nav.mrta-bc a:hover,
+nav.mrta-bc a:focus-visible { color: #fff; }
+
+nav.mrta-bc .mrta-bc-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+nav.mrta-bc .mrta-bc-pin {
+    display: block;
+    flex: none;
+    width: 15px;
+    height: 17.14px;
+}
+
+/* ลูกศรคั่น = กล่องเท่า <i class="fa-solid fa-angle-right"> ของ FA7 (กว้าง 1.25em สูง 1em ที่ 0.7em ของตัวหนังสือ) */
+nav.mrta-bc .mrta-bc-sep {
+    display: inline-block;
+    flex: none;
+    width: 1.25em;
+    height: 1em;
+    font-size: .7em;
+    fill: #fff;
+    overflow: visible;
+}
+
+nav.mrta-bc .mrta-bc-current { color: #fff; }

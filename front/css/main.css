@@ -1,0 +1,1957 @@
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-Thin.otf') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-ExtraLight.otf') format('opentype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-SemiBold.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-ExtraBold.otf') format('opentype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-Black.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+/* Italic Variants */
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-ThinItalic.otf') format('opentype');
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-ExtraLightItalic.otf') format('opentype');
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-LightItalic.otf') format('opentype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-Italic.otf') format('opentype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-MediumItalic.otf') format('opentype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-SemiBoldItalic.otf') format('opentype');
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-BoldItalic.otf') format('opentype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-ExtraBoldItalic.otf') format('opentype');
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-BlackItalic.otf') format('opentype');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-Heavy.otf') format('opentype');
+    font-weight: 950;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FC Vision';
+    src: url('/fonts/FC_Vision/FCVision-HeavyItalic.otf') format('opentype');
+    font-weight: 950;
+    font-style: italic;
+}
+
+.font-pri { font-family: var(--bs-font-primary) !important; }
+.font-sec { font-family: var(--bs-font-secondary) !important; }
+.font-tri { font-family: var(--bs-font-tertiary) !important; }
+
+
+/* ─── RESET / GLOBAL ─── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* พื้นหลังกลางของทุกหน้า front - หน้าไหนไม่ได้กำหนดพื้นหลังเองก็ได้สีนี้
+   (เช่น หน้าอ่านบทความ ที่เดิมตกไปใช้ --bs-bg-soft-blue ซึ่งเข้มกว่าหน้าอื่น) */
+body {
+    background: var(--bs-bg-page) !important;
+    font-family: var(--bs-font-secondary) !important;
+    font-weight: normal;
+    margin: 0;
+}
+
+/* รูปหัวข้อ section (Librarian's Choice / Most Popular / New Arrivals ฯลฯ)
+   เป็นภาพประดับล้วน ไม่ได้อยู่ในลิงก์และไม่มี event handler ใด ๆ
+
+   บั๊ก: ปล่อยไว้เฉย ๆ เบราว์เซอร์ถือว่า <img> ลากได้ตามค่าเริ่มต้น พอผู้ใช้กดค้าง
+   แล้วขยับเมาส์แม้แต่ 2-3 px จะเริ่ม native image drag ถ้า dragend ไม่ยิง
+   (เกิดบ่อยเวลาปล่อยเมาส์นอกจอ/บนพื้นที่ที่ไม่รับ drop) เบราว์เซอร์จะค้างอยู่ใน
+   สถานะกำลังลาก แล้วกลืนคลิกทั้งหน้าจนกดอะไรไม่ได้ ต้อง refresh อย่างเดียว
+
+   ปกหนังสือไม่เจอปัญหานี้เพราะอยู่ใน owl carousel ซึ่งมี dragstart handler กันไว้ให้แล้ว
+
+   pointer-events: none ตัดที่ต้นทาง - เบราว์เซอร์ไม่ส่ง pointer event ให้รูปเลย
+   จึงเริ่มลาก/เลือกไม่ได้ตั้งแต่แรก ใช้ได้ทุกเบราว์เซอร์ (ต่างจาก -webkit-user-drag
+   ที่ Firefox ไม่รองรับ) และไม่กระทบหน้าตาเพราะรูปไม่เคยรับคลิกอยู่แล้ว */
+.img-header {
+    max-width: 300px;
+    pointer-events: none;
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+/* รูปประดับใบอื่นที่ลากได้เหมือนกัน (ไม่ได้อยู่ในลิงก์ ไม่มี handler) - กันไว้ด้วยเหตุผลเดียวกัน
+   แต่ใช้แค่กัน drag ไม่ใส่ pointer-events: none เพราะรูปพวกนี้ผู้ใช้อาจคลิกขวาเพื่อบันทึก
+   (ต่างจาก .img-header ที่เป็นกราฟิกหัวข้อล้วน ๆ) */
+.footer-logo,
+.cookie-logo,
+.pd-cover-img,
+.pd-type-icon,
+.rv-avatar,
+.qa-avatar-img {
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+/* ══════════════════════════════════════
+       Text clamp - ตัดข้อความตามจำนวนบรรทัด เกินแล้วขึ้น …
+       ใช้กันทั่วเว็บ (การ์ดบทความ, ผลค้นหา, ข่าวยอดนิยม) แต่เดิมมีนิยามแค่
+       .text-2-line ในไฟล์ของหน้าค้นหาไฟล์เดียว คลาสอื่นจึงไม่ทำงานเลย
+       ย้ายมาไว้ที่นี่เพื่อให้ทุกหน้าใช้ได้จากนิยามชุดเดียว
+       ══════════════════════════════════════ */
+.text-1-line,
+.text-2-line,
+.text-3-line,
+.text-4-line,
+.text-5-line {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.text-1-line {
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+}
+
+.text-2-line {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+.text-3-line {
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+}
+
+.text-4-line {
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+}
+
+.text-5-line {
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+}
+
+/* ══════════════════════════════════════
+       Background color
+       ══════════════════════════════════════ */
+.bg-soft-blue {
+    background: var(--bs-bg-soft-blue);
+}
+.bg-soft {
+    background: var(--bs-bg-soft);
+}
+
+/* ══════════════════════════════════════
+       text color
+       ══════════════════════════════════════ */
+.text-secondary-900 {
+    color: var(--bs-secondary-900);
+}
+.text-secondary-700 {
+    color: var(--bs-secondary-700);
+}
+.text-secondary-500 {
+    color: var(--bs-secondary-500);
+}
+.text-secondary-300 {
+    color: var(--bs-secondary-300);
+}
+.text-primary-900 {
+    color: var(--bs-primary-900);
+}
+.text-primary-700 {
+    color: var(--bs-primary-700);
+}
+.text-primary-500 {
+    color: var(--bs-primary-500);
+}
+.text-primary-300 {
+    color: var(--bs-primary-300);
+}
+
+.text-gray-700 {
+    color: var(--bs-gray-700);
+}
+/* .underline / .underline-primary-500 / .underline-secondary(-900) ถูกลบแล้ว
+   เป็นขีดใต้ของแท็บแบบเก่า ตอนนี้ทุกหน้าใช้ component .app-tabs / .app-tab แทน */
+
+/* ══════════════════════════════════════
+       SECTION TITLE PATTERN
+       ══════════════════════════════════════ */
+.sec-title-wrap {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.sec-title {
+    display: inline-flex;
+    align-items: center;
+}
+
+.sec-badge {
+    background: var(--bs-primary-500);
+    background: var(--bs-gradient-a);
+    color: #fff;
+    font-size: 30px;
+    font-weight: 600;
+    padding: 5px 14px 4px;
+    border-radius: 4px;
+    letter-spacing: .4px;
+    line-height: 1.25;
+}
+
+.sec-accent {
+    font-size: 30px;
+    font-weight: 600;
+    color: #667181; /* เดิม var(--bs-gray-700) #adb4be คอนทราสต์ไม่ผ่าน - โทนเทาเดิมแต่เข้มขึ้น */
+    letter-spacing: .4px;
+    line-height: 1.25;
+    border-bottom: solid var(--bs-secondary-900) 4px;
+}
+
+.sec-colon {
+    color: var(--bs-secondary-900);
+}
+
+.sec-colon-primary500{
+    color: var(--bs-primary-500) !important;
+}
+
+/* ── PRIMARY BUTTON ── */
+.btn-primary {
+    border: 1.5px solid var(--bs-primary-900) !important;
+    color: var(--bs-white)  !important;
+    background: var(--bs-primary-900) !important;
+    transition: all .18s;
+}
+
+.btn-primary:hover {
+    background: var(--bs-primary-700) !important;
+    border: 1.5px solid var(--bs-primary-700) !important;
+    color: var(--bs-white) !important;
+}
+
+/* outline button - ขอบ+ตัวอักษรสี primary กลับสีตอน hover
+   (override ของ bootstrap ให้ใช้ navy ของธีม ไม่ใช่ฟ้าเริ่มต้น) */
+.btn-outline-primary {
+    border: 1.5px solid var(--bs-primary-900) !important;
+    color: var(--bs-primary-900) !important;
+    background: transparent !important;
+    transition: all .18s;
+}
+
+.btn-outline-primary:hover {
+    background: var(--bs-primary-900) !important;
+    color: var(--bs-white) !important;
+}
+
+/* gradient button - ใช้ไล่สีชุดเดียวกับ --bs-gradient-a */
+.btn-gradient-a {
+    border: 0 !important;
+    color: var(--bs-white) !important;
+    background: var(--bs-gradient-a) !important;
+    transition: all .18s;
+}
+
+.btn-gradient-a:hover {
+    color: var(--bs-white) !important;
+    opacity: .9;
+}
+
+/* secondary button */
+.btn-secondary {
+    border: 1.5px solid var(--bs-secondary-900) !important;
+    color: var(--bs-white)  !important;
+    background: var(--bs-secondary-900) !important;
+    transition: all .18s;
+}
+
+.btn-secondary:hover {
+    background: var(--bs-secondary-700) !important;
+    border: 1.5px solid var(--bs-secondary-700) !important;
+    color: var(--bs-white) !important;
+}
+
+.border-secondary{
+    padding: 10px 20px !important;
+    margin-top: 20px;
+    border-radius: 30px !important;
+}
+
+
+.text-truncate-1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* แสดง 2 บรรทัด พร้อม ... */
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* แสดง 3 บรรทัด พร้อม ... */
+.text-truncate-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sharethis-inline-share-buttons {
+    display: flex !important;
+    gap: 8px !important;
+    margin-top: 10px;
+    align-items: center !important;
+}
+
+.sharethis-inline-share-buttons {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.sharethis-inline-share-buttons .st-btn {
+    width: 50px !important;
+    height: 50px !important;
+
+    border-radius: 50% !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+
+.sharethis-inline-share-buttons .st-btn > svg,
+.sharethis-inline-share-buttons .st-btn > span,
+.sharethis-inline-share-buttons .st-btn img {
+    position: static !important;
+    margin: 0 !important;
+    transform: none !important;
+}
+
+.bg-breadcrumbs{
+    background: #002C87;
+}
+
+/* ══════════════════════════════════════
+       PAGINATION - PREV 01 02 03 … NEXT
+       ใช้ร่วมกันทั้งหน้ารายการทรัพยากรและหน้าข่าวสาร
+       (markup: frontend/components/pagination_custom.blade.php)
+   ══════════════════════════════════════ */
+.pagination-custom {
+    margin-top: 2rem;
+}
+
+.pagination-custom-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* เลขหน้าเป็นกรมท่า หน้าที่เลือกอยู่เป็นแดง PREV/NEXT เป็นเทา */
+.pagination-custom-btn {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0.25rem 0.6rem;
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: #677088;
+    cursor: pointer;
+    transition: color .15s;
+    letter-spacing: 0.02em;
+}
+
+.pagination-custom-btn:hover:not(:disabled) {
+    color: var(--bs-secondary-900) !important;
+}
+
+.pagination-custom-btn.active {
+    color: var(--bs-secondary-900) !important;
+    font-weight: 700;
+    cursor: default;
+}
+
+.pagination-custom-btn.prev,
+.pagination-custom-btn.next {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #677088;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.75rem;
+}
+
+.pagination-custom-btn.prev:hover:not(:disabled),
+.pagination-custom-btn.next:hover:not(:disabled) {
+    color: var(--bs-primary-900);
+}
+
+.pagination-custom-btn:disabled {
+    color: #C6CEDE;
+    cursor: default;
+}
+
+/* จุดไข่ปลากดได้ - คลิกแล้วสลับเป็นช่องกรอกเลขหน้า */
+.pagination-custom-ellipsis {
+    font-size: 1.35rem;
+    color: var(--bs-primary-900);
+    padding: 0 0.4rem;
+    line-height: 1;
+}
+
+.pagination-custom-jump {
+    width: 4.25rem;
+    padding: 0.1rem 0.4rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+    color: var(--bs-primary-900);
+    background: #fff;
+    border: 1px solid #E1E8F3;
+    border-radius: 6px;
+    outline: none;
+}
+
+.pagination-custom-jump:focus {
+    border-color: var(--bs-primary-500);
+}
+
+/* ลิงก์ก่อนหน้าเป็นสีจาง หน้าปัจจุบันขาวเน้น */
+.bc-link {
+    font-size: 14px;
+}
+
+.bc-item,
+.bc-sep {
+    color: #93A2C4;
+}
+
+.bc-item:hover {
+    color: var(--bs-white);
+}
+
+.bc-current {
+    color: var(--bs-white);
+    font-weight: 600;
+}
+.txt-color-primary-100{
+    color: var(--bs-primary-100);
+}
+
+.txt-color-secondary-500{
+    color: var(--bs-secondary-500);
+}
+
+.txt-color-white{
+    color: var(--bs-white);
+}
+
+/* ══════════════════════════════════════
+       Owl Carousel Dots
+   ══════════════════════════════════════ */
+
+.owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+    background-color: var(--bs-secondary-900) !important;
+}
+
+.owl-theme .owl-dots .owl-dot span {
+    background-color: var(--bs-white) !important;
+}
+
+/* ══════════════════════════════════════
+       SECTION TITLE - RESPONSIVE
+   ══════════════════════════════════════ */
+
+/* ── md: 768–991px ── */
+@media (max-width: 991.98px) {
+    .sec-title-wrap {
+        margin-bottom: 22px;
+    }
+
+    .sec-title {
+        gap: 0;
+    }
+
+    .sec-badge {
+        font-size: 26px;
+        padding: 4px 12px 3px;
+        letter-spacing: .3px;
+    }
+
+    .sec-accent {
+    }
+}
+
+/* ── sm: 576–767px ── */
+@media (max-width: 767.98px) {
+    .sec-title-wrap {
+        margin-bottom: 18px;
+    }
+
+    .sec-title {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0;
+    }
+
+    .sec-badge {
+        font-size: 22px;
+        padding: 4px 11px 3px;
+        letter-spacing: .2px;
+    }
+
+    .sec-accent {
+        font-size: 22px;
+        letter-spacing: .2px;
+        border-bottom-width: 3px;
+    }
+
+    .btn-see-all {
+        margin-top: 20px;
+        padding: 7px 22px;
+        font-size: 13px;
+    }
+}
+
+/* ── xs: < 576px ── */
+@media (max-width: 575.98px) {
+    .sec-title-wrap {
+        margin-bottom: 14px;
+    }
+
+    .sec-title {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0;
+    }
+
+    .sec-badge {
+        font-size: 18px;
+        padding: 3px 9px 3px;
+        border-radius: 4px;
+        letter-spacing: .1px;
+    }
+
+    .sec-accent {
+        font-size: 18px;
+        letter-spacing: .1px;
+        border-bottom-width: 2px;
+    }
+
+    .sec-colon {
+        font-size: inherit;
+    }
+
+    .btn-see-all {
+        margin-top: 14px;
+        padding: 6px 20px;
+        font-size: 13px;
+    }
+}
+
+.txt-weight-400{
+    font-weight: 400;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Back to top button
+|--------------------------------------------------------------------------
+*/
+/* จัดลูกศรกึ่งกลางวงกลมด้วย flex - ของเดิมเป็น inline-block ที่ไม่มีอะไรจัดแนวตั้งให้
+   ไอคอนจึงไปเกาะขอบบน (วัดได้ offset 0px เหลือที่ว่างล่าง 33px)
+   ตัว pt-3 ที่ markup ใส่ไว้ก็ไม่ได้ช่วย เพราะ padding บน inline element ไม่ดันตัวเองลง */
+#btn_back_to_top {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bs-gray);
+    /* เปลี่ยนจาก <a> ที่ไม่มี href เป็น <button> (lighthouse: ลิงก์ไม่มีชื่อ + ไม่ใช่ลิงก์จริง)
+       จึงต้องล้างเส้นขอบเริ่มต้นของปุ่มออก หน้าตาจะได้เหมือนเดิมทุกประการ */
+    border: 0;
+    padding: 0;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    transition: background-color 0.3s, opacity 0.5s, visibility 0.5s;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+}
+#btn_back_to_top::before {
+    /*font-family: "Font Awesome 5 Free";
+	content: "\f167";*/
+    font-weight: 400;
+    font-style: normal;
+    /*font-size: 1.4em;*/
+    line-height: 50px;
+    color: #fff;
+}
+#btn_back_to_top:hover {
+    cursor: pointer;
+    opacity: 0.8 !important;
+}
+#btn_back_to_top i:hover {
+    color: #fff !important;
+    text-decoration: none !important;
+}
+#btn_back_to_top:active {
+    background-color: var(--bs-gray);
+}
+#btn_back_to_top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* ==========================================================================
+   Breadcrumb component (<x-breadcrumb />)
+   ========================================================================== */
+    .fe-breadcrumb {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        font-size: 0.85rem;
+        color: #55608a;
+        margin-bottom: 0.5rem;
+    }
+    .fe-breadcrumb a {
+        color: #55608a;
+        text-decoration: none;
+    }
+    .fe-breadcrumb a:hover {
+        color: var(--bs-primary);
+    }
+    .fe-breadcrumb i {
+        font-size: 0.6rem;
+        color: #9aa3b8;
+    }
+    .fe-breadcrumb span {
+        color: var(--bs-primary);
+        font-weight: 600;
+    }
+    /* crumb ที่ js เปลี่ยนให้กดกลับได้ (เช่น "ข่าวสารและกิจกรรม" ตอนอยู่แท็บย่อย) */
+    .fe-breadcrumb span.is-link {
+        color: #55608a;
+        font-weight: 400;
+        cursor: pointer;
+    }
+    .fe-breadcrumb span.is-link:hover {
+        color: var(--bs-primary);
+    }
+
+    /* ---------- variant: bar (<x-breadcrumb variant="bar">) ----------
+       แถบกรมท่าเต็มความกว้างใต้ header - ชุดเดียวกับ .bk-breadcrumb ของ mrta-booking
+       ตั้งใจไม่กำหนดฟอนต์ (ตระกูล/ขนาด/น้ำหนัก) ให้ใช้ฟอนต์ปกติของหน้า
+       ระยะซ้ายขวาเท่ากรอบเนื้อหาแบบเดียวกับ booking (1800px + clamp) ข้อความจึงตรงแนวกับขอบการ์ด */
+    .fe-breadcrumb-bar {
+        background: #002777;
+    }
+    .fe-breadcrumb-bar-inner {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0 .6rem;
+        max-width: 1800px;
+        min-height: 38px;
+        margin: 0 auto;
+        padding: .35rem clamp(1rem, 4.5vw, 5.5rem);
+        text-align: left;
+    }
+    .fe-breadcrumb-bar a {
+        color: #8597be;
+        text-decoration: none;
+    }
+    .fe-breadcrumb-bar a:hover { color: #fff; }
+    .fe-breadcrumb-bar .fe-breadcrumb-home {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+    }
+    .fe-breadcrumb-home img { width: 15px; height: auto; }
+    .fe-breadcrumb-bar i        { font-size: .7em; color: #fff; }
+    .fe-breadcrumb-bar .current { color: #fff; }
+
+/* ==========================================================================
+   Hero component (<x-hero />)
+   ========================================================================== */
+    .fe-hero {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        min-height: 240px;
+        padding: 1rem 0 3rem;
+    }
+    .fe-hero-text {
+        flex: 1 1 50%;
+        min-width: 0;
+    }
+    .fe-hero-text h1 {
+        color: var(--bs-primary);
+        font-weight: 800;
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        margin: 0 0 1rem;
+    }
+    .fe-hero-text p {
+        color: #3a4668;
+        font-size: clamp(0.92rem, 1.1vw, 1.1rem);
+        line-height: 1.8;
+        margin: 0;
+    }
+
+    /* ---------- variant: split (ข้อความซ้าย รูปขวาจางเข้าพื้นหลัง) ---------- */
+    .fe-hero-img {
+        flex: 1 1 50%;
+        align-self: stretch;
+        min-height: 220px;
+        background: var(--fe-hero-image) center / cover no-repeat;
+        border-radius: 24px;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
+        mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
+    }
+
+    /* ---------- variant: banner (รูปเต็มพื้นหลัง) ---------- */
+    .fe-hero-banner {
+        position: relative;
+        min-height: 260px;
+        padding: 2.5rem;
+        border-radius: 24px;
+        overflow: hidden;
+        background: var(--fe-hero-image) right center / cover no-repeat;
+    }
+    /* ไล่สีทับรูปให้ข้อความฝั่งซ้ายอ่านง่าย */
+    .fe-hero-banner::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, #eef3fc 0%, rgba(238, 243, 252, 0.92) 35%, rgba(238, 243, 252, 0) 70%);
+    }
+    .fe-hero-banner .fe-hero-text {
+        position: relative;
+        flex: 1 1 55%;
+    }
+
+    @media (max-width: 991.98px) {
+        .fe-hero-split {
+            flex-direction: column;
+            align-items: flex-start;
+            min-height: 0;
+            padding-bottom: 2.5rem;
+        }
+        .fe-hero-img {
+            width: 100%;
+            min-height: 200px;
+            -webkit-mask-image: none;
+            mask-image: none;
+        }
+    }
+    @media (max-width: 767.98px) {
+        .fe-hero-banner {
+            min-height: 200px;
+            padding: 1.5rem 1.25rem;
+            border-radius: 18px;
+        }
+        .fe-hero-banner::before {
+            background: linear-gradient(180deg, rgba(238, 243, 252, 0.95) 0%, rgba(238, 243, 252, 0.8) 100%);
+        }
+    }
+
+
+/* ══════════════════════════════════════
+       SHARED: รีวิว / คอมเมนต์ / ปุ่มแชร์ / ดาวให้คะแนน
+       ใช้ร่วมกันระหว่างหน้ารายละเอียดทรัพยากรกับหน้าอ่านบทความ
+       markup อยู่ที่ frontend/components/{comment-list,comment-form,rating-input,share-buttons}
+       (ย้ายมาจาก products.css เพราะหน้าบทความไม่ได้โหลดไฟล์นั้น)
+   ══════════════════════════════════════ */
+.rv-card {
+    display: flex;
+    gap: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 16px rgba(33, 48, 105, .08);
+    padding: 22px 26px;
+    margin-bottom: 18px;
+}
+
+.rv-avatar {
+    flex: 0 0 62px;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.rv-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.rv-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.rv-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--bs-primary-900);
+}
+
+.rv-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.rv-time {
+    font-size: 14px;
+    color: #9AA6BF;
+}
+
+.rv-text {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--bs-primary-900);
+    margin: 10px 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.rv-tools {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.rv-tool {
+    background: transparent;
+    border: 1px solid var(--bs-primary-900);
+    color: var(--bs-primary-900);
+    border-radius: 50rem;
+    font-size: 13px;
+    padding: 3px 14px;
+    cursor: pointer;
+    transition: all .15s;
+}
+
+.rv-tool:hover {
+    background: var(--bs-primary-900);
+    color: #fff;
+}
+
+.rv-tool-danger {
+    border-color: var(--bs-secondary-900);
+    color: var(--bs-secondary-900);
+}
+
+.rv-tool-danger:hover {
+    background: var(--bs-secondary-900);
+}
+
+/* .rv-empty → .empty-state */
+
+/* ══════════════════════════════════════
+       ADD YOUR COMMENT
+       ══════════════════════════════════════ */
+.pd-block-comment {
+    background: #fff;
+    padding-bottom: 48px;
+}
+
+.cm-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+}
+
+.cm-avatar {
+    flex: 0 0 74px;
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* กล่องข้อความมีหางชี้ไปทางอวาตาร์แบบบอลลูนสนทนา */
+.cm-box {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+
+.cm-box::before {
+    content: "";
+    position: absolute;
+    left: -9px;
+    top: 26px;
+    width: 0;
+    height: 0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-right: 9px solid #EDEFF2;
+}
+
+.cm-input {
+    width: 100%;
+    background: #F7F7F7;
+    border: 0;
+    border-radius: 8px;
+    padding: 16px 18px;
+    font-size: 15px;
+    color: var(--bs-primary-900);
+    resize: vertical;
+    outline: none;
+}
+
+.cm-input::placeholder {
+    color: #9AA6BF;
+}
+
+.cm-input:focus {
+    box-shadow: 0 0 0 2px rgba(33, 48, 105, .15);
+}
+
+.cm-input:disabled {
+    opacity: .6;
+}
+
+.cm-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 18px;
+    margin-top: 18px;
+}
+
+/* กล่องชวนเข้าสู่ระบบ - ขึ้นแทนช่องเขียนคอมเมนต์เมื่อยังไม่ได้ล็อกอิน
+   (markup: frontend/components/comment-login-prompt.blade.php)
+   ใช้พื้นและระยะขอบชุดเดียวกับกล่องคอมเมนต์ เพื่อให้อยู่ในที่เดียวกันแล้วไม่สะดุดตา */
+.cm-login {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 18px;
+    padding: 20px 24px;
+    background: #EDEFF2;
+    border-radius: 8px;
+}
+
+.cm-login-icon {
+    flex: 0 0 auto;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--bs-primary-500);
+    font-size: 1.35rem;
+}
+
+.cm-login-text {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.cm-login-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bs-primary-900);
+}
+
+.cm-login-hint {
+    margin-top: 2px;
+    font-size: .88rem;
+    line-height: 1.5;
+    color: #6B7794;
+}
+
+.cm-login-btn {
+    flex: 0 0 auto;
+}
+
+/* จอแคบ เรียงลงล่างแล้วให้ปุ่มเต็มความกว้าง กดง่ายกว่าบีบไว้ขวาสุด */
+@media (max-width: 575.98px) {
+    .cm-login {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 18px;
+    }
+
+    .cm-login-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.cm-rate {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cm-rate-label {
+    font-size: 15px;
+    color: var(--bs-primary-900);
+    margin: 0;
+}
+
+.rate-star {
+    display: flex;
+}
+
+.rate-star a {
+    padding: 0 3px;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* ── แถวไอคอนแชร์แบบเปลือย (component frontend/components/share-buttons) ──
+   main.css บังคับ .st-btn เป็นวงกลม 50px ด้วย !important จึงต้องทับด้วย !important
+   ตัว svg เป็นสีขาว ใช้ brightness(0) ทำให้ทึบดำแล้วลด opacity เป็นเทา */
+.share-inline .sharethis-inline-share-buttons {
+    gap: 4px !important;
+    margin-top: 0 !important;
+    /* ShareThis ตั้ง z-index: 94034 !important มาจาก stylesheet ของตัวเอง สูงกว่า
+       sticky header (1030) และ modal ของ bootstrap (1055)
+       ปกติ z-index ไม่มีผลกับ position: static แต่ .share-inline เป็น flex container
+       กล่องนี้จึงเป็น flex item ซึ่ง z-index มีผล → แถวไอคอนลอยทับทุกอย่างเวลาเลื่อนหน้า
+       ต้องใช้ !important เพราะฝั่งเขาประกาศ !important ไว้ (ทับด้วยวิธีอื่นไม่ได้) */
+    z-index: auto !important;
+}
+
+.share-inline .sharethis-inline-share-buttons .st-btn {
+    width: 34px !important;
+    height: 34px !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    opacity: 1 !important;
+    top: 0 !important;
+}
+
+.share-inline .sharethis-inline-share-buttons .st-btn > img,
+.share-inline .sharethis-inline-share-buttons .st-btn > svg {
+    width: 20px !important;
+    height: 20px !important;
+    filter: brightness(0) opacity(.32);
+    transition: filter .15s;
+}
+
+.share-inline .sharethis-inline-share-buttons .st-btn:hover > img,
+.share-inline .sharethis-inline-share-buttons .st-btn:hover > svg {
+    filter: brightness(0) opacity(.6);
+}
+
+.share-inline .sharethis-inline-share-buttons .st-btn > span {
+    display: none !important;
+}
+
+/* ป้ายกำกับหน้าแชร์ - ใช้ span ของเราเอง จะได้แปลไทย/อังกฤษตาม locale ได้ และมี colon แดง
+   ส่วนคำ "Shares" ที่ ShareThis เรนเดอร์เองเป็น .st-total ซ่อนทิ้ง เพราะเปลี่ยนภาษาไม่ได้ */
+.share-inline.share-labeled .st-total {
+    display: none !important;
+}
+
+/* ป้ายกับแถวไอคอนต้องอยู่บรรทัดเดียวกัน - .sharethis-inline-share-buttons เป็น block
+   ถ้า .share-inline เป็น block ธรรมดา ป้ายจะไปลอยอยู่บรรทัดบน */
+.share-inline {
+    display: flex;
+    align-items: center;
+}
+
+/* กฎรวมด้านบนใส่ margin-top: 10px ไว้ ทำให้แถวไอคอนต่ำกว่าป้ายกำกับ */
+.share-inline .sharethis-inline-share-buttons {
+    margin: 0 !important;
+    align-self: center !important;
+}
+
+.share-label {
+    font-size: 1rem;
+    line-height: 1.5;
+    font-weight: 600;
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+/* คอมเมนต์ส่วนที่เกิน 5 อัน ซ่อนไว้จนกว่าจะกด "ดูเพิ่มเติม" */
+.rv-more {
+    display: none;
+}
+
+.rv-more.is-open {
+    display: block;
+}
+
+.star-off {
+    color: #D2D9E6;
+}
+
+/* ══════════════════════════════════════
+       BUTTONS - component frontend/components/button
+       .btn-app = ฐาน, ต่อด้วย variant เดียว (fill / outline / capsule / muted / danger / blue / outline-light)
+       ห้ามประกาศปุ่มทรงเดียวกันซ้ำในไฟล์อื่นอีก ให้ต่อชื่อเข้ามาใน selector ที่นี่แทน
+
+       .btn-go-to-my-shelf / .btn-reserve-to-my-shelf / .btn-add-to-my-shelf
+       เป็นชื่อที่ ProductsController ปั้น HTML ส่งมาทาง ajax จึงเปลี่ยนชื่อไม่ได้
+       แต่หน้าตาเหมือน .btn-app-fill เป๊ะ เลยผูกเป็น alias ไม่ประกาศซ้ำ
+   ══════════════════════════════════════ */
+.btn-app,
+.btn-go-to-my-shelf,
+.btn-reserve-to-my-shelf,
+.btn-add-to-my-shelf {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px;
+    padding: 10px 22px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+    outline: none;
+    transition: all .15s ease-in-out;
+}
+
+/* ── variant: ทึบกรมท่า ── */
+.btn-app-fill,
+.btn-go-to-my-shelf,
+.btn-reserve-to-my-shelf,
+.btn-add-to-my-shelf {
+    background: var(--bs-primary-900);
+    border: 1.5px solid var(--bs-primary-900);
+    color: #fff;
+}
+
+.btn-app-fill:hover,
+.btn-app-fill:focus,
+.btn-go-to-my-shelf:hover,
+.btn-go-to-my-shelf:focus,
+.btn-reserve-to-my-shelf:hover,
+.btn-reserve-to-my-shelf:focus,
+.btn-add-to-my-shelf:hover,
+.btn-add-to-my-shelf:focus {
+    background: var(--bs-primary-700);
+    border-color: var(--bs-primary-700);
+    color: #fff;
+}
+
+/* ── variant: ขอบกรมท่าพื้นขาว ── */
+.btn-app-outline {
+    background: #fff;
+    border: 1.5px solid var(--bs-primary-900);
+    color: var(--bs-primary-900);
+}
+
+.btn-app-outline:hover,
+.btn-app-outline:focus {
+    background: var(--bs-primary-900);
+    color: #fff;
+}
+
+/* ── variant: เทาจาง (ปุ่มรองที่ไม่ใช่การกระทำหลัก เช่น ปิด / ยกเลิกการจอง) ── */
+.btn-app-muted {
+    background: var(--bs-gray-300);
+    border: 1.5px solid transparent;
+    color: #656a71; /* เดิม var(--bs-gray-900) #7b8189 - เข้มขึ้นให้คอนทราสต์ผ่าน 4.5:1 บนพื้น gray-300 */
+}
+
+.btn-app-muted:hover,
+.btn-app-muted:focus {
+    background: var(--bs-gray-500);
+    color: var(--bs-primary-900);
+}
+
+/* ── variant: แดง (การกระทำที่ย้อนกลับไม่ได้ เช่น ลบรีวิว) ── */
+.btn-app-danger {
+    background: var(--bs-secondary-900);
+    border: 1.5px solid var(--bs-secondary-900);
+    color: #fff;
+}
+
+.btn-app-danger:hover,
+.btn-app-danger:focus {
+    background: var(--bs-secondary-700);
+    border-color: var(--bs-secondary-700);
+    color: #fff;
+}
+
+/* ── variant: ฟ้าสด (ปุ่มเปิดฟอร์มที่ต้องเด่นกว่าปุ่มกรมท่ารอบ ๆ เช่น "ถามคำถามใหม่" ของหน้า Q&A) ── */
+.btn-app-blue {
+    background: #2f67f6;
+    border: 1.5px solid #2f67f6;
+    color: #fff;
+}
+
+.btn-app-blue:hover,
+.btn-app-blue:focus {
+    background: #2456d8;
+    border-color: #2456d8;
+    color: #fff;
+}
+
+/* ── variant: แคปซูลขอบขาว (ปุ่มที่วางทับรูป/พื้นเข้ม เช่น "อ่านต่อ" บนการ์ดข่าวเด่นหน้าแรก) ── */
+.btn-app-outline-light {
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, .9);
+    border-radius: 50rem;
+    color: #fff;
+}
+
+.btn-app-outline-light:hover,
+.btn-app-outline-light:focus {
+    background: #fff;
+    border-color: #fff;
+    color: var(--bs-primary-500);
+}
+
+/* กำลังส่ง (JS ปิดปุ่มระหว่างรอ ajax) */
+.btn-app:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* ── SweetAlert2 ──────────────────────────────────────────────
+   ป๊อปอัพ Swal.fire ทั้งเว็บใช้ปุ่ม default (ม่วง/เทา/แดง) ของ plugin
+   บังคับให้เป็นปุ่มชุดเดียวกับ .btn-app จะได้ไม่ต้องส่ง confirmButtonColor ทุกจุดที่เรียก
+   sweetalert2.min.css โหลดทีหลัง main.css จึงต้องชนะด้วย specificity (ไม่ใช้ !important) */
+.swal2-container .swal2-popup .swal2-styled {
+    border-radius: 6px;
+    padding: 10px 22px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.swal2-container .swal2-popup .swal2-styled:focus {
+    box-shadow: none;
+}
+
+.swal2-container .swal2-popup .swal2-styled.swal2-confirm {
+    background-color: var(--bs-primary-900);
+    border: 1.5px solid var(--bs-primary-900);
+    color: #fff;
+}
+
+.swal2-container .swal2-popup .swal2-styled.swal2-confirm:hover,
+.swal2-container .swal2-popup .swal2-styled.swal2-confirm:focus {
+    background-color: var(--bs-primary-700);
+    border-color: var(--bs-primary-700);
+}
+
+.swal2-container .swal2-popup .swal2-styled.swal2-cancel {
+    background-color: var(--bs-gray-300);
+    border: 1.5px solid transparent;
+    color: #656a71; /* ชุดเดียวกับ .btn-app-muted */
+}
+
+.swal2-container .swal2-popup .swal2-styled.swal2-cancel:hover,
+.swal2-container .swal2-popup .swal2-styled.swal2-cancel:focus {
+    background-color: var(--bs-gray-500);
+    color: var(--bs-primary-900);
+}
+
+.swal2-container .swal2-popup .swal2-styled.swal2-deny {
+    background-color: var(--bs-secondary-900);
+    border: 1.5px solid var(--bs-secondary-900);
+    color: #fff;
+}
+
+.swal2-container .swal2-popup .swal2-styled.swal2-deny:hover,
+.swal2-container .swal2-popup .swal2-styled.swal2-deny:focus {
+    background-color: var(--bs-secondary-700);
+    border-color: var(--bs-secondary-700);
+}
+
+/* ── variant: แคปซูลกรมท่า (ดูทั้งหมด / ดูเพิ่มเติม) ──
+   เดิมมี .btn-see-all กับ .pd-btn-more ที่หน้าตาเหมือนกันคนละชื่อ รวมเป็นอันเดียว */
+.btn-app-capsule,
+.btn-see-all,
+.pd-btn-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bs-primary-900);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    border: 0;
+    border-radius: 50rem;
+    padding: 10px 28px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .15s;
+}
+
+.btn-app-capsule:hover,
+.btn-see-all:hover,
+.pd-btn-more:hover {
+    background: var(--bs-primary-700);
+    color: #fff;
+}
+
+.pd-badge {
+    background: var(--bs-primary-900);
+    color: #fff;
+    border-radius: 50rem;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 8px;
+}
+
+.btn-app-outline:hover .pd-badge {
+    background: #fff;
+    color: var(--bs-primary-900);
+}
+
+/* ── Responsive ของการ์ดรีวิว/คอมเมนต์ (ย้ายมาจาก products.css) ── */
+@media (max-width: 767.98px) {
+    .rv-card {
+        gap: 14px;
+        padding: 16px 18px;
+    }
+
+    .rv-avatar {
+        flex-basis: 46px;
+        width: 46px;
+        height: 46px;
+    }
+
+    .cm-avatar {
+        flex-basis: 52px;
+        width: 52px;
+        height: 52px;
+    }
+
+}
+
+@media (max-width: 575.98px) {
+    .cm-actions {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px;
+    }
+}
+
+/* ══════════════════════════════════════
+       DROPDOWN - เมนูดรอปดาวน์มาตรฐาน ใช้หน้าตาเดียวกันทั้งเว็บ
+       .nav-dd-menu    ดรอปดาวน์ใน top nav (ทรัพยากร / โปรไฟล์)
+       .notif-dd-menu  ดรอปดาวน์แจ้งเตือน - ต่างแค่ความกว้าง/padding (header.css)
+       .app-dd-menu    ดรอปดาวน์ตัวกรองในหน้า (component select-dropdown)
+       ห้ามประกาศเปลือกดรอปดาวน์ซ้ำในไฟล์อื่น ให้ต่อชื่อเข้ามาใน selector ที่นี่แทน
+
+       ต้องเขียนคู่กับ .dropdown-menu เพราะ bootstrap.min.css ถูกโหลดทีหลัง
+       ถ้าใช้ชื่อคลาสเดี่ยว specificity เท่ากันแล้วของ bootstrap จะชนะ
+   ══════════════════════════════════════ */
+.dropdown-menu.nav-dd-menu,
+.dropdown-menu.notif-dd-menu,
+.dropdown-menu.app-dd-menu {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .12);
+    margin-top: 4px;
+}
+
+.dropdown-menu.nav-dd-menu,
+.dropdown-menu.app-dd-menu {
+    padding: 8px;
+    min-width: 165px;
+}
+
+.nav-dd-menu .dropdown-item,
+.app-dd-menu .dropdown-item {
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 8px 12px;
+    color: #333;
+}
+
+/* ตัวเลือกที่เลือกอยู่ของดรอปดาวน์ตัวกรอง - พื้นเทา ตัวหนังสือกรมท่า */
+.app-dd-menu .dropdown-item.on {
+    background: var(--bs-gray-300);
+    color: var(--bs-primary-900);
+    font-weight: 600;
+}
+
+.nav-dd-menu .dropdown-item:hover,
+.nav-dd-menu .dropdown-item:focus,
+.app-dd-menu .dropdown-item:hover,
+.app-dd-menu .dropdown-item:focus {
+    background: var(--bs-gray-300);
+    color: var(--bs-secondary-900);
+}
+
+.nav-dd-menu .dropdown-divider {
+    margin: 6px 4px;
+    border-top-color: var(--bs-gray-300);
+    opacity: 1;
+}
+
+/* ── ปุ่มเปิดดรอปดาวน์ตัวกรอง (component frontend/components/select-dropdown)
+      หน้าตาเดิมของ .ap-select / .pl-select ที่เคยเป็น <select> - รวมเหลือชุดเดียว ── */
+.app-dd {
+    position: relative;
+    display: inline-block;
+    min-width: 170px;
+}
+
+/* เต็มความกว้างคอลัมน์ (ใช้ที่หน้าคะแนนของฉัน) */
+.app-dd-block {
+    display: block;
+    min-width: 0;
+}
+
+.app-dd-toggle {
+    display: block;
+    width: 100%;
+    height: 40px;
+    background: #fff;
+    border: 1px solid #E1E8F3;
+    border-radius: 6px;
+    color: var(--bs-primary-900);
+    font-size: 15px;
+    text-align: left;
+    padding: 0 34px 0 16px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23213069' stroke-width='2'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.app-dd-toggle:focus,
+.app-dd-toggle[aria-expanded="true"] {
+    outline: none;
+    border-color: var(--bs-primary-500);
+}
+
+/* ยังไม่ได้เลือก (component ส่ง placeholder มา) - สีเดียวกับ placeholder ของช่องกรอก */
+.app-dd-label.is-placeholder {
+    color: #9aa4bd;
+}
+
+/* ── ช่องกรอกข้อความมาตรฐาน (component-less) ──
+   ใช้ที่หน้าข้อมูลส่วนตัวและหน้าค้นหาแบบละเอียด - นิยามเดียวทั้งเว็บ */
+.field-input {
+    width: 100%;
+    padding: .5rem .75rem;
+    border-radius: 4px;
+    border: 1px solid #d1d5db;
+    font-size: .88rem;
+    color: #1a2a4a;
+    background: #fff;
+    outline: none;
+    transition: border-color .15s;
+}
+
+.field-input:focus {
+    border-color: var(--bs-secondary-900);
+    box-shadow: 0 0 0 2px rgba(0, 188, 212, .12);
+}
+
+/* variant: พื้นฟ้าจาง ไม่มีเส้นขอบ (หน้าคะแนนของฉัน + หน้ารายการทรัพยากร)
+   แผงที่เปิดออกมายังเป็น .app-dd-menu ชุดเดียวกับดรอปดาวน์อื่นทั้งเว็บ */
+.app-dd-soft .app-dd-toggle {
+    background-color: #DEE8F6;
+    border-color: transparent;
+}
+
+.app-dd-soft .app-dd-toggle:focus,
+.app-dd-soft .app-dd-toggle[aria-expanded="true"] {
+    border-color: var(--bs-primary-500);
+}
+
+/* variant: มีป้ายชื่อในกรอบ "หมวดหมู่ | ทั้งหมด" (prop label ของ component - หน้าคำถามทั้งหมด)
+   ชุดเดียวกับ mrta-booking / mrta-news - ทั้งกรอบเป็นปุ่มเดียว กดตรงป้ายก็เปิด แผงตัวเลือกกว้างเท่ากรอบ */
+.app-dd-labeled .app-dd-toggle {
+    display: flex;
+    align-items: center;
+    padding-left: 0;
+    border-color: #B9C3D8;
+}
+
+.app-dd-prefix {
+    flex: none;
+    padding: 0 1em;
+    border-right: 1px solid #C6CEDE;
+    color: #5B6A8F;
+    line-height: 1.7;
+}
+
+.app-dd-labeled .app-dd-label {
+    flex: 1;
+    min-width: 0;
+    padding-left: .75em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-weight: 600;
+}
+
+.app-dd-labeled .dropdown-menu.app-dd-menu {
+    width: 100%;
+}
+
+/* แบนเนอร์หัวหน้ารายการ (component sub-banner) - ภาพท้องฟ้า banner-sub.png หัวเรื่องขาวกลางภาพ มีขีดแดงนำหน้า
+   ชุดเดียวกับ mrta-booking (.bk-subhero) */
+.fe-subhero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    padding: 24px 16px;
+    background: #1747c9 var(--fe-subhero-image) center / cover no-repeat;
+    text-align: center;
+}
+
+.fe-subhero-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    color: #fff;
+    font-family: var(--bs-font-primary);
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 1.3;
+    text-shadow: 0 2px 14px rgba(0, 25, 90, .3);
+}
+
+.fe-subhero-title::before {
+    content: "";
+    flex: none;
+    width: 8px;
+    height: .82em;
+    background: var(--bs-secondary, #d82028);
+}
+
+@media (max-width: 767.98px) {
+    .fe-subhero {
+        min-height: 130px;
+    }
+
+    .fe-subhero-title {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .app-dd {
+        min-width: 140px;
+    }
+
+    .app-dd-toggle {
+        height: 36px;
+        font-size: 14px;
+    }
+}
+
+/* ══════════════════════════════════════
+       TABS - component frontend/components/tabs + tab
+       ใช้ร่วมกัน: หน้ารวมบทความ (/article/all), โปรไฟล์, ชั้นหนังสือ, คะแนนของฉัน
+       แท็บที่เลือกอยู่ = คลาส .on (JS ของแต่ละหน้า add/remove คลาสนี้)
+       ห้ามประกาศแท็บทรงเดียวกันซ้ำในไฟล์อื่น
+   ══════════════════════════════════════ */
+.app-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 28px;
+    border-bottom: 1px solid #DEE5F0;
+    margin-bottom: 20px;
+}
+
+/* กระจายแท็บเต็มความกว้างแทนการชิดซ้าย (ใช้ที่ชั้นหนังสือของฉัน ซึ่งแท็บคือชนิดทรัพยากร) */
+.app-tabs-spread {
+    justify-content: space-between;
+    gap: 0 16px;
+}
+
+.app-tab {
+    background: none;
+    border: 0;
+    padding: 0 2px 12px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #617092;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    transition: color .15s;
+}
+
+.app-tab:hover {
+    color: var(--bs-primary-700);
+}
+
+.app-tab.on {
+    color: var(--bs-primary-900);
+    font-weight: 700;
+}
+
+/* ขีดใต้แท็บที่เลือก ทับเส้นคั่นของ .app-tabs พอดี */
+.app-tab.on::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--bs-primary-900);
+}
+
+/* ── แท็บบนจอเล็ก: เลื่อนแนวนอนบรรทัดเดียว ไม่ตัดขึ้นบรรทัดใหม่ ──
+   ชั้นหนังสือของฉันมีแท็บ 9 อัน (ชนิดทรัพยากร) ที่ 390px ตัดเป็น 3 บรรทัด
+   พอ .app-tabs-spread ใส่ justify-content:space-between เข้าไปด้วย
+   บรรทัดท้าย ๆ ยิ่งกระจายห่างไม่เท่ากันจนดูเหมือนหลุดจากกลุ่ม
+   ให้อยู่บรรทัดเดียวแล้วปัดนิ้วเลื่อนแทน (แท็บที่โผล่ครึ่งใบตรงขอบเป็นสัญญาณว่ายังมีต่อ)
+
+   ต้องมาก่อน @media 575.98px ข้างล่างเพื่อไม่ให้ทับกฎ font-size/padding ที่นั่น */
+@media (max-width: 991.98px) {
+    .app-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none;
+    }
+
+    .app-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .app-tab {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+}
+
+/* เป้าแตะบนมือถือ: แท็บเดิมสูง 33px กดยาก เพิ่มพื้นที่ด้านบนให้เป็น ~43px
+   ทำเฉพาะจอโทรศัพท์ แท็บเล็ต (768-991) สูง 38px อยู่แล้วจึงปล่อยไว้ */
+@media (max-width: 767.98px) {
+    .app-tab {
+        padding-top: 10px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .app-tabs {
+        gap: 0 18px;
+    }
+
+    .app-tab {
+        font-size: 15px;
+        padding-bottom: 10px;
+    }
+}
+
+/* ══════════════════════════════════════
+       การ์ดทรัพยากร (component frontend/components/product-card)
+       ใช้ร่วมกัน: หน้าแรก New Arrivals / หน้ารายการทรัพยากร / carousel "แนะนำ" ในหน้ารายละเอียด
+       .pc-card-wide = ปกแนวนอน สำหรับ multimedia
+       (ย้ายมาจาก products.css เพราะหน้าแรกกับหน้ารายละเอียดไม่ได้โหลดไฟล์นั้น)
+   ══════════════════════════════════════ */
+/* display:block ไม่ใช่ flex column - ถ้าเป็น flex column ความสูงของ .pc-cover
+   จะถูกกำหนดโดยเนื้อหา ทำให้ aspect-ratio ไม่เป็นความสูงที่แน่นอน
+   height:100% ของรูปข้างในเลยไม่ทำงาน ปกแต่ละใบจะสูงไม่เท่ากัน */
+.pc-card {
+    display: block;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(33, 48, 105, .10);
+    overflow: hidden;
+    text-decoration: none;
+    user-select: none;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.pc-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 26px rgba(33, 48, 105, .20);
+}
+
+.pc-cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 22px 24px 20px;
+    aspect-ratio: 5 / 6;
+}
+
+/* multimedia เป็นปกแนวนอน กล่องปกจึงเตี้ยกว่า */
+.pc-card-wide .pc-cover {
+    aspect-ratio: 16 / 10;
+}
+
+.pc-cover-img {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 3px;
+    box-shadow: 0 4px 19px #256CFF40;
+}
+
+/* ขีดแดงสั้นๆ ที่ขอบบนซ้ายของส่วนชื่อเรื่อง */
+.pc-body {
+    padding: 20px 20px 22px;
+    background:
+        linear-gradient(90deg, var(--bs-secondary-900) 0 100%) top left / 56px 5px no-repeat;
+}
+
+.pc-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--bs-primary-900);
+}
+
+/* ── แบบ "เปลือย" ── ไม่มีการ์ดขาว มีแค่ปกกับชื่อเรื่อง (ใช้ใน carousel แนะนำ) */
+.pc-card-bare {
+    background: none;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.pc-card-bare:hover {
+    transform: translateY(-3px);
+    box-shadow: none;
+}
+
+.pc-card-bare .pc-cover {
+    padding: 0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.pc-card-bare .pc-cover-img {
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 4px 14px rgba(33, 48, 105, .18);
+}
+
+.pc-card-bare .pc-body {
+    padding: 14px 0 0;
+    background: none;
+}
+
+.pc-card-bare .pc-title {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* ══════════════════════════════════════
+       EMPTY STATE (component frontend/components/empty-state)
+       รวมจาก .most-popular-empty / .new-avalible-empty / .rv-empty / .pl-empty / .ap-empty
+       ที่เดิมกระจายอยู่ 4 ไฟล์ แต่หน้าตาเหมือนกัน
+   ══════════════════════════════════════ */
+.empty-state {
+    text-align: center;
+    padding: 48px 16px;
+    color: var(--bs-primary-900);
+    user-select: none;
+}
+
+/* Font Awesome ล็อกความกว้างไอคอนไว้ 1.25em ตัว <i> จึงไม่เต็มบรรทัด
+   text-align:center ของ parent เลยไม่ทำให้กล่อง block นี้อยู่กึ่งกลาง ต้อง margin auto เอง */
+.empty-state i {
+    display: block;
+    font-size: 44px;
+    margin: 0 auto 16px;
+    color: var(--bs-primary-900);
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* ในกริดที่เป็น CSS grid ให้กินเต็มแถว */
+.pl-grid > .empty-state {
+    grid-column: 1 / -1;
+}
+
+.empty-state-boxed {
+    background: #fff;
+    border: 1px dashed #D7DEEC;
+    border-radius: 10px;
+    color: #677088;
+    padding: 40px 16px;
+}
+
+.empty-state-boxed p {
+    font-weight: 400;
+}
+
+.empty-state-action {
+    margin-top: 1rem;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Scroll bars - แบบเดียวกับ e-Learning (mrta-learnext: theme_mrta/css/main.css)
+| ช่องที่มี scrollbar ของตัวเอง (qa / myshelf / search-advanced) ยังใช้ของตัวเองตามเดิม
+|--------------------------------------------------------------------------
+*/
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background-color: #e1e7ed;
+}
+::-webkit-scrollbar-thumb {
+    height: 8px;
+    min-height: 6px;
+    border: 0;
+    background-clip: padding-box;
+    background-color: #4a4a4a;
+    -webkit-border-radius: 2px;
+    -webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0), inset 1px 1px 0px rgba(0, 0, 0, 0);
+}
+::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+}
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}

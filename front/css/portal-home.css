@@ -1,0 +1,1738 @@
+/* ══════════════════════════════════════════════════════════════════
+   หน้าแรก portal (ดีไซน์ชุดใหม่) - frontend/home/home.blade.php + ph_*.blade.php + section_quicknav
+   คลาสทั้งหมดขึ้นต้น ph- (ยกเว้นทางเข้าด่วนที่ใช้คลาสเดิม quicknav-* / qn-* เพราะ JS โหมดสลับลำดับผูกไว้)
+
+   ขนาด: mockup วาดที่ 1920px - ไม่ได้ลอก px ตรง ๆ ใช้ .container (สูงสุด 1320) + ขนาดตายตัว
+         หัวข้อ section 22px / เนื้อหา 14-16px / ช่องกรอก-ปุ่ม 42-46px (ชุดเดียวกับหน้า event ของ booking)
+   สี: น้ำเงิน/แดงจากตัวแปรของเว็บ (front/color/main.css)
+   ══════════════════════════════════════════════════════════════════ */
+
+.ph {
+    --ph-navy: var(--bs-primary-500, #002777);
+    --ph-navy-2: var(--bs-primary-900, #213069);
+    --ph-red: var(--bs-secondary-900, #D82028);
+    --ph-bg: #f2f5fa;
+    --ph-text: #1b2a4e;
+    --ph-muted: #6b7690;
+    --ph-line: #e5eaf2;
+    --ph-radius: 18px;
+    --ph-shadow: 0 8px 28px rgba(16, 38, 92, .08);
+    background: var(--ph-bg);
+    color: var(--ph-text);
+    text-align: left;
+    overflow-x: clip;
+}
+
+.ph a {
+    text-decoration: none;
+}
+
+.ph-body {
+    padding-bottom: 56px;
+}
+
+.ph-section {
+    margin-top: 28px;
+}
+
+/* การ์ดขาวมุมมน (ทุก section) */
+.ph-card {
+    background: #fff;
+    border-radius: var(--ph-radius);
+    box-shadow: var(--ph-shadow);
+    padding: 24px;
+    min-width: 0;
+}
+
+.ph-card-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.ph-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ph-navy);
+}
+
+.ph-eyebrow {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    color: var(--ph-red);
+}
+
+.ph-link {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ph-navy);
+    white-space: nowrap;
+}
+
+.ph-link:hover {
+    color: var(--ph-red);
+}
+
+.ph-link i {
+    transition: transform .2s;
+}
+
+.ph-link:hover i {
+    transform: translateX(3px);
+}
+
+/* ปุ่ม */
+.ph-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 22px;
+    border: 0;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    transition: background-color .2s, color .2s, box-shadow .2s;
+}
+
+.ph-btn-primary {
+    background: var(--ph-navy);
+    color: #fff;
+}
+
+.ph-btn-primary:hover,
+.ph-btn-primary:focus-visible {
+    background: var(--bs-primary-300, #202EAB);
+    color: #fff;
+}
+
+.ph-btn-red {
+    background: var(--ph-red);
+    color: #fff;
+}
+
+.ph-btn-red:hover,
+.ph-btn-red:focus-visible {
+    background: #b5161d;
+    color: #fff;
+}
+
+.ph-btn-block {
+    display: flex;
+    width: 100%;
+    border-radius: 12px;
+}
+
+.ph-round-btn {
+    width: 42px;
+    height: 42px;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--ph-line);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--ph-navy);
+    font-size: 16px;
+    transition: background-color .2s, color .2s, border-color .2s;
+}
+
+.ph-round-btn:hover,
+.ph-round-btn:focus-visible {
+    background: var(--ph-navy);
+    border-color: var(--ph-navy);
+    color: #fff;
+}
+
+.ph-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--ph-red);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* แถวตัวเลขเล็ก (วันที่ / ยอดเข้าชม / ความยาว) */
+.ph-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 14px;
+    font-size: 13px;
+    color: var(--ph-muted);
+    line-height: 1.4;
+}
+
+.ph-meta > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.ph-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 180px;
+    padding: 24px;
+    border-radius: 14px;
+    background: #f7f9fc;
+    color: var(--ph-muted);
+    font-size: 14px;
+    text-align: center;
+}
+
+.ph-empty i {
+    font-size: 28px;
+    color: #a9b4c9;
+}
+
+/* ══════════════ Hero ══════════════ */
+.ph-hero {
+    position: relative;
+    background: #cfe3f7;
+}
+
+/* ฟิล์มน้ำเงินจาง ๆ ขอบบน - ให้ตัวหนังสือขาวของแถบเมนู (header_transparent) อ่านออกบนท้องฟ้าสว่าง */
+.ph-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 150px;
+    z-index: 2;
+    pointer-events: none;
+    /* ฝั่งซ้ายสุด (โลโก้สีน้ำเงินบนท้องฟ้าสว่าง) แทบไม่ทับ - เข้มขึ้นตรงช่วงเมนู แล้วจางลงด้านล่างด้วย mask */
+    background: linear-gradient(90deg, rgba(0, 31, 92, .08) 0%, rgba(0, 31, 92, .55) 26%, rgba(0, 31, 92, .45) 100%);
+    -webkit-mask-image: linear-gradient(180deg, #000 35%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 35%, transparent 100%);
+}
+
+.ph-hero .carousel-item {
+    position: relative;
+}
+
+.ph-hero-media {
+    position: relative;
+    height: clamp(440px, 36vw, 560px);
+    overflow: hidden;
+}
+
+.ph-hero-media > img,
+.ph-hero-media .bm-frame,
+.ph-hero-media video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.ph-hero-body {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    padding-top: 72px;
+    pointer-events: none;
+}
+
+.ph-hero-body .container {
+    width: 100%;
+}
+
+.ph-hero-text {
+    max-width: 600px;
+    pointer-events: auto;
+}
+
+.ph-hero-eyebrow {
+    margin: 0 0 8px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    color: var(--ph-red);
+}
+
+.ph-hero-title {
+    margin: 0;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ph-navy);
+}
+
+.ph-hero-title .accent {
+    color: var(--ph-red);
+}
+
+.ph-hero-sub {
+    margin: 18px 0 0;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.75;
+    color: #22365f;
+}
+
+.ph-hero-btn {
+    margin-top: 24px;
+}
+
+/* จุดบอกสไลด์ */
+.ph-hero-dots {
+    z-index: 4;
+    margin-bottom: 22px;
+    gap: 8px;
+    align-items: center;
+}
+
+.ph-hero-dots [data-bs-target] {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .6);
+    opacity: 1;
+    text-indent: -999px;
+    transition: width .25s, background-color .25s;
+}
+
+.ph-hero-dots [data-bs-target].active {
+    width: 28px;
+    background: #fff;
+}
+
+/* ══════════════ ทางเข้าด่วน (section_quicknav) ══════════════ */
+.quicknav-section {
+    margin-top: 28px;
+}
+
+.quicknav-wrap {
+    position: relative;
+}
+
+.quicknav-card {
+    display: grid;
+    /* จำนวนช่องเปลี่ยนตามการล็อกอิน (ช่อง Dashboard) - --qn-cols ตั้งจาก section_quicknav */
+    grid-template-columns: repeat(var(--qn-cols, 6), minmax(0, 1fr));
+    padding: 10px;
+    border-radius: var(--ph-radius);
+    background: #fff;
+    box-shadow: var(--ph-shadow);
+}
+
+.quicknav-cell {
+    position: relative;
+    display: flex;
+    min-width: 0;
+}
+
+/* เส้นแบ่งแนวตั้งระหว่างช่อง */
+.quicknav-cell + .quicknav-cell::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 22%;
+    bottom: 22%;
+    width: 1px;
+    background: var(--ph-line);
+}
+
+.quicknav-item {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 20px 8px 18px;
+    border-radius: 14px;
+    text-align: center;
+    transition: background-color .2s;
+}
+
+/* ชี้/โฟกัส: ไม่ระบายพื้น (กล่องฟ้าเต็มช่องชนขอบการ์ดกับเส้นแบ่ง ดูเป็นการ์ดซ้อนการ์ด) - ไอคอนยกขึ้น + ชื่อเปลี่ยนสี */
+.quicknav-item:focus-visible {
+    outline: 2px solid var(--ph-navy);
+    outline-offset: -6px;
+}
+
+.quicknav-item.is-disabled {
+    cursor: default;
+}
+
+.quicknav-item.is-disabled:hover > i {
+    transform: none;
+}
+
+.quicknav-item > i {
+    margin-bottom: 8px;
+    font-size: 38px;
+    line-height: 1;
+    color: var(--ph-navy);
+    transition: transform .2s;
+}
+
+/* ไอคอน e-Library: หนังสือเปิดมีเส้นบรรทัด (bi-book-fill ทึบทั้งเล่มดูหนักเกิน) - สีตาม currentColor ผ่าน mask */
+.ph-ico-library::before {
+    content: "";
+    display: inline-block;
+    width: 1.3em;
+    height: 1em;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 40'%3E%3Cpath fill-rule='evenodd' d='M24.5 7.6C19.8 4.3 12.2 3.1 3 3.7v30.2c9.2-.6 16.8.6 21.5 3.9zM27.5 7.6c4.7-3.3 12.3-4.5 21.5-3.9v30.2c-9.2-.6-16.8.6-21.5 3.9zM7.3 11.2h12.6a1.35 1.35 0 0 1 0 2.7H7.3a1.35 1.35 0 0 1 0-2.7zM7.3 17.4h12.6a1.35 1.35 0 0 1 0 2.7H7.3a1.35 1.35 0 0 1 0-2.7zM7.3 23.6h12.6a1.35 1.35 0 0 1 0 2.7H7.3a1.35 1.35 0 0 1 0-2.7zM32.1 11.2h12.6a1.35 1.35 0 0 1 0 2.7H32.1a1.35 1.35 0 0 1 0-2.7zM32.1 17.4h12.6a1.35 1.35 0 0 1 0 2.7H32.1a1.35 1.35 0 0 1 0-2.7zM32.1 23.6h12.6a1.35 1.35 0 0 1 0 2.7H32.1a1.35 1.35 0 0 1 0-2.7z'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 40'%3E%3Cpath fill-rule='evenodd' d='M24.5 7.6C19.8 4.3 12.2 3.1 3 3.7v30.2c9.2-.6 16.8.6 21.5 3.9zM27.5 7.6c4.7-3.3 12.3-4.5 21.5-3.9v30.2c-9.2-.6-16.8.6-21.5 3.9zM7.3 11.2h12.6a1.35 1.35 0 0 1 0 2.7H7.3a1.35 1.35 0 0 1 0-2.7zM7.3 17.4h12.6a1.35 1.35 0 0 1 0 2.7H7.3a1.35 1.35 0 0 1 0-2.7zM7.3 23.6h12.6a1.35 1.35 0 0 1 0 2.7H7.3a1.35 1.35 0 0 1 0-2.7zM32.1 11.2h12.6a1.35 1.35 0 0 1 0 2.7H32.1a1.35 1.35 0 0 1 0-2.7zM32.1 17.4h12.6a1.35 1.35 0 0 1 0 2.7H32.1a1.35 1.35 0 0 1 0-2.7zM32.1 23.6h12.6a1.35 1.35 0 0 1 0 2.7H32.1a1.35 1.35 0 0 1 0-2.7z'/%3E%3C/svg%3E") center / contain no-repeat;
+    vertical-align: -.125em;   /* แนวเดียวกับไอคอน bootstrap-icons ช่องอื่น */
+}
+
+.quicknav-item:not(.is-disabled):hover > i {
+    transform: translateY(-4px);
+}
+
+.quicknav-title {
+    transition: color .2s;
+}
+
+.quicknav-item:not(.is-disabled):hover .quicknav-title {
+    color: var(--ph-red, #e11d2a);
+}
+
+.quicknav-title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--ph-navy);
+}
+
+.quicknav-sub {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--ph-muted);
+}
+
+/* โหมดสลับลำดับ (คนที่เข้าหลังบ้านได้) - ปุ่มดินสอมุมขวาบน โผล่ตอนชี้/โฟกัส */
+.quicknav-tools {
+    position: absolute;
+    top: -14px;
+    right: 14px;
+    z-index: 6;
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s;
+}
+
+.quicknav-wrap:hover .quicknav-tools,
+.quicknav-wrap:focus-within .quicknav-tools,
+.quicknav-tools.is-editing {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+@media (hover: none) {
+    .quicknav-tools {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+.qn-tool-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 9px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--ph-navy);
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(33, 48, 105, .3);
+}
+
+.qn-tool-btn:hover {
+    background: #2d66cc;
+}
+
+.qn-tool-btn.is-save {
+    background: #1a8a4c;
+}
+
+.qn-tool-btn.is-cancel {
+    background: #8b93a7;
+}
+
+.quicknav-card.is-editing .quicknav-cell {
+    cursor: grab;
+    outline: 1px dashed rgba(33, 48, 105, .35);
+    outline-offset: -4px;
+    border-radius: 14px;
+}
+
+.quicknav-card.is-editing .quicknav-cell:active {
+    cursor: grabbing;
+}
+
+.quicknav-cell.qn-dragging {
+    opacity: .35;
+}
+
+.qn-move {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 4px;
+    display: none;
+    justify-content: center;
+    gap: 5px;
+}
+
+.quicknav-card.is-editing .qn-move {
+    display: flex;
+}
+
+.qn-move-btn {
+    width: 22px;
+    height: 22px;
+    border: 0;
+    border-radius: 50%;
+    background: #e6ecf8;
+    color: var(--ph-navy);
+    font-size: 10px;
+}
+
+.qn-move-btn:hover {
+    background: var(--ph-navy);
+    color: #fff;
+}
+
+/* ══════════════ เนื้อหาแนะนำ | ข่าวสาร | กิจกรรม ══════════════ */
+.ph-feed-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.72fr) minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 24px;
+    align-items: stretch;
+}
+
+/* จอ xl+: ทั้งสามคอลัมน์สูงเท่าการ์ดแนะนำ (1:1)
+   ข่าว/กิจกรรมใช้ contain: size = ไม่นับความสูงเนื้อหาตอนคำนวณแถว แล้วยืดเต็มแถว */
+@media (min-width: 1200px) {
+    .ph-feed-grid {
+        align-items: start;
+    }
+
+    .ph-featured {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .ph-news {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: stretch;
+        contain: size;
+    }
+
+    /* กิจกรรม: ปฏิทินกระชับลง / รายการกิจกรรมเลื่อนดูได้ในการ์ดถ้าไม่พอ / ปุ่มปฏิทินทั้งหมดชิดล่าง */
+    .ph-events {
+        grid-column: 3;
+        grid-row: 1;
+        align-self: stretch;
+        contain: size;
+        padding: 24px 22px 20px;
+    }
+
+    .ph-events .ph-card-head {
+        margin-bottom: 10px;
+    }
+
+    .ph-events .ph-cal {
+        flex: none;
+        padding: 8px 10px 6px;
+    }
+
+    .ph-events .ph-cal-head {
+        margin-bottom: 2px;
+    }
+
+    .ph-events .ph-cal-nav {
+        width: 28px;
+        height: 28px;
+    }
+
+    .ph-events .ph-cal-grid {
+        gap: 0 2px;
+    }
+
+    .ph-events .ph-cal-dow {
+        padding: 2px 0;
+    }
+
+    .ph-events .ph-cal-day {
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+    }
+
+    .ph-events .ph-cal-day.has-event::after {
+        bottom: 2px;
+    }
+
+    /* แสดงเฉพาะกิจกรรมที่พอดีการ์ด (ไม่ให้เห็นรายการถูกตัดครึ่ง) - ที่เหลือดูจากจุดแดงในปฏิทิน / ปุ่มปฏิทินทั้งหมด */
+    .ph-events .ph-ev-list {
+        min-height: 0;
+        margin: 2px 0 10px;
+        overflow: hidden;
+    }
+
+    .ph-events .ph-ev:nth-child(n + 3) {
+        display: none;
+    }
+
+    .ph-events .ph-ev {
+        padding: 8px 0;
+    }
+
+    .ph-events .ph-ev-date b {
+        font-size: 26px;
+    }
+
+    .ph-events .ph-btn-block {
+        flex: none;
+    }
+
+    /* 4 ข่าวแบ่งความสูงเท่า ๆ กัน รูปสูงเต็มแถวของตัวเอง */
+    .ph-news-list {
+        justify-content: flex-start;
+        gap: 14px;
+        min-height: 0;
+    }
+
+    .ph-news-item {
+        flex: 1 1 0;
+        min-height: 0;
+        align-items: stretch;
+    }
+
+    .ph-news-thumb {
+        height: auto;
+        align-self: stretch;
+    }
+
+    .ph-news-body {
+        align-self: center;
+    }
+}
+
+/* desktop เล็ก (1200–1399 / container 1140): การ์ดแนะนำเตี้ยลง (~470px) - 3 ข่าว / 1 กิจกรรม ให้พอดีความสูง */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    .ph-news-item:nth-child(n + 4),
+    .ph-events .ph-ev:nth-child(n + 2) {
+        display: none;
+    }
+
+    .ph-news-thumb {
+        width: 96px;
+    }
+}
+
+.ph-featured,
+.ph-news,
+.ph-events {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── เนื้อหาแนะนำ: การ์ดรูปเต็มใบ 1:1 ตัวหนังสือทับรูป (ตาม mockup) ── */
+.ph-featured {
+    position: relative;
+    align-self: start;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: var(--ph-radius);
+    background: #dfe8f5;
+    box-shadow: var(--ph-shadow);
+    isolation: isolate;
+}
+
+.ph-feat-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 3;
+    margin: 0;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: var(--ph-navy);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.ph-slide {
+    position: absolute;
+    inset: 0;
+    animation: phFade .35s ease;
+}
+
+.ph-slide[hidden] {
+    display: none;
+}
+
+@keyframes phFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.ph-slide-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 70% center;
+    transition: transform .6s ease;
+}
+
+.ph-featured:hover .ph-slide-bg {
+    transform: scale(1.03);
+}
+
+/* ฟิล์มขาวจางจากซ้ายบน - รูปจริงสีเข้มก็ยังอ่านตัวหนังสือกรมท่าออก */
+.ph-slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        linear-gradient(180deg, rgba(240, 246, 255, .55) 0%, rgba(240, 246, 255, 0) 55%),
+        linear-gradient(100deg, rgba(240, 246, 255, .92) 0%, rgba(240, 246, 255, .78) 36%, rgba(240, 246, 255, .2) 64%, rgba(240, 246, 255, 0) 80%);
+}
+
+.ph-slide-body {
+    position: absolute;
+    top: 96px;
+    left: 32px;
+    width: min(400px, calc(100% - 64px));
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.ph-slide-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ph-slide-title a {
+    color: var(--ph-navy);
+}
+
+.ph-slide-title a:hover {
+    color: var(--ph-red);
+}
+
+.ph-slide-text {
+    margin: 14px 0 0;
+    font-size: 16px;
+    line-height: 1.75;
+    color: #1d2b4f;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ph-slide-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 46px;
+    margin-top: 30px;
+    padding: 0 22px;
+    border-radius: 999px;
+    background: var(--ph-navy);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(0, 39, 119, .25);
+    transition: background-color .2s;
+}
+
+.ph-slide-more:hover,
+.ph-slide-more:focus-visible {
+    background: var(--ph-navy-2);
+    color: #fff;
+}
+
+.ph-slide-more i {
+    transition: transform .2s;
+}
+
+.ph-slide-more:hover i {
+    transform: translateX(3px);
+}
+
+/* ล่าง: [← 01 02 03 04] บนแถบขาวโปร่ง · → ชิดขวา */
+.ph-featured-nav {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.ph-feat-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-right: 18px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .6);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+
+.ph-feat-btn {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--ph-navy);
+    font-size: 22px;
+    box-shadow: 0 4px 16px rgba(0, 20, 70, .2);
+    transition: background-color .2s, color .2s;
+}
+
+.ph-feat-btn:hover,
+.ph-feat-btn:focus-visible {
+    background: var(--ph-navy);
+    color: #fff;
+}
+
+
+.ph-slide-nums {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ph-slide-num {
+    position: relative;
+    min-width: 38px;
+    height: 40px;
+    padding: 0 4px;
+    border: 0;
+    background: none;
+    color: var(--ph-navy);
+    font-size: 18px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    opacity: .8;
+}
+
+.ph-slide-num::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: 3px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--ph-navy);
+    transform: scaleX(0);
+    transition: transform .25s;
+}
+
+.ph-slide-num:hover,
+.ph-slide-num.active {
+    opacity: 1;
+}
+
+.ph-slide-num.active::after {
+    transform: scaleX(1);
+}
+
+.ph-featured .ph-empty {
+    position: absolute;
+    inset: 0;
+}
+
+/* ── ข่าวสารล่าสุด: วางบนพื้นหน้าเว็บ ไม่มีการ์ด (ตาม mockup) ── */
+/* เว้นบน-ล่างเท่าขอบในการ์ดกิจกรรม - หัวข้อตรงแนวกับ "กิจกรรมที่น่าสนใจ" ข่าวสุดท้ายจบแนวปุ่มปฏิทิน */
+.ph-news {
+    padding: 24px 0;
+}
+
+@media (min-width: 1200px) {
+    .ph-news {
+        padding-bottom: 0;
+    }
+}
+
+.ph-news .ph-card-head {
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.ph-news .ph-title {
+    font-size: 20px;
+}
+
+/* 4 ข่าวกระจายเต็มความสูงแถว (เท่าการ์ดกิจกรรมข้าง ๆ) */
+.ph-news-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.ph-news-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: inherit;
+}
+
+.ph-news-thumb {
+    flex: none;
+    width: 104px;
+    height: 112px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: #e3eaf5;
+    box-shadow: 0 4px 12px rgba(16, 38, 92, .1);
+    transition: transform .3s;
+}
+
+.ph-news-item:hover .ph-news-thumb {
+    transform: translateY(-2px);
+}
+
+.ph-news-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ph-news-cat {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2f5bd3;
+}
+
+.ph-news-title {
+    font-size: 15.5px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--ph-navy);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color .2s;
+}
+
+.ph-news-item:hover .ph-news-title {
+    color: var(--ph-red);
+}
+
+/* วันที่ซ้าย / ยอดเข้าชมขวา */
+.ph-news-body .ph-meta {
+    margin-top: 6px;
+    justify-content: space-between;
+    color: #5d6984;
+}
+
+.ph-news-body .ph-meta .bi-eye {
+    font-size: 15px;
+    color: var(--ph-navy);
+}
+
+/* ── กิจกรรม: ปฏิทินเล็ก ── */
+.ph-cal {
+    padding: 14px;
+    border: 1px solid var(--ph-line);
+    border-radius: 14px;
+}
+
+.ph-cal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.ph-cal-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ph-navy);
+}
+
+.ph-cal-nav {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    background: #f1f4f9;
+    color: var(--ph-navy);
+    font-size: 13px;
+    transition: background-color .2s, color .2s;
+}
+
+.ph-cal-nav:hover,
+.ph-cal-nav:focus-visible {
+    background: var(--ph-navy);
+    color: #fff;
+}
+
+.ph-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 2px;
+    text-align: center;
+}
+
+.ph-cal-dow {
+    padding: 4px 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ph-muted);
+}
+
+.ph-cal-day {
+    position: relative;
+    justify-self: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--ph-text);
+    font-size: 13px;
+    line-height: 32px;
+    transition: background-color .15s, color .15s;
+}
+
+.ph-cal-day:hover {
+    background: #eef2f8;
+}
+
+.ph-cal-day.muted {
+    color: #c3cad8;
+    pointer-events: none;
+}
+
+/* วันที่มีกิจกรรม: ตัวเลขแดง + จุดใต้ */
+.ph-cal-day.has-event {
+    color: var(--ph-red);
+    font-weight: 700;
+}
+
+.ph-cal-day.has-event::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 3px;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    border-radius: 50%;
+    background: var(--ph-red);
+}
+
+.ph-cal-day.today,
+.ph-cal-day.selected {
+    background: var(--ph-red);
+    color: #fff;
+    font-weight: 700;
+}
+
+.ph-cal-day.today::after,
+.ph-cal-day.selected::after {
+    background: #fff;
+}
+
+.ph-cal-day.selected:not(.today) {
+    background: var(--ph-navy);
+}
+
+/* ── กิจกรรม: รายการ ── */
+.ph-ev-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 6px 0 16px;
+}
+
+.ph-ev {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    color: inherit;
+}
+
+.ph-ev + .ph-ev {
+    border-top: 1px solid var(--ph-line);
+}
+
+.ph-ev-date {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 48px;
+    line-height: 1;
+}
+
+.ph-ev-date b {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ph-red);
+}
+
+.ph-ev-date small {
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ph-navy);
+}
+
+.ph-ev-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ph-ev-time,
+.ph-ev-place {
+    font-size: 12.5px;
+    color: var(--ph-muted);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.ph-ev-name {
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--ph-text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ph-ev:hover .ph-ev-name {
+    color: var(--ph-navy);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.ph-ev-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 120px;
+    color: var(--ph-muted);
+    font-size: 14px;
+    text-align: center;
+}
+
+.ph-ev-empty i {
+    font-size: 24px;
+    color: #a9b4c9;
+}
+
+/* ══════════════ Learning Highlights | KM Highlight ══════════════ */
+.ph-hl-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.ph-hl {
+    display: flex;
+    flex-direction: column;
+}
+
+.ph-hl-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+/* การ์ดย่อย (ตาม mockup): พื้นขาวขอบบางมีเงา รูปเต็มกว้างด้านบน / ป้ายแถบขาวทับขอบรูป / ชื่อ 2 บรรทัด / แถวล่าง ชนิด-เวลา ซ้าย · ยอดเข้าชม ขวา */
+.ph-hl-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid #e6ebf3;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(16, 38, 92, .07);
+    color: inherit;
+    transition: box-shadow .25s, transform .25s;
+}
+
+.ph-hl-card:hover {
+    box-shadow: 0 10px 24px rgba(16, 38, 92, .13);
+    transform: translateY(-2px);
+}
+
+.ph-hl-img {
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #eef2f8;
+}
+
+.ph-hl-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
+}
+
+.ph-hl-card:hover .ph-hl-img img {
+    transform: scale(1.04);
+}
+
+.ph-hl-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 12px 12px;
+}
+
+.ph-hl-label {
+    position: relative;
+    align-self: flex-start;
+    max-width: 100%;
+    margin: -24px 0 0 -2px;
+    padding: 4px 12px 2px;
+    border-radius: 8px 8px 0 0;
+    background: #fff;
+    color: var(--ph-navy);
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1.5;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.ph-hl-title {
+    margin-top: 6px;
+    font-size: 14.5px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--ph-navy);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 3em;
+    transition: color .2s;
+}
+
+.ph-hl-card:hover .ph-hl-title {
+    color: var(--ph-red);
+}
+
+.ph-hl-body .ph-meta {
+    margin-top: auto;
+    padding-top: 10px;
+    justify-content: space-between;
+    gap: 4px 10px;
+    font-size: 12.5px;
+    color: #5d6984;
+}
+
+.ph-hl-body .ph-meta i {
+    font-size: 14px;
+    color: var(--ph-navy);
+}
+
+/* ชนิด-เวลาอยู่ซ้าย ยอดเข้าชมชิดขวาเสมอ (แม้ไม่มีชนิด-เวลา) */
+.ph-hl-body .ph-meta > span:last-child {
+    margin-left: auto;
+}
+
+/* ══════════════ แถบสถิติ ══════════════ */
+.ph-stats-card {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin: 0;
+    padding: 26px 12px;
+    list-style: none;
+}
+
+.ph-stat {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-width: 0;
+    padding: 4px 14px;
+}
+
+.ph-stat + .ph-stat::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10%;
+    bottom: 10%;
+    width: 1px;
+    background: var(--ph-line);
+}
+
+.ph-stat > i {
+    flex: none;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--ph-navy);
+}
+
+.ph-stat-body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.ph-stat-num {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ph-navy);
+    font-variant-numeric: tabular-nums;
+}
+
+.ph-stat-label {
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--ph-muted);
+}
+
+/* ══════════════ Responsive ══════════════ */
+
+/* desktop เล็ก */
+@media (max-width: 1399.98px) {
+    .ph-hero-title {
+        font-size: 44px;
+    }
+
+    .ph-stat > i {
+        font-size: 32px;
+    }
+
+    .ph-stat-num {
+        font-size: 24px;
+    }
+}
+
+/* แท็บเล็ตแนวนอน / notebook เล็ก: สามคอลัมน์ → เนื้อหาแนะนำเต็มแถว + ข่าว | กิจกรรม */
+@media (max-width: 1199.98px) {
+    .ph-hero-title {
+        font-size: 40px;
+    }
+
+    .ph-hero-sub {
+        font-size: 16px;
+    }
+
+    .ph-feed-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ph-featured {
+        grid-column: 1 / -1;
+    }
+
+    /* แนะนำเต็มแถว: การ์ดรูปกว้าง (1:1 สูงเกินจอ) */
+    .ph-featured {
+        aspect-ratio: 16 / 9;
+        min-height: 440px;
+    }
+
+    /* ทางเข้าด่วน 3 + 3 (+ 1 ตอนล็อกอิน) */
+    .quicknav-card {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        row-gap: 4px;
+    }
+
+    .quicknav-cell:nth-child(3n + 1)::before {
+        display: none;
+    }
+
+    /* ช่องที่เหลือเดี่ยวในแถวสุดท้าย (ถ้าจำนวนช่องไม่ลงตัว 3) กางเต็มแถว */
+    .quicknav-cell:last-child:nth-child(3n + 1) {
+        grid-column: 1 / -1;
+    }
+
+    .ph-hl-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ph-stats-card {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        row-gap: 22px;
+    }
+
+    .ph-stat:nth-child(3n + 1)::before {
+        display: none;
+    }
+
+    .ph-stat {
+        justify-content: flex-start;
+        padding-left: 20px;
+    }
+}
+
+/* แท็บเล็ต (ข้อความ hero ยังทับรูป): ฟิล์มฟ้าอ่อนฝั่งซ้ายให้ตัวหนังสือน้ำเงินไม่จมกับตึกในรูป */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+    .ph-hero-media::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(232, 242, 252, .82) 0%, rgba(232, 242, 252, .55) 45%, rgba(232, 242, 252, 0) 70%);
+    }
+}
+
+/* แท็บเล็ตแนวตั้ง */
+@media (max-width: 991.98px) {
+    .ph-hero-media {
+        height: 420px;
+    }
+
+    .ph-hero-title {
+        font-size: 36px;
+    }
+
+    .ph-hero-text {
+        max-width: 480px;
+    }
+}
+
+/* มือถือ: ข้อความ hero ลงไปอยู่ใต้รูป, ทุกอย่างเรียงคอลัมน์เดียว, ขอบข้าง 16px */
+@media (max-width: 767.98px) {
+    .ph .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .ph-section,
+    .quicknav-section {
+        margin-top: 20px;
+    }
+
+    .ph-card {
+        padding: 18px 16px;
+        border-radius: 16px;
+    }
+
+    .ph-title {
+        font-size: 20px;
+    }
+
+    .ph-hero::before {
+        height: 110px;
+    }
+
+    .ph-hero-media {
+        height: 250px;
+    }
+
+    .ph-hero-media > img {
+        object-position: 62% center;
+    }
+
+    .ph-hero-body {
+        position: static;
+        padding: 22px 0 6px;
+        background: linear-gradient(180deg, #e3effb 0%, var(--ph-bg) 100%);
+    }
+
+    .ph-hero-text {
+        max-width: none;
+    }
+
+    .ph-hero-title {
+        font-size: 28px;
+        line-height: 1.4;
+    }
+
+    .ph-hero-sub {
+        margin-top: 10px;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .ph-hero-dots {
+        bottom: auto;
+        top: 214px;
+        margin-bottom: 0;
+    }
+
+
+
+
+
+    /* แท็กเลื่อนแนวนอนในแถวเดียว (ไม่ดันหน้าให้กว้างเกินจอ) */
+
+
+
+    /* ทางเข้าด่วน 3 คอลัมน์ */
+    .quicknav-card {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        padding: 6px;
+    }
+
+    .quicknav-cell::before {
+        display: none;
+    }
+
+    .quicknav-item {
+        padding: 14px 4px 12px;
+    }
+
+    .quicknav-item > i {
+        margin-bottom: 6px;
+        font-size: 26px;
+    }
+
+    .quicknav-title {
+        font-size: 14px;
+    }
+
+    .quicknav-sub {
+        font-size: 12px;
+    }
+
+    .quicknav-tools {
+        right: 8px;
+    }
+
+    .ph-feed-grid,
+    .ph-hl-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+    }
+
+    /* แนะนำ: จอแคบใช้ความสูงคงที่ (1:1 จะเตี้ยเกินกว่าหัวข้อ + ปุ่ม + แถบเลื่อน) */
+    .ph-featured {
+        aspect-ratio: auto;
+        min-height: 0;
+        height: 440px;
+    }
+
+    .ph-news {
+        padding: 0;
+    }
+
+    .ph-feat-badge {
+        top: 12px;
+        left: 12px;
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .ph-slide-body {
+        top: 64px;
+        left: 18px;
+        width: calc(100% - 36px);
+    }
+
+    .ph-slide-title {
+        font-size: 22px;
+    }
+
+    .ph-slide-text {
+        margin-top: 8px;
+        font-size: 14px;
+    }
+
+    .ph-slide-more {
+        height: 42px;
+        margin-top: 18px;
+        padding: 0 18px;
+        font-size: 15px;
+    }
+
+    .ph-featured-nav {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+    }
+
+    .ph-feat-bar {
+        gap: 8px;
+        padding-right: 10px;
+    }
+
+    .ph-feat-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+    }
+
+
+    .ph-slide-nums {
+        gap: 0;
+    }
+
+    .ph-slide-num {
+        min-width: 32px;
+        font-size: 15px;
+    }
+
+    .ph-news-thumb {
+        width: 88px;
+        height: 96px;
+    }
+
+    .ph-news-title {
+        font-size: 15px;
+    }
+
+    /* highlight: เลื่อนแนวนอนทีละการ์ด (ขนาดการ์ดเท่าบนจอใหญ่) */
+    .ph-hl-list {
+        grid-template-columns: none;
+        grid-auto-flow: column;
+        grid-auto-columns: 72%;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        margin: -4px -16px -8px;
+        padding: 4px 16px 8px;
+        scroll-padding-left: 16px;
+        scrollbar-width: none;
+    }
+
+    .ph-hl-list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .ph-hl-card {
+        scroll-snap-align: start;
+    }
+
+    .ph-stats-card {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 20px 8px;
+        row-gap: 18px;
+    }
+
+    .ph-stat::before,
+    .ph-stat + .ph-stat::before {
+        display: none;
+    }
+
+    .ph-stat {
+        gap: 10px;
+        padding: 0 8px;
+    }
+
+    .ph-stat:last-child {
+        grid-column: 1 / -1;
+        justify-content: center;
+    }
+
+    .ph-stat > i {
+        font-size: 28px;
+    }
+
+    .ph-stat-num {
+        font-size: 20px;
+    }
+
+    .ph-stat-label {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 379.98px) {
+    .quicknav-card {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .quicknav-cell:last-child:nth-child(3n + 1) {
+        grid-column: auto;
+    }
+
+    .quicknav-cell:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+    }
+
+    .ph-hero-title {
+        font-size: 25px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ph *,
+    .ph *::before,
+    .ph *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
